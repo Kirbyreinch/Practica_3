@@ -5,38 +5,38 @@ const mongoose = require('mongoose');
 //////////////Modelo Vehiculos/////////////////////
 const VehiculoSchemas = new mongoose.Schema(
     {
-        Nombre:{
-            type:String,
-            required: true,
-        },
-        Modelo:{
+        Nombre: {
             type: String,
             required: true,
         },
-        Clase:{
-            type:String,
-            
+        Modelo: {
+            type: String,
+            required: true,
         },
-        Tamaño:{
-            type:String,
-            
+        Clase: {
+            type: String,
+
         },
-        Numero_de_Pasajeros:{
-            type:String,
-            
+        Tamaño: {
+            type: String,
+
         },
-        Maxima_velocidad_atmosferica:{
-            type:String,
-            
+        Numero_de_Pasajeros: {
+            type: String,
+
         },
-        Capacidad_Maxima:{
-            type:String,
-            
+        Maxima_velocidad_atmosferica: {
+            type: String,
+
+        },
+        Capacidad_Maxima: {
+            type: String,
+
         },
 
-        Tiempo_Maximo_Cobustibles:{
-            type:String,
-            
+        Tiempo_Maximo_Cobustibles: {
+            type: String,
+
         },
     },
     {

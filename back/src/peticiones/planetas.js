@@ -1,5 +1,5 @@
-const express = require('express');  
-const { PlanetasModel } = require('../modelos/planets');  
+const express = require('express');
+const { PlanetasModel } = require('../modelos/planets');
 const app = express.Router();
 
 
@@ -10,7 +10,7 @@ app.post("/", async (req, res) => {
 
         if (existe) {
             console.log(`El Planeta ${req.body.Nombre} ya existe. No se guardará.`);
-            return res.status(409).send(`El Planeta ${req.body.Nombre} ya existe.`); 
+            return res.status(409).send(`El Planeta ${req.body.Nombre} ya existe.`);
         }
         const nuevoplaneta = new PlanetasModel(req.body);
         const guardarplaneta = await nuevoplaneta.save();
@@ -23,8 +23,8 @@ app.post("/", async (req, res) => {
 
 app.get("/id/:id", async (req, res) => {
     try {
-        const id = req.params.id; 
-        const planets = await PlanetasModel.findById(id, {createdAt: 0, updatedAt: 0}); 
+        const id = req.params.id;
+        const planets = await PlanetasModel.findById(id, { createdAt: 0, updatedAt: 0 });
         if (!planets) {
             return res.status(404).send("Planeta no encontrado");
         }
@@ -37,7 +37,7 @@ app.get("/id/:id", async (req, res) => {
 
 app.get("/personajes/", async (req, res) => {
     try {
-        const planets = await PlanetasModel.find({}, {Nombre:1, _id:1}); 
+        const planets = await PlanetasModel.find({}, { Nombre: 1, _id: 1 });
         if (planets.length === 0) {
             return res.status(404).send("Planeta no encontrado");
         }
@@ -50,8 +50,8 @@ app.get("/personajes/", async (req, res) => {
 
 app.get("/modulo/", async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1; 
-        const limit = parseInt(req.query.limit) || 10; 
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
         const planets = await PlanetasModel.find({}, { createdAt: 0, updatedAt: 0 })
             .skip(skip)
@@ -69,8 +69,8 @@ app.get("/modulo/", async (req, res) => {
 
 app.delete("/Delete/:id", async (req, res) => {
     try {
-        const id = req.params.id; 
-        const planets = await PlanetasModel.findById(id); 
+        const id = req.params.id;
+        const planets = await PlanetasModel.findById(id);
         if (!planets) {
             return res.status(404).send("Planeta no encontrado");
         }
@@ -78,7 +78,7 @@ app.delete("/Delete/:id", async (req, res) => {
         res.send({ message: "Planeta eliminado", Planeta: planets });
     } catch (error) {
         res.status(400).send("Error al eliminar Planeta: " + error.message);
-    } 
+    }
 });
 
 app.put("/Modificar/:id", async (req, res) => {

@@ -1,5 +1,5 @@
-const express = require('express');  
-const { PelisModel } = require('../modelos/films');  
+const express = require('express');
+const { PelisModel } = require('../modelos/films');
 const app = express.Router();
 
 

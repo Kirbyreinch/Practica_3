@@ -4,37 +4,37 @@ const mongoose = require('mongoose');
 //////////////Modelo Personajes/////////////////////
 const PersonajeSchemas = new mongoose.Schema(
     {
-        Nombre:{
-            type:String,
-            required: true,
-        },
-        Fecha_Nacimiento:{
+        Nombre: {
             type: String,
             required: true,
         },
-        Color_Ojos:{
-            type:String,
-            
+        Fecha_Nacimiento: {
+            type: String,
+            required: true,
         },
-        Genero:{
-            type:String,
-            
+        Color_Ojos: {
+            type: String,
+
         },
-        Color_Cabello:{
-            type:String,
-            
+        Genero: {
+            type: String,
+
         },
-        Altura:{
-            type:String,
-            
+        Color_Cabello: {
+            type: String,
+
         },
-        Masa:{
-            type:String,
-            
+        Altura: {
+            type: String,
+
         },
-        Color_de_Piel:{
-            type:String,
-            
+        Masa: {
+            type: String,
+
+        },
+        Color_de_Piel: {
+            type: String,
+
         },
     },
     {

@@ -1,5 +1,5 @@
-const express = require('express');  
-const { especiesModel } = require('../modelos/species');  
+const express = require('express');
+const { especiesModel } = require('../modelos/species');
 const app = express.Router();
 
 
@@ -14,7 +14,7 @@ app.post("/", async (req, res) => {
         }
         const nueva = new especiesModel(req.body);
         const guardar = await nueva.save();
-        res.status(201).send(guardar); 
+        res.status(201).send(guardar);
     } catch (error) {
         res.status(400).send("Error al crear especie: " + error.message);
     }
@@ -22,8 +22,8 @@ app.post("/", async (req, res) => {
 
 app.get("/id/:id", async (req, res) => {
     try {
-        const id = req.params.id; 
-        const modelo = await especiesModel.findById(id, {createdAt: 0, updatedAt: 0}); 
+        const id = req.params.id;
+        const modelo = await especiesModel.findById(id, { createdAt: 0, updatedAt: 0 });
         if (!modelo) {
             return res.status(404).send("especie no encontrado");
         }
@@ -36,7 +36,7 @@ app.get("/id/:id", async (req, res) => {
 
 app.get("/personajes/", async (req, res) => {
     try {
-        const modelo = await especiesModel.find({}, {Nombre:1, _id:1}); 
+        const modelo = await especiesModel.find({}, { Nombre: 1, _id: 1 });
         if (modelo.length === 0) {
             return res.status(404).send("especie no encontrado");
         }
@@ -50,7 +50,7 @@ app.get("/personajes/", async (req, res) => {
 app.get("/modulo/", async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10; 
+        const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
         const modelo = await especiesModel.find({}, { createdAt: 0, updatedAt: 0 })
             .skip(skip)
@@ -58,7 +58,7 @@ app.get("/modulo/", async (req, res) => {
         res.send({
             page,
             limit,
-            especies: modelo, 
+            especies: modelo,
         });
     } catch (error) {
         res.status(400).send("Error al obtener especies: " + error.message);
@@ -68,8 +68,8 @@ app.get("/modulo/", async (req, res) => {
 
 app.delete("/Delete/:id", async (req, res) => {
     try {
-        const id = req.params.id; 
-        const modelo = await especiesModel.findById(id); 
+        const id = req.params.id;
+        const modelo = await especiesModel.findById(id);
         if (!modelo) {
             return res.status(404).send("especie no encontrado");
         }
@@ -77,7 +77,7 @@ app.delete("/Delete/:id", async (req, res) => {
         res.send({ message: "Especies eliminado", especie: modelo });
     } catch (error) {
         res.status(400).send("Error al eliminar especie: " + error.message);
-    } 
+    }
 });
 
 

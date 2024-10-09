@@ -4,41 +4,41 @@ const mongoose = require('mongoose');
 //////////////Modelo Especies/////////////////////
 const especiesSchemas = new mongoose.Schema(
     {
-        Nombre:{
-            type:String,
+        Nombre: {
+            type: String,
             required: true,
         },
-        Clasificacion:{
+        Clasificacion: {
             type: String,
-            
+
         },
-        Designacion:{
-            type:String,
-            
+        Designacion: {
+            type: String,
+
         },
-        Estatura:{
-            type:String,
-            
+        Estatura: {
+            type: String,
+
         },
-        Color_de_piel:{
-            type:String,
-            
+        Color_de_piel: {
+            type: String,
+
         },
-        Color_de_cabello:{
-            type:String,
-            
+        Color_de_cabello: {
+            type: String,
+
         },
-        Color_de_ojos:{
-            type:String,
-            
+        Color_de_ojos: {
+            type: String,
+
         },
-        Promedio_de_vida:{
-            type:String,
-            
+        Promedio_de_vida: {
+            type: String,
+
         },
-        Lenguaje:{
-            type:String,
-            
+        Lenguaje: {
+            type: String,
+
         },
     },
     {
@@ -48,7 +48,7 @@ const especiesSchemas = new mongoose.Schema(
 )
 
 
-// Crear los modelos
+// Crear los modelosa
 const especiesModel = mongoose.model("Especies", especiesSchemas);
 
 

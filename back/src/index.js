@@ -1,17 +1,17 @@
 
-const llenarBDpersonajes = require ('./llenadoBD/personajes');
-const llenarBDespecies = require ('./llenadoBD/especies');
-const llenarBDnaves = require ('./llenadoBD/naves');
-const llenarBDpeliculas = require ('./llenadoBD/peliculas');
-const llenarBDplanetas = require ('./llenadoBD/planetas');
-const llenarBDvehiculos = require ('./llenadoBD/vehiculos');
+const llenarBDpersonajes = require('./llenadoBD/personajes');
+const llenarBDespecies = require('./llenadoBD/especies');
+const llenarBDnaves = require('./llenadoBD/naves');
+const llenarBDpeliculas = require('./llenadoBD/peliculas');
+const llenarBDplanetas = require('./llenadoBD/planetas');
+const llenarBDvehiculos = require('./llenadoBD/vehiculos');
 
-const especiesRouter = require('./peticiones/especies'); 
-const navesRouter = require('./peticiones/naves'); 
-const peliculasRouter = require('./peticiones/peliculas'); 
-const personajesRouter = require('./peticiones/personajes'); 
-const planetasRouter = require('./peticiones/planetas'); 
-const vehiculosRouter = require('./peticiones/vehiculos'); 
+const especiesRouter = require('./peticiones/especies');
+const navesRouter = require('./peticiones/naves');
+const peliculasRouter = require('./peticiones/peliculas');
+const personajesRouter = require('./peticiones/personajes');
+const planetasRouter = require('./peticiones/planetas');
+const vehiculosRouter = require('./peticiones/vehiculos');
 
 const express = require('express');
 const dbconnect = require('./conexionBD');

@@ -1,5 +1,5 @@
-const express = require('express');  
-const { PersonajesModel } = require('../modelos/characters');  
+const express = require('express');
+const { PersonajesModel } = require('../modelos/characters');
 const app = express.Router();
 
 
@@ -14,7 +14,7 @@ app.post("/", async (req, res) => {
         }
         const nueva = new PersonajesModel(req.body);
         const guardar = await nueva.save();
-        res.status(201).send(guardar); 
+        res.status(201).send(guardar);
     } catch (error) {
         res.status(400).send("Error al crear Personaje: " + error.message);
     }
@@ -23,11 +23,11 @@ app.post("/", async (req, res) => {
 
 app.get("/nombre/:nombre", async (req, res) => {
     try {
-        const nombre = req.params.nombre; 
+        const nombre = req.params.nombre;
         if (!nombre) {
             return res.status(400).send("El nombre es requerido.");
         }
-        const modelo = await PersonajesModel.findOne({ Nombre: nombre }, { createdAt: 0, updatedAt: 0 }); 
+        const modelo = await PersonajesModel.findOne({ Nombre: nombre }, { createdAt: 0, updatedAt: 0 });
         if (!modelo) {
             console.log(nombre);
             return res.status(404).send("Personaje no encontrado");
@@ -42,8 +42,8 @@ app.get("/nombre/:nombre", async (req, res) => {
 
 app.get("/id/:id", async (req, res) => {
     try {
-        const id = req.params.id; 
-        const modelo = await PersonajesModel.findById(id, {createdAt: 0, updatedAt: 0}); 
+        const id = req.params.id;
+        const modelo = await PersonajesModel.findById(id, { createdAt: 0, updatedAt: 0 });
         if (!modelo) {
             return res.status(404).send("Personaje no encontrado");
         }
@@ -56,7 +56,7 @@ app.get("/id/:id", async (req, res) => {
 
 app.get("/personajes/", async (req, res) => {
     try {
-        const modelo = await PersonajesModel.find({}, {Nombre:1, _id:1}); 
+        const modelo = await PersonajesModel.find({}, { Nombre: 1, _id: 1 });
         if (modelo.length === 0) {
             return res.status(404).send("Personaje no encontrado");
         }
@@ -69,7 +69,7 @@ app.get("/personajes/", async (req, res) => {
 
 app.get("/modulo/", async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1; 
+        const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
         const modelo = await PersonajesModel.find({}, { createdAt: 0, updatedAt: 0 })
@@ -79,7 +79,7 @@ app.get("/modulo/", async (req, res) => {
 
             page,
             limit,
-            personajes: modelo, 
+            personajes: modelo,
         });
     } catch (error) {
         res.status(400).send("Error al obtener personajes: " + error.message);
@@ -93,8 +93,8 @@ app.get("/modulo/", async (req, res) => {
 
 app.delete("/Delete/:id", async (req, res) => {
     try {
-        const id = req.params.id; 
-        const modelo = await PersonajesModel.findById(id); 
+        const id = req.params.id;
+        const modelo = await PersonajesModel.findById(id);
         if (!modelo) {
             return res.status(404).send("Personaje no encontrado");
         }
@@ -102,7 +102,7 @@ app.delete("/Delete/:id", async (req, res) => {
         res.send({ message: "Personaje eliminado", Personaje: modelo });
     } catch (error) {
         res.status(400).send("Error al eliminar Personaje: " + error.message);
-    } 
+    }
 });
 
 app.put("/Modificar/:id", async (req, res) => {

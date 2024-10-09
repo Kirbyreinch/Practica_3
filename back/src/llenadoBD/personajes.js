@@ -1,5 +1,5 @@
-const express = require('express');  
-const { PersonajesModel } = require('../modelos/characters');  
+const express = require('express');
+const { PersonajesModel } = require('../modelos/characters');
 const axios = require('axios');
 
 
@@ -14,11 +14,11 @@ const llenarBDpersonajes = async () => {
             const personajes = response.data.results;
 
             if (personajes.length === 0) {
-                pagina = false; 
+                pagina = false;
                 break;
             }
             const promises = personajes.map(async personaje => {
-            const existePersonaje = await PersonajesModel.findOne({ Nombre: personaje.name });
+                const existePersonaje = await PersonajesModel.findOne({ Nombre: personaje.name });
                 if (!existePersonaje) {
                     const nuevospersonajes = new PersonajesModel({
                         Nombre: personaje.name,
@@ -38,7 +38,7 @@ const llenarBDpersonajes = async () => {
 
             await Promise.all(promises);
             console.log(`Personajes de la página ${page} guardados con éxito.`);
-            page++; 
+            page++;
         }
 
         console.log("Todos los personajes han sido procesados.");

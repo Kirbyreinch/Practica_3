@@ -4,46 +4,46 @@ const mongoose = require('mongoose');
 //////////////Modelo Naves/////////////////////
 const NavesSchemas = new mongoose.Schema(
     {
-        Nombre:{
-            type:String,
-            required: true,
-        },
-        Modelo:{
+        Nombre: {
             type: String,
             required: true,
-            
         },
-        Clase:{
-            type:String,
-            
+        Modelo: {
+            type: String,
+            required: true,
+
         },
-        Tamaño:{
-            type:String,
-            
+        Clase: {
+            type: String,
+
         },
-        Numero_de_Pasajeros:{
-            type:String,
-            
+        Tamaño: {
+            type: String,
+
         },
-        Maxima_velocidad_atmosferica:{
-            type:String,
-            
+        Numero_de_Pasajeros: {
+            type: String,
+
         },
-        Hiperimpulsor:{
-            type:String,
-            
+        Maxima_velocidad_atmosferica: {
+            type: String,
+
         },
-        MGLT:{
-            type:String,
-            
+        Hiperimpulsor: {
+            type: String,
+
         },
-        Capacidad_de_carga:{
-            type:String,
-            
+        MGLT: {
+            type: String,
+
         },
-        Tiempo_Maximo_Cobustibles:{
-            type:String,
-            
+        Capacidad_de_carga: {
+            type: String,
+
+        },
+        Tiempo_Maximo_Cobustibles: {
+            type: String,
+
         },
     },
     {

@@ -3,17 +3,17 @@ const mongoose = require('mongoose');
 //Modelo Peliculas
 const pelisSchema = new mongoose.Schema(
     {
-        Titulo:{
-            type:String,
+        Titulo: {
+            type: String,
             required: true,
         },
-        Director:{
+        Director: {
             type: String,
             required: true
         },
-        Productor:{
-            type:String,
-            required:true,
+        Productor: {
+            type: String,
+            required: true,
         }
 
     },

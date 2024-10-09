@@ -3,41 +3,41 @@ const mongoose = require('mongoose');
 //////////////Modelo Planetas/////////////////////
 const planetSchema = new mongoose.Schema(
     {
-        Nombre:{
-            type:String,
+        Nombre: {
+            type: String,
             required: true,
         },
-        Diametro:{
+        Diametro: {
             type: String,
-            
+
         },
-        Periodo_Rotacion:{
-            type:String,
-            
+        Periodo_Rotacion: {
+            type: String,
+
         },
-        Periodo_Orbital:{
-            type:String,
-            
+        Periodo_Orbital: {
+            type: String,
+
         },
-        Gravedad:{
-            type:String,
-            
+        Gravedad: {
+            type: String,
+
         },
-        Poblacion:{
-            type:String,
-            
+        Poblacion: {
+            type: String,
+
         },
-        Clima:{
-            type:String,
-            
+        Clima: {
+            type: String,
+
         },
-        Terreno:{
-            type:String,
-            
+        Terreno: {
+            type: String,
+
         },
-        Superficie_Agua:{
-            type:String,
-            
+        Superficie_Agua: {
+            type: String,
+
         },
     },
     {
