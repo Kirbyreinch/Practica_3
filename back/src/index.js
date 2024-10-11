@@ -1,3 +1,8 @@
+const express = require('express');
+const dbconnect = require('./conexionBD');
+const cors = require('cors');
+
+
 
 const llenarBDpersonajes = require('./llenadoBD/personajes');
 const llenarBDespecies = require('./llenadoBD/especies');
@@ -13,14 +18,26 @@ const personajesRouter = require('./peticiones/personajes');
 const planetasRouter = require('./peticiones/planetas');
 const vehiculosRouter = require('./peticiones/vehiculos');
 
-const express = require('express');
-const dbconnect = require('./conexionBD');
 const app = express();
 const port = 5000;
 
-
+//Se habilita CORS,Express y funcion dbconnect
+app.use(cors());
 app.use(express.json());
 dbconnect();
+
+
+
+//Mostrar ruta del server
+app.listen(port, () => {
+    console.log(`Servidor escuchando en http://localhost:${port}`);
+});
+
+//Permisos Cors para la ruta
+app.use(cors({
+    origin: 'http://localhost:3000' 
+}));
+
 
 
 
@@ -47,7 +64,3 @@ app.use("/Vehiculos", vehiculosRouter);
 
 
 
-//Mostrar ruta del server
-app.listen(port, () => {
-    console.log(`Servidor escuchando en http://localhost:${port}`);
-});

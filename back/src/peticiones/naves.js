@@ -51,15 +51,18 @@ app.get("/personajes/", async (req, res) => {
 app.get("/modulo/", async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = 10;
         const skip = (page - 1) * limit;
         const modelo = await NavesModel.find({}, { createdAt: 0, updatedAt: 0 })
             .skip(skip)
             .limit(limit);
+            const total = await NavesModel.countDocuments();
         res.send({
+            total:total,
             page,
             limit,
             naves: modelo,
+            
         });
     } catch (error) {
         res.status(400).send("Error al obtener naves: " + error.message);

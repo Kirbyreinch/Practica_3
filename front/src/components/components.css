@@ -1,0 +1,147 @@
+/* CSS GENERAL */
+
+/* CONTENEDOR  */
+.contenedor{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    align-items: center; 
+    height: 6rem; 
+    font-size: 15px;
+}
+
+
+/* BARRA TITULO COMPONENTE  */
+.Titulo{
+    background-color: #ffffff;
+    border-radius: 9px; 
+    width: 93%; 
+    margin-left: 3rem;
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.3);
+}
+
+
+/* SECCION PARA BOTONES ARRIBA DE LA TABLA  */
+.Registrar{
+    
+    margin-top: 3rem; 
+    margin-bottom: 1rem; 
+    display: flex;
+    gap: 1rem; 
+}
+
+.Btn_agregar {
+    background: #141429;
+    border-radius: 999px;
+    box-shadow: #3b3b83 0 10px 20px -10px;
+    box-sizing: border-box;
+    color: #f3f3f3;
+    cursor: pointer;
+    font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    opacity: 1;
+    outline: 0 solid transparent;
+    padding: 8px 18px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: fit-content;
+    word-break: break-word;
+    border: 0;
+    color: rgb(219, 219, 219);
+  }
+
+
+
+
+/* ESTILO PARA LA TABLA */
+.DatosBD{
+    border-color: black;
+}
+
+.Table {
+    margin-top: 20px; 
+    width: 100%;
+    border-collapse: collapse;
+    
+}
+.Table th {
+    background-color: #7a7a7a;
+
+    padding: 10px;
+    text-align: center; 
+}
+th:first-child {
+    border-top-left-radius: 10px; 
+    border-bottom-left-radius: 10px;
+}
+th:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+td:first-child {
+    border-top-left-radius: 10px; 
+    border-bottom-left-radius: 10px;
+}
+td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.Table th, .Table td {
+    padding: 10px; 
+    text-align: left; 
+}
+
+.Table tr:nth-child(odd) {
+    background-color: #d6d6d6; 
+}
+
+.Table tr:nth-child(even) {
+    background-color: #ffffff; 
+}
+
+.icon {
+    margin-right: 10px; 
+}
+
+
+
+
+/* PAGINACION (PENDIENTE, PERO IRA AQUI (CREO)) */
+
+.button-74 {
+    background-color: #a09f9f;
+    border: 2px solid #302d29;
+    border-radius: 20px;
+    box-shadow: #4d4c4a 4px 4px 0 0;
+    color: #33302b;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 0 18px;
+    line-height: 20px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+
+  .button-74:hover {
+    background-color: #b8b2b2;
+  }
+  
+  .button-74:active {
+    box-shadow: #a19c93 2px 2px 0 0;
+    transform: translate(2px, 2px);
+  }
+  .pagination{
+    text-align: center;
+    font-size: 25px;
+    color: rgb(255, 255, 255);
+    }
+    
+

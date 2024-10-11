@@ -69,23 +69,24 @@ app.get("/personajes/", async (req, res) => {
 
 app.get("/modulo/", async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page) || 1; 
+        const limit = 10; 
         const skip = (page - 1) * limit;
         const modelo = await PersonajesModel.find({}, { createdAt: 0, updatedAt: 0 })
             .skip(skip)
             .limit(limit);
-        res.send({
 
+        const total = await PersonajesModel.countDocuments();
+        res.send({
             page,
             limit,
+            total,
             personajes: modelo,
         });
     } catch (error) {
         res.status(400).send("Error al obtener personajes: " + error.message);
     }
 });
-
 
 
 
