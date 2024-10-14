@@ -1,33 +1,33 @@
-.header{
+.header {
     display: flex;
-    justify-content: center; 
-    align-items: center; 
-    height: 4.5rem; 
+    justify-content: center;
+    align-items: center;
+    height: 4.5rem;
     font-size: 15px;
 
 }
 
 
-.options{
+.options {
     background-color: #ffffff;
-    padding: 0.5rem; 
-    border-radius: 9px; 
-    width: 93%; 
+    padding: 0.5rem;
+    border-radius: 9px;
+    width: 93%;
     margin-left: 3rem;
     box-shadow: 0 10px 16px rgba(0, 0, 0, 0.3);
 }
 
-input{
+input {
     margin-left: 2rem;
     background-color: rgb(255, 255, 255);
-    border-radius: 8px; 
+    border-radius: 8px;
     width: 50rem;
     height: 2rem;
     border: 1px solid #ffffff;
-    
+
 }
 
-.fa-search{
+.fa-search {
     margin-left: 3rem;
 
 }

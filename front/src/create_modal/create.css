@@ -1,0 +1,47 @@
+/*Contenedor Modal*/
+.modal {
+    position: fixed;
+    top: 27%;
+    left: 80%;
+    width: 20%;
+    height: 50%;
+    background-color: rgb(94, 94, 94);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+}
+.modal-main {
+    background: rgb(94, 94, 94);
+    padding: 20px;
+    border-radius: 8px;
+}
+.display-block {
+    display: block;
+}
+
+.display-none {
+    display: none;
+}
+
+.input_field {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+
+/*Titulo de la ventana modal*/
+.titulo_modal{
+font-size: 25px;
+}
+
+/*Mensaje de error*/
+.error-message {
+    color: rgb(87, 26, 26);
+    font-size: 0.875em;
+}
