@@ -4,19 +4,36 @@ import React, { useState, useEffect } from "react";
 import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faFilePen } from '@fortawesome/free-solid-svg-icons';
-import Modal from '../create_modal/modal';
-import MyForm from '../create_modal/create_film';
+import Modal from '../Modals/create_modal/modal';
+import MyForm from '../Modals/create_modal/create_film';
+import ConfirmDeleteModal from '../Modals/Delete_modals/delete_films';
+import ModifyFilmForm from '../Modals/modify_modals/modify_films'
+import { deleteMovie } from '../request/films';
 
 function Films() {
     const [films, setFilms] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showModifyModal, setShowModifyModal] = useState(false);
+    const [filmToDelete, setFilmToDelete] = useState(null);
+    const [filmToModify, setFilmToModify] = useState(null);
 
-    const handleOpen = () => setShowModal(true);
-    const handleClose = () => setShowModal(false);
+    // Función para abrir el modal de agregar
+    const handleOpen = () => {
+        setShowDeleteModal(false);
+        setShowModifyModal(false); // Cerrar modal de modificación
+        setShowModal(true);
+    };
 
-    // Función para obtener las películas
+    // Función para cerrar todos los modales
+    const handleClose = () => {
+        setShowModal(false);
+        setShowDeleteModal(false);
+        setShowModifyModal(false);
+    };
+
     const fetchFilms = async (page) => {
         try {
             const response = await axios.get(`http://localhost:5000/Peliculas/modulo/?page=${page}`);
@@ -27,21 +44,42 @@ function Films() {
         }
     };
 
-    // useEffect para cargar las películas al montar el componente
     useEffect(() => {
         fetchFilms(currentPage);
     }, [currentPage]);
 
-    // Funciones para cambiar de página
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
-        }
+    const openDeleteModal = (film) => {
+        handleClose(); // Cerrar todos los modales
+        setFilmToDelete(film);
+        setShowDeleteModal(true);
     };
 
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
+    const openModifyModal = (film) => {
+        handleClose(); // Cerrar todos los modales
+        setFilmToModify(film);
+        setShowModifyModal(true);
+    };
+
+    const closeDeleteModal = () => {
+        setFilmToDelete(null);
+        setShowDeleteModal(false);
+    };
+
+    const closeModifyModal = () => {
+        setFilmToModify(null);
+        setShowModifyModal(false);
+    };
+
+    const handleDelete = async () => {
+        if (filmToDelete) {
+            try {
+                await deleteMovie(filmToDelete._id);
+                fetchFilms(currentPage);
+            } catch (error) {
+                console.error("Error al eliminar la película: ", error.message);
+            } finally {
+                closeDeleteModal();
+            }
         }
     };
 
@@ -73,8 +111,16 @@ function Films() {
                                 <td>{film.Director}</td>
                                 <td>{film.Productor}</td>
                                 <td>
-                                    <FontAwesomeIcon className="icon" icon={faTrash} />
-                                    <FontAwesomeIcon className="icon" icon={faFilePen} />
+                                    <FontAwesomeIcon
+                                        className="icon"
+                                        icon={faTrash}
+                                        onClick={() => openDeleteModal(film)}
+                                    />
+                                    <FontAwesomeIcon
+                                        className="icon"
+                                        icon={faFilePen}
+                                        onClick={() => openModifyModal(film)}
+                                    />
                                 </td>
                             </tr>
                         ))}
@@ -84,13 +130,34 @@ function Films() {
             <div className="Paginacion">
                 <div className="pagination">
                     <br />
-                    <button className="button-74" onClick={handlePrevPage} disabled={currentPage === 1}>Anterior</button>
+                    <button className="button-74" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Anterior</button>
                     <span> Página {currentPage} de {totalPages} </span>
-                    <button className="button-74" onClick={handleNextPage} disabled={currentPage === totalPages}>Siguiente</button>
+                    <button className="button-74" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>Siguiente</button>
                 </div>
             </div>
+
+            <ConfirmDeleteModal
+                isOpen={showDeleteModal}
+                onRequestClose={closeDeleteModal}
+                onConfirm={handleDelete}
+                filmTitle={filmToDelete ? filmToDelete.Titulo : ''}
+            />
+
+            {showModifyModal && (
+                <Modal show={showModifyModal} handleClose={closeModifyModal}>
+                    <ModifyFilmForm
+                        handleClose={closeModifyModal}
+                        fetchFilms={fetchFilms}
+                        currentPage={currentPage}
+                        film={filmToModify}
+                    />
+                </Modal>
+            )}
         </div>
     );
 }
 
 export default Films;
+
+
+

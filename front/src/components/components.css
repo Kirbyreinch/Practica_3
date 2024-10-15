@@ -31,9 +31,9 @@
 }
 
 .Btn_agregar {
-    background: #141429;
+    background: #6a6a7e;
     border-radius: 999px;
-    box-shadow: #3b3b83 0 10px 20px -10px;
+    box-shadow: #474753 0 10px 20px -10px;
     box-sizing: border-box;
     color: #f3f3f3;
     cursor: pointer;
@@ -99,8 +99,13 @@ td:last-child {
 .Table td {
     padding: 10px;
     text-align: center;
-    max-width: 150px;
+    max-width: 150px; 
+    width: 100px; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
 }
+
 
 .Table tr:nth-child(odd) {
     background-color: #d6d6d6;

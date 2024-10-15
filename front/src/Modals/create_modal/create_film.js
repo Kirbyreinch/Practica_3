@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { createMovie } from '../request/films'; // Asegúrate de que la ruta sea correcta
+import { createMovie } from '../../request/films'; // Asegúrate de que la ruta sea correcta
 
 const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
     const validationSchema = Yup.object({
@@ -9,15 +9,14 @@ const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
         Director: Yup.string(),
         Productor: Yup.string(),
     });
+    
     return (
         <Formik
             initialValues={{ Titulo: '', Director: '', Productor: '' }}
             validationSchema={validationSchema}
             onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                 try {
-
                     await createMovie(values);
-                    console.log("Enviando datos:", values); // Consolelog para ver los datos a enviar 
                     resetForm();
                     handleClose();
                     fetchFilms(currentPage); // Actualiza la tabla después de agregar
@@ -44,7 +43,10 @@ const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
                         <label htmlFor="Productor">Productor</label>
                         <Field name="Productor" className="input_field" />
                     </div>
-                    <button className='Btn_agregar' type="submit" disabled={isSubmitting}>Enviar</button>
+                    <div className="button-container"> {/* Contenedor para botones */}
+                        <button className='Btn_agregar' type="submit" disabled={isSubmitting}>Enviar</button>
+                        <button className='Btn_agregar' onClick={handleClose}>Cerrar</button>
+                    </div>
                 </Form>
             )}
         </Formik>

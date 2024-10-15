@@ -5,10 +5,9 @@ const Modal = ({ show, handleClose, children }) => {
     const showHideClassName = show ? "modal display-block" : "modal display-none";
 
     return (
-        <div className={showHideClassName}>
-            <section className="modal-main">
+        <div className={showHideClassName} onClick={handleClose}>
+            <section className="modal-main" onClick={e => e.stopPropagation()}>
                 {children}
-                <button className='Btn_agregar' onClick={handleClose}>Cerrar</button>
             </section>
         </div>
     );

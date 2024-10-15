@@ -4,15 +4,15 @@
     top: 27%;
     left: 80%;
     width: 20%;
-    height: 50%;
-    background-color: rgb(94, 94, 94);
+    height: 36.5%;
+    background-color:rgb(80, 80, 80);
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 20px;
 }
 .modal-main {
-    background: rgb(94, 94, 94);
+    background: rgb(124, 124, 124);
     padding: 20px;
     border-radius: 8px;
 }
@@ -44,4 +44,15 @@ font-size: 25px;
 .error-message {
     color: rgb(87, 26, 26);
     font-size: 0.875em;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: space-between; 
+    margin-top: 30px; 
+}
+
+.Btn_agregar {
+    margin-right: 5px; 
 }
