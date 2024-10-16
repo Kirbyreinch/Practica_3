@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:5000/Vehiculos';
 
 
 //PETICION PARA CREAR//
-export const Createvehiculos = async (vehiculosdata) => {
+export const Createvehicles = async (vehiculosdata) => {
     try {
         const response = await axios.post(API_URL, vehiculosdata);
         return response.data; 
@@ -15,7 +15,7 @@ export const Createvehiculos = async (vehiculosdata) => {
 };
 
 //PETICION PARA ELIMINAR//
-export const Deletevehiculos = async (id) => {
+export const Deletevehicles = async (id) => {
     try {
         const response = await axios.delete(`${API_URL}/Delete/${id}`);
         return response.data; 
@@ -26,7 +26,7 @@ export const Deletevehiculos = async (id) => {
 
 
 //PETICION PARA MODIFICAR//
-export const Modifyvehiculos = async (id, vehiculosdata) => {
+export const Modifyvehicles = async (id, vehiculosdata) => {
     try {
         const response = await axios.put(`${API_URL}/Modificar/${id}`, vehiculosdata);
         return response.data; 

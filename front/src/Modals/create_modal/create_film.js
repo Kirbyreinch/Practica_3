@@ -1,9 +1,11 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { createMovie } from '../../request/films'; // Asegúrate de que la ruta sea correcta
+import { createMovie } from '../../request/films';
 
 const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
+
+    //VALIDACIONES
     const validationSchema = Yup.object({
         Titulo: Yup.string().required('El título es requerido'),
         Director: Yup.string(),
@@ -11,6 +13,7 @@ const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
     });
     
     return (
+        // FORMULARIO //
         <Formik
             initialValues={{ Titulo: '', Director: '', Productor: '' }}
             validationSchema={validationSchema}
@@ -19,7 +22,7 @@ const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
                     await createMovie(values);
                     resetForm();
                     handleClose();
-                    fetchFilms(currentPage); // Actualiza la tabla después de agregar
+                    fetchFilms(currentPage); // ACTUALIZA LA TABLA
                 } catch (error) {
                     setErrors({ submit: error.message });
                 } finally {
@@ -28,8 +31,9 @@ const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
             }}
         >
             {({ isSubmitting }) => (
+                     // FORMULARIO  HTML//
                 <Form>
-                    <label className='titulo_modal' htmlFor="Titulo">Agregar Película</label>
+                    <label className='titulo_modal' htmlFor="Titulo">Agregar Pelicula</label>
                     <div className='Crear'>
                         <label htmlFor="Titulo">Título</label>
                         <Field name="Titulo" className="input_field" />
@@ -43,7 +47,7 @@ const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
                         <label htmlFor="Productor">Productor</label>
                         <Field name="Productor" className="input_field" />
                     </div>
-                    <div className="button-container"> {/* Contenedor para botones */}
+                    <div className="button-container"> 
                         <button className='Btn_agregar' type="submit" disabled={isSubmitting}>Enviar</button>
                         <button className='Btn_agregar' onClick={handleClose}>Cerrar</button>
                     </div>

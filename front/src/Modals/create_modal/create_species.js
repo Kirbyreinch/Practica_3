@@ -1,9 +1,9 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { createMovie } from '../../request/films'; // Asegúrate de que la ruta sea correcta
+import { Createspecies } from '../../request/species'; 
 
-const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
+const MyForm = ({ handleClose, fetchSpecies, currentPage }) => {
     const validationSchema = Yup.object({
         Nombre: Yup.string().required('El título es requerido'),
         Clasificacion: Yup.string(),
@@ -22,11 +22,11 @@ const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
             onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                 try {
 
-                    await createMovie(values);
-                    console.log("Enviando datos:", values); // Consolelog para ver los datos a enviar 
+                    await Createspecies(values);
+                    console.log("Enviando datos:", values); 
                     resetForm();
                     handleClose();
-                    fetchFilms(currentPage); // Actualiza la tabla después de agregar
+                    fetchSpecies(currentPage); 
                 } catch (error) {
                     setErrors({ submit: error.message });
                 } finally {
@@ -36,7 +36,7 @@ const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
         >
             {({ isSubmitting }) => (
                 <Form>
-                    <label className='Nombre_modal' htmlFor="Nombre">Agregar Especie</label>
+                    <label className='titulo_modal' htmlFor="Titulo">Agregar Especie</label>
                     <div className='Crear'>
                         <label htmlFor="Nombre">Nombre</label>
                         <Field name="Nombre" className="input_field" />
@@ -75,6 +75,7 @@ const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
                         <Field name="Lenguaje" className="input_field" />
                     </div>
                     <button className='Btn_agregar' type="submit" disabled={isSubmitting}>Enviar</button>
+                    <button className='Btn_agregar' onClick={handleClose}>Cerrar</button>
                 </Form>
             )}
         </Formik>

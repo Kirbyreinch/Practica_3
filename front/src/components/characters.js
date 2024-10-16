@@ -4,54 +4,116 @@ import React, { useState, useEffect } from "react";
 import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import Modal from '../Modals/create_modal/modal';
+import MyForm from '../Modals/create_modal/create_characters';
+import ConfirmDeleteModal from '../Modals/Delete_modals/delete_characters';
+import ModifyModelCharacter from '../Modals/modify_modals/modify_characters'
+import { Deletecharacter } from '../request/characters';
 
 function Characters() {
-    const [characters, setCharacters] = useState([]);
+    const [characters, setCharacter] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showModifyModal, setShowModifyModal] = useState(false);
+    const [CharacterToDelete, setCharacterToDelete] = useState(null);
+    const [CharacterToModify, setCharacterToModify] = useState(null);
 
-    // Función para obtener los personajes
-    const fetchCharacters = async (page) => {
+
+
+    //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
+    const fetchCharater = async (page) => {
         try {
             const response = await axios.get(`http://localhost:5000/Personajes/modulo/?page=${page}`);
-            setCharacters(response.data.personajes);
+            setCharacter(response.data.personajes);
             setTotalPages(Math.ceil(response.data.total / 10));
         } catch (error) {
-            console.error("Error al obtener los personajes:", error);
+            console.error("Error al obtener las películas:", error);
         }
     };
 
-    // useEffect para cargar los personajes al montar el componente
     useEffect(() => {
-        fetchCharacters(currentPage);
+        fetchCharater(currentPage);
     }, [currentPage]);
 
-    // Funciones para cambiar de página
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
+
+
+    // VENTANA DE REGITRAR
+    const handleOpen = () => {
+        setShowDeleteModal(false);
+        setShowModifyModal(false);
+        setShowModal(true);
+    };
+
+    // CERRAR TODAS LAS VENTANAS
+    const handleClose = () => {
+        setShowModal(false);
+        setShowDeleteModal(false);
+        setShowModifyModal(false);
+    };
+
+
+    //VENTANA DE ELIMINAR
+    const openDeleteModal = (character) => {
+        handleClose(); // Cerrar todos los modales
+        setCharacterToDelete(character);
+        setShowDeleteModal(true);
+    };
+    //CERRAR VENTANA DE ELIMINAR
+    const closeDeleteModal = () => {
+        setCharacterToDelete(null);
+        setShowDeleteModal(false);
+    };
+
+
+    //VENTANA DE MODIFICAR
+    const openModifyModal = (character) => {
+        handleClose(); // Cerrar todos los modales
+        setCharacterToModify(character);
+        setShowModifyModal(true);
+    };
+
+
+    //CERRAR VENTANA DE MODIFICAR
+    const closeModifyModal = () => {
+        setCharacterToModify(null);
+        setShowModifyModal(false);
+    };
+
+
+    //SELECCIONAR ELIMINAR
+    const handleDelete = async () => {
+        if (CharacterToDelete) {
+            try {
+                await Deletecharacter(CharacterToDelete._id);
+                fetchCharater(currentPage);
+            } catch (error) {
+                console.error("Error al eliminar el Personaje: ", error.message);
+            } finally {
+                closeDeleteModal();
+            }
         }
     };
 
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
 
     return (
+        //HTML
         <div className="contenedor">
             <div className="Titulo">
                 <h1>Personajes</h1>
             </div>
             <div className="Registrar">
-                <button className='Btn_agregar'>+ Agregar Registro</button>
+                <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
+                <Modal show={showModal} handleClose={handleClose}>
+                    <MyForm handleClose={handleClose} fetchFilms={fetchCharater} currentPage={currentPage} />
+                </Modal>
             </div>
             <div className="DatosBD">
                 <table className='Table'>
                     <thead>
                         <tr>
-                            <th>Nombre</th>
+                        <th>Nombre</th>
                             <th>Altura</th>
                             <th>Peso</th>
                             <th>Color de cabello</th>
@@ -74,24 +136,56 @@ function Characters() {
                                 <td>{character.Fecha_Nacimiento}</td>
                                 <td>{character.Genero}</td>
                                 <td>
-                                    <FontAwesomeIcon className="icon" icon={faTrash} />
-                                    <FontAwesomeIcon className="icon" icon={faFilePen} />
+                                    <FontAwesomeIcon
+                                        className="icon"
+                                        icon={faTrash}
+                                        onClick={() => openDeleteModal(character)}
+                                    />
+                                    <FontAwesomeIcon
+                                        className="icon"
+                                        icon={faFilePen}
+                                        onClick={() => openModifyModal(character)}
+                                    />
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+            {/* PAGINACION */}
             <div className="Paginacion">
                 <div className="pagination">
                     <br />
-                    <button className="button-74" onClick={handlePrevPage} disabled={currentPage === 1}>Anterior</button>
-                    <span>  Página   {currentPage} de {totalPages}  </span>
-                    <button className="button-74" onClick={handleNextPage} disabled={currentPage === totalPages}>Siguiente</button>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Anterior</button>
+                    <span> Página {currentPage} de {totalPages} </span>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>Siguiente</button>
                 </div>
             </div>
+
+            {/* MOSTRAR VENTANA ELIMNAR */}
+            <ConfirmDeleteModal
+                isOpen={showDeleteModal}
+                onRequestClose={closeDeleteModal}
+                onConfirm={handleDelete}
+                Character_Name={CharacterToDelete ? CharacterToDelete.Nombre : ''}
+            />
+
+            {/* MOSTRAR VENTANA MODIFICAR */}
+            {showModifyModal && (
+                <Modal show={showModifyModal} handleClose={closeModifyModal}>
+                    <ModifyModelCharacter
+                        handleClose={closeModifyModal}
+                        fetchCharater={fetchCharater}
+                        currentPage={currentPage}
+                        Character={CharacterToModify}
+                    />
+                </Modal>
+            )}
         </div>
     );
 }
 
 export default Characters;
+
+
+

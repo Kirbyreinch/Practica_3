@@ -21,7 +21,7 @@ const ModifyFilmForm = ({ handleClose, fetchFilms, currentPage, film }) => {
             enableReinitialize={true} // Permite que los valores iniciales se actualicen cuando la prop cambie
             onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                 try {
-                    await modifyMovie(film._id, values); // Asegúrate de pasar el id y los valores
+                    await modifyMovie(film._id, values); 
                     resetForm();
                     handleClose();
                     fetchFilms(currentPage);
@@ -49,6 +49,7 @@ const ModifyFilmForm = ({ handleClose, fetchFilms, currentPage, film }) => {
                         <Field name="Productor" className="input_field" />
                     </div>
                     <button className='Btn_agregar' type="submit" disabled={isSubmitting}>Modificar</button>
+                    <button className='Btn_agregar' onClick={handleClose}>Cerrar</button>
                 </Form>
             )}
         </Formik>

@@ -20,20 +20,9 @@ function Films() {
     const [filmToDelete, setFilmToDelete] = useState(null);
     const [filmToModify, setFilmToModify] = useState(null);
 
-    // Función para abrir el modal de agregar
-    const handleOpen = () => {
-        setShowDeleteModal(false);
-        setShowModifyModal(false); // Cerrar modal de modificación
-        setShowModal(true);
-    };
 
-    // Función para cerrar todos los modales
-    const handleClose = () => {
-        setShowModal(false);
-        setShowDeleteModal(false);
-        setShowModifyModal(false);
-    };
 
+    //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
     const fetchFilms = async (page) => {
         try {
             const response = await axios.get(`http://localhost:5000/Peliculas/modulo/?page=${page}`);
@@ -48,27 +37,55 @@ function Films() {
         fetchFilms(currentPage);
     }, [currentPage]);
 
+
+
+
+
+
+    // VENTANA DE REGITRAR
+    const handleOpen = () => {
+        setShowDeleteModal(false);
+        setShowModifyModal(false);
+        setShowModal(true);
+    };
+
+    // CERRAR TODAS LAS VENTANAS
+    const handleClose = () => {
+        setShowModal(false);
+        setShowDeleteModal(false);
+        setShowModifyModal(false);
+    };
+
+
+    //VENTANA DE ELIMINAR
     const openDeleteModal = (film) => {
         handleClose(); // Cerrar todos los modales
         setFilmToDelete(film);
         setShowDeleteModal(true);
     };
+    //CERRAR VENTANA DE ELIMINAR
+    const closeDeleteModal = () => {
+        setFilmToDelete(null);
+        setShowDeleteModal(false);
+    };
 
+
+    //VENTANA DE MODIFICAR
     const openModifyModal = (film) => {
         handleClose(); // Cerrar todos los modales
         setFilmToModify(film);
         setShowModifyModal(true);
     };
 
-    const closeDeleteModal = () => {
-        setFilmToDelete(null);
-        setShowDeleteModal(false);
-    };
 
+    //CERRAR VENTANA DE MODIFICAR
     const closeModifyModal = () => {
         setFilmToModify(null);
         setShowModifyModal(false);
     };
+
+
+    //SELECCIONAR ELIMINAR
 
     const handleDelete = async () => {
         if (filmToDelete) {
@@ -83,7 +100,9 @@ function Films() {
         }
     };
 
+
     return (
+        //HTML
         <div className="contenedor">
             <div className="Titulo">
                 <h1>Peliculas</h1>
@@ -127,22 +146,25 @@ function Films() {
                     </tbody>
                 </table>
             </div>
+            {/* PAGINACION */}
             <div className="Paginacion">
                 <div className="pagination">
                     <br />
-                    <button className="button-74" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Anterior</button>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Anterior</button>
                     <span> Página {currentPage} de {totalPages} </span>
-                    <button className="button-74" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>Siguiente</button>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>Siguiente</button>
                 </div>
             </div>
 
+            {/* MOSTRAR VENTANA ELIMNAR */}
             <ConfirmDeleteModal
                 isOpen={showDeleteModal}
                 onRequestClose={closeDeleteModal}
                 onConfirm={handleDelete}
-                filmTitle={filmToDelete ? filmToDelete.Titulo : ''}
+                Film_Title={filmToDelete ? filmToDelete.Titulo : ''}
             />
 
+            {/* MOSTRAR VENTANA MODIFICAR */}
             {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <ModifyFilmForm
