@@ -106,7 +106,7 @@ function Species() {
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose} fetchFilms={fetchSpecies} currentPage={currentPage} />
+                    <MyForm handleClose={handleClose} fetchSpecies={fetchSpecies} currentPage={currentPage} />
                 </Modal>
             </div>
             <div className="DatosBD">
@@ -179,7 +179,7 @@ function Species() {
                         handleClose={closeModifyModal}
                         fetchSpecies={fetchSpecies}
                         currentPage={currentPage}
-                        Specie={specieToModify}
+                        specie={specieToModify}
                     />
                 </Modal>
             )}

@@ -23,7 +23,7 @@ function Characters() {
 
 
     //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
-    const fetchCharater = async (page) => {
+    const fetchCharacter = async (page) => {
         try {
             const response = await axios.get(`http://localhost:5000/Personajes/modulo/?page=${page}`);
             setCharacter(response.data.personajes);
@@ -34,7 +34,7 @@ function Characters() {
     };
 
     useEffect(() => {
-        fetchCharater(currentPage);
+        fetchCharacter(currentPage);
     }, [currentPage]);
 
 
@@ -87,7 +87,7 @@ function Characters() {
         if (CharacterToDelete) {
             try {
                 await Deletecharacter(CharacterToDelete._id);
-                fetchCharater(currentPage);
+                fetchCharacter(currentPage);
             } catch (error) {
                 console.error("Error al eliminar el Personaje: ", error.message);
             } finally {
@@ -106,7 +106,7 @@ function Characters() {
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose} fetchFilms={fetchCharater} currentPage={currentPage} />
+                    <MyForm handleClose={handleClose} fetchCharacter={fetchCharacter} currentPage={currentPage} />
                 </Modal>
             </div>
             <div className="DatosBD">
@@ -175,9 +175,9 @@ function Characters() {
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <ModifyModelCharacter
                         handleClose={closeModifyModal}
-                        fetchCharater={fetchCharater}
+                        fetchCharacter={fetchCharacter}
                         currentPage={currentPage}
-                        Character={CharacterToModify}
+                        character={CharacterToModify}
                     />
                 </Modal>
             )}

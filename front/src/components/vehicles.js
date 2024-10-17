@@ -104,7 +104,7 @@ function Vehicles() {
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose} fetchFilms={fetchVehicles} currentPage={currentPage} />
+                    <MyForm handleClose={handleClose} fetchVehicles={fetchVehicles} currentPage={currentPage} />
                 </Modal>
             </div>
             <div className="DatosBD">
@@ -175,7 +175,7 @@ function Vehicles() {
                         handleClose={closeModifyModal}
                         fetchVehicles={fetchVehicles}
                         currentPage={currentPage}
-                        Vehicles={vehiclesToModify}
+                        vehicle={vehiclesToModify}
                     />
                 </Modal>
             )}

@@ -38,10 +38,6 @@ function Films() {
     }, [currentPage]);
 
 
-
-
-
-
     // VENTANA DE REGITRAR
     const handleOpen = () => {
         setShowDeleteModal(false);

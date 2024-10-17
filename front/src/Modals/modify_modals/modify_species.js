@@ -3,9 +3,9 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Modifyspecies } from '../../request/species';
 
-const ModifyModelSpecies = ({ handleClose, fetchFilms, currentPage, specie }) => {
+const ModifyModelSpecies = ({ handleClose, fetchSpecies, currentPage, specie }) => {
     const validationSchema = Yup.object({
-        Nombre: Yup.string().required('El título es requerido'),
+        Nombre: Yup.string().required('El Nombre es requerido'),
         Clasificacion: Yup.string(),
         Designacion: Yup.string(),
         Estatura: Yup.string(),
@@ -18,26 +18,28 @@ const ModifyModelSpecies = ({ handleClose, fetchFilms, currentPage, specie }) =>
 
     return (
         <Formik
-            initialValues={{ 
-                Nombre: specie.Titulo || '', 
-                Clasificacion: specie.Director || '', 
-                Designacion: specie.Productor || '' ,
-                Estatura: specie.Titulo || '', 
-                Color_de_piel: specie.Director || '', 
-                Color_de_cabello: specie.Productor || '' ,
-                Color_de_ojos: specie.Titulo || '', 
-                Promedio_de_vida: specie.Director || '', 
-                Lenguaje: specie.Director || '', 
-               
+            initialValues={{
+                Nombre: specie.Nombre || '',
+                Clasificacion: specie.Clasificacion || '',
+                Designacion: specie.Designacion || '',
+                Estatura: specie.Estatura || '',
+                Color_de_piel: specie.Color_de_piel || '',
+                Color_de_cabello: specie.Color_de_cabello || '',
+                Color_de_ojos: specie.Color_de_ojos || '',
+                Promedio_de_vida: specie.Promedio_de_vida || '',
+                Lenguaje: specie.Lenguaje || '',
+
             }}
             validationSchema={validationSchema}
             enableReinitialize={true} // Permite que los valores iniciales se actualicen cuando la prop cambie
             onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                 try {
-                    await Modifyspecies(specie._id, values); 
+                    // TIEMPO QUE GIRARA EL SPINNER
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    await Modifyspecies(specie._id, values);
                     resetForm();
                     handleClose();
-                    fetchFilms(currentPage);
+                    fetchSpecies(currentPage);
                 } catch (error) {
                     setErrors({ submit: error.message });
                 } finally {
@@ -45,50 +47,57 @@ const ModifyModelSpecies = ({ handleClose, fetchFilms, currentPage, specie }) =>
                 }
             }}
         >
-            {({ isSubmitting }) => (
-                 <Form>
-                 <label className='Nombre_modal' htmlFor="Nombre">Modificar Especie</label>
-                 <div className='Crear'>
-                     <label htmlFor="Nombre">Nombre</label>
-                     <Field name="Nombre" className="input_field" />
-                     <ErrorMessage name="Nombre" component="div" className="error-message" />
-                 </div>
-                 <div>
-                     <label htmlFor="Clasificacion">Clasificacion</label>
-                     <Field name="Clasificacion" className="input_field" />
-                 </div>
-                 <div>
-                     <label htmlFor="Designacion">Designacion</label>
-                     <Field name="Designacion" className="input_field" />
-                 </div>
-                 <div>
-                     <label htmlFor="Estatura">Estatura</label>
-                     <Field name="Estatura" className="input_field" />
-                 </div>
-                 <div>
-                     <label htmlFor="Color_de_piel">Color_de_piel</label>
-                     <Field name="Color_de_piel" className="input_field" />
-                 </div>
-                 <div>
-                     <label htmlFor="Color_de_cabello">Color_de_cabello</label>
-                     <Field name="Color_de_cabello" className="input_field" />
-                 </div>
-                 <div>
-                     <label htmlFor="Color_de_ojos">Color_de_ojos</label>
-                     <Field name="Color_de_ojos" className="input_field" />
-                 </div>
-                 <div>
-                     <label htmlFor="Promedio_de_vida">Promedio_de_vida</label>
-                     <Field name="Promedio_de_vida" className="input_field" />
-                 </div>
-                 <div>
-                     <label htmlFor="Lenguaje">Lenguaje</label>
-                     <Field name="Lenguaje" className="input_field" />
-                 </div>
-                 <button className='Btn_agregar' type="submit" disabled={isSubmitting}>Enviar</button>
-             </Form>
-
-                
+            {({ isSubmitting, errors }) => (
+                <Form>
+                    <label className='Nombre_modal' htmlFor="Nombre">Modificar Especie</label>
+                    <div className='Crear'>
+                        <label htmlFor="Nombre">Nombre</label>
+                        <Field name="Nombre" className="input_field" />
+                        <ErrorMessage name="Nombre" component="div" className="error-message" />
+                    </div>
+                    <div>
+                        <label htmlFor="Clasificacion">Clasificacion</label>
+                        <Field name="Clasificacion" className="input_field" />
+                    </div>
+                    <div>
+                        <label htmlFor="Designacion">Designacion</label>
+                        <Field name="Designacion" className="input_field" />
+                    </div>
+                    <div>
+                        <label htmlFor="Estatura">Estatura</label>
+                        <Field name="Estatura" className="input_field" />
+                    </div>
+                    <div>
+                        <label htmlFor="Color_de_piel">Color_de_piel</label>
+                        <Field name="Color_de_piel" className="input_field" />
+                    </div>
+                    <div>
+                        <label htmlFor="Color_de_cabello">Color_de_cabello</label>
+                        <Field name="Color_de_cabello" className="input_field" />
+                    </div>
+                    <div>
+                        <label htmlFor="Color_de_ojos">Color_de_ojos</label>
+                        <Field name="Color_de_ojos" className="input_field" />
+                    </div>
+                    <div>
+                        <label htmlFor="Promedio_de_vida">Promedio_de_vida</label>
+                        <Field name="Promedio_de_vida" className="input_field" />
+                    </div>
+                    <div>
+                        <label htmlFor="Lenguaje">Lenguaje</label>
+                        <Field name="Lenguaje" className="input_field" />
+                    </div>
+                    {/* SECCION DE BOTONES*/}
+                    {errors.submit && <div className="error-message">{errors.submit}</div>}
+                    <div className="button-container">
+                        <button className='Btn_agregar' type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? <div class="lds-hourglass"></div> : 'Enviar'}
+                        </button>
+                        <button className='Btn_agregar' type="button" onClick={handleClose} disabled={isSubmitting}>
+                            Cerrar
+                        </button>
+                    </div>
+                </Form>
             )}
         </Formik>
     );

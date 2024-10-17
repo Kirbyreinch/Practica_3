@@ -106,7 +106,7 @@ function Planets() {
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose} fetchFilms={fetchPlanets} currentPage={currentPage} />
+                    <MyForm handleClose={handleClose} fetchPlanets={fetchPlanets} currentPage={currentPage} />
                 </Modal>
             </div>
             <div className="DatosBD">
@@ -177,9 +177,9 @@ function Planets() {
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <ModifyModelPlanets
                         handleClose={closeModifyModal}
-                        fetchPlanet={fetchPlanets}
+                        fetchPlanets={fetchPlanets}
                         currentPage={currentPage}
-                        Planet={PlanetToModify}
+                        planet={PlanetToModify}
                     />
                 </Modal>
             )}

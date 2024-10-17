@@ -106,7 +106,7 @@ function Starships() {
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose} fetchFilms={fetchStarships} currentPage={currentPage} />
+                    <MyForm handleClose={handleClose} fetchStarships={fetchStarships} currentPage={currentPage} />
                 </Modal>
             </div>
             <div className="DatosBD">
@@ -181,7 +181,7 @@ function Starships() {
                         handleClose={closeModifyModal}
                         fetchStarships={fetchStarships}
                         currentPage={currentPage}
-                        Starship={starshipsToModify}
+                        starship={starshipsToModify}
                     />
                 </Modal>
             )}

@@ -5,34 +5,36 @@ import { modifyMovie } from '../../request/films';
 
 const ModifyFilmForm = ({ handleClose, fetchFilms, currentPage, film }) => {
     const validationSchema = Yup.object({
-        Titulo: Yup.string().required('El título es requerido'),
-        Director: Yup.string(),
-        Productor: Yup.string(),
+        Titulo: Yup.string().required('El Título es requerido'),
+        Director: Yup.string().required('El Director es requerido'),
+        Productor: Yup.string().required('El Producto es requerido'),
     });
 
     return (
         <Formik
-            initialValues={{ 
-                Titulo: film.Titulo || '', 
-                Director: film.Director || '', 
-                Productor: film.Productor || '' 
+            initialValues={{
+                Titulo: film.Titulo || '',
+                Director: film.Director || '',
+                Productor: film.Productor || ''
             }}
             validationSchema={validationSchema}
             enableReinitialize={true} // Permite que los valores iniciales se actualicen cuando la prop cambie
             onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                 try {
-                    await modifyMovie(film._id, values); 
+                    // TIEMPO QUE GIRARA EL SPINNER
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    await modifyMovie(film._id, values);
                     resetForm();
                     handleClose();
                     fetchFilms(currentPage);
                 } catch (error) {
-                    setErrors({ submit: error.message });
+                    setErrors({ submit: 'Ya hay una película con ese Título.' }); // MENSAJE DE ERROR SI LA PELICULA "YA EXISTE"
                 } finally {
                     setSubmitting(false);
                 }
             }}
         >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, errors }) => (
                 <Form>
                     <label className='titulo_modal' htmlFor="Titulo">Modificar Película</label>
                     <div className='Crear'>
@@ -48,8 +50,16 @@ const ModifyFilmForm = ({ handleClose, fetchFilms, currentPage, film }) => {
                         <label htmlFor="Productor">Productor</label>
                         <Field name="Productor" className="input_field" />
                     </div>
-                    <button className='Btn_agregar' type="submit" disabled={isSubmitting}>Modificar</button>
-                    <button className='Btn_agregar' onClick={handleClose}>Cerrar</button>
+                    {/* SECCION DE BOTONES*/}
+                    {errors.submit && <div className="error-message">{errors.submit}</div>}
+                    <div className="button-container">
+                        <button className='Btn_agregar' type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? <div class="lds-hourglass"></div> : 'Modificar'}
+                        </button>
+                        <button className='Btn_agregar' type="button" onClick={handleClose} disabled={isSubmitting}>
+                            Cerrar
+                        </button>
+                    </div>
                 </Form>
             )}
         </Formik>

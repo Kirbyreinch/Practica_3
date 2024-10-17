@@ -1,11 +1,11 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Createspecies } from '../../request/species'; 
+import { Createspecies } from '../../request/species';
 
 const MyForm = ({ handleClose, fetchSpecies, currentPage }) => {
     const validationSchema = Yup.object({
-        Nombre: Yup.string().required('El título es requerido'),
+        Nombre: Yup.string().required('El Nombre es requerido'),
         Clasificacion: Yup.string(),
         Designacion: Yup.string(),
         Estatura: Yup.string(),
@@ -21,20 +21,21 @@ const MyForm = ({ handleClose, fetchSpecies, currentPage }) => {
             validationSchema={validationSchema}
             onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                 try {
-
+                    // TIEMPO QUE GIRARA EL SPINNER
+                    await new Promise(resolve => setTimeout(resolve, 2000));
                     await Createspecies(values);
-                    console.log("Enviando datos:", values); 
+                    console.log("Enviando datos:", values);
                     resetForm();
                     handleClose();
-                    fetchSpecies(currentPage); 
+                    fetchSpecies(currentPage);
                 } catch (error) {
-                    setErrors({ submit: error.message });
+                    setErrors({ submit: 'Ya hay una Especie con ese Nombre.' }); // MENSAJE DE ERROR SI LA ESPECIE "YA EXISTE"
                 } finally {
                     setSubmitting(false);
                 }
             }}
         >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, errors }) => (
                 <Form>
                     <label className='titulo_modal' htmlFor="Titulo">Agregar Especie</label>
                     <div className='Crear'>
@@ -74,8 +75,16 @@ const MyForm = ({ handleClose, fetchSpecies, currentPage }) => {
                         <label htmlFor="Lenguaje">Lenguaje</label>
                         <Field name="Lenguaje" className="input_field" />
                     </div>
-                    <button className='Btn_agregar' type="submit" disabled={isSubmitting}>Enviar</button>
-                    <button className='Btn_agregar' onClick={handleClose}>Cerrar</button>
+                    {/* SECCION DE BOTONES*/}
+                    {errors.submit && <div className="error-message">{errors.submit}</div>}
+                    <div className="button-container">
+                        <button className='Btn_agregar' type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? <div class="lds-hourglass"></div> : 'Enviar'}
+                        </button>
+                        <button className='Btn_agregar' type="button" onClick={handleClose} disabled={isSubmitting}>
+                            Cerrar
+                        </button>
+                    </div>
                 </Form>
             )}
         </Formik>

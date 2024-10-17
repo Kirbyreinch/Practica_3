@@ -13,7 +13,7 @@ const ConfirmDeleteModal = ({ isOpen, onRequestClose, onConfirm, Film_Title }) =
         >
             <div className="modal-main">
                 <h2 className="titulo_modal">Confirmar Eliminación</h2>
-                <p className='p_accion'>¿Estás seguro de que deseas eliminar la película "{Film_Title}"?</p>
+                <p className='p_accion'>¿Estás seguro de que deseas eliminar la Película "{Film_Title}"?</p>
                 <div className='button-conatiner'>
                     <button className="delete_button" onClick={onConfirm}>Eliminar</button>
                     <button className="cancel_button" onClick={onRequestClose}>Cancelar</button>
