@@ -8,7 +8,7 @@ const API_URL = 'http://localhost:5000/Planetas';
 export const Createplanets = async (planetsdata) => {
     try {
         const response = await axios.post(API_URL, planetsdata);
-        return response.data; 
+        return response.data;
     } catch (error) {
         throw new Error(error.response.data.message || 'Error al crear el Planeta');
     }
@@ -18,7 +18,7 @@ export const Createplanets = async (planetsdata) => {
 export const Deleteplanets = async (id) => {
     try {
         const response = await axios.delete(`${API_URL}/Delete/${id}`);
-        return response.data; 
+        return response.data;
     } catch (error) {
         throw new Error(error.response.data.message || 'Error al eliminar el Planeta');
     }
@@ -29,7 +29,7 @@ export const Deleteplanets = async (id) => {
 export const Modifyplanets = async (id, planetsdata) => {
     try {
         const response = await axios.put(`${API_URL}/Modificar/${id}`, planetsdata);
-        return response.data; 
+        return response.data;
     } catch (error) {
         throw new Error(error.response.data.message || 'Error al modificar el Planeta');
     }

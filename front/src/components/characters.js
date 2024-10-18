@@ -9,6 +9,8 @@ import MyForm from '../Modals/create_modal/create_characters';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_characters';
 import ModifyModelCharacter from '../Modals/modify_modals/modify_characters'
 import { Deletecharacter } from '../request/characters';
+import Register_complete from '../Modals/message_modal/registro_modal';
+import DeleteComplete from '../Modals/message_modal/delete_modal';
 
 function Characters() {
     const [characters, setCharacter] = useState([]);
@@ -17,6 +19,8 @@ function Characters() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showModifyModal, setShowModifyModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
     const [CharacterToDelete, setCharacterToDelete] = useState(null);
     const [CharacterToModify, setCharacterToModify] = useState(null);
 
@@ -82,18 +86,27 @@ function Characters() {
     };
 
 
+
     //SELECCIONAR ELIMINAR
     const handleDelete = async () => {
         if (CharacterToDelete) {
             try {
                 await Deletecharacter(CharacterToDelete._id);
-                fetchCharacter(currentPage);
+                setShowDeleteSuccessModal(true);
             } catch (error) {
                 console.error("Error al eliminar el Personaje: ", error.message);
             } finally {
                 closeDeleteModal();
+                fetchCharacter(currentPage);
             }
         }
+    };
+
+
+
+    const handleSuccessModalClose = () => {
+        setShowSuccessModal(false);
+        fetchCharacter(currentPage);
     };
 
 
@@ -106,14 +119,18 @@ function Characters() {
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose} fetchCharacter={fetchCharacter} currentPage={currentPage} />
+                    <MyForm handleClose={handleClose} fetchCharacter={fetchCharacter} currentPage={currentPage}
+                        onSuccess={() => {
+                            handleClose();
+                            setShowSuccessModal(true);
+                        }} />
                 </Modal>
             </div>
             <div className="DatosBD">
                 <table className='Table'>
                     <thead>
                         <tr>
-                        <th>Nombre</th>
+                            <th>Nombre</th>
                             <th>Altura</th>
                             <th>Peso</th>
                             <th>Color de cabello</th>
@@ -170,6 +187,14 @@ function Characters() {
                 Character_Name={CharacterToDelete ? CharacterToDelete.Nombre : ''}
             />
 
+            <DeleteComplete
+                show={showDeleteSuccessModal}
+                handleClose={() => {
+                    setShowDeleteSuccessModal(false);
+                    fetchCharacter(currentPage);
+                }}
+            />
+
             {/* MOSTRAR VENTANA MODIFICAR */}
             {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
@@ -178,9 +203,16 @@ function Characters() {
                         fetchCharacter={fetchCharacter}
                         currentPage={currentPage}
                         character={CharacterToModify}
+                        onSuccess={() => {
+                            handleClose();
+                            setShowSuccessModal(true);
+                        }}
                     />
                 </Modal>
             )}
+
+            {/* MODAL DE REGISTRO EXITOSO */}
+            <Register_complete show={showSuccessModal} handleClose={handleSuccessModalClose} />
         </div>
     );
 }

@@ -11,6 +11,7 @@ const ConfirmDeleteModal = ({ isOpen, onRequestClose, onConfirm, Starship_Name }
             className="modal_delete"
             overlayClassName="overlay"
         >
+            {/* VENTANA DE ELIMINAR */}
             <div className="modal-main">
                 <h2 className="titulo_modal">Confirmar Eliminación</h2>
                 <p className='p_accion'>¿Estás seguro de que deseas eliminar la Nave "{Starship_Name}"?</p>

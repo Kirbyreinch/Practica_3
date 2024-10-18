@@ -51,19 +51,19 @@ app.get("/personajes/", async (req, res) => {
 app.get("/modulo/", async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit =  10;
+        const limit = 10;
         const skip = (page - 1) * limit;
         const modelo = await PelisModel.find({}, { createdAt: 0, updatedAt: 0 })
             .skip(skip)
             .limit(limit);
 
         const total = await PelisModel.countDocuments();
-        
+
         res.send({
-            total:total,
+            total: total,
             page,
             limit,
-            pelis:modelo,
+            pelis: modelo,
         });
     } catch (error) {
         res.status(400).send("Error al obtener películas: " + error.message);

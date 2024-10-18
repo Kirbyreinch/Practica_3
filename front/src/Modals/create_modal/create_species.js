@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Createspecies } from '../../request/species';
 
-const MyForm = ({ handleClose, fetchSpecies, currentPage }) => {
+const MyForm = ({ handleClose, fetchSpecies, currentPage,  onSuccess }) => {
     const validationSchema = Yup.object({
         Nombre: Yup.string().required('El Nombre es requerido'),
         Clasificacion: Yup.string(),
@@ -27,6 +27,7 @@ const MyForm = ({ handleClose, fetchSpecies, currentPage }) => {
                     console.log("Enviando datos:", values);
                     resetForm();
                     handleClose();
+                    onSuccess();
                     fetchSpecies(currentPage);
                 } catch (error) {
                     setErrors({ submit: 'Ya hay una Especie con ese Nombre.' }); // MENSAJE DE ERROR SI LA ESPECIE "YA EXISTE"

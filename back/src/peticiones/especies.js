@@ -55,9 +55,9 @@ app.get("/modulo/", async (req, res) => {
         const modelo = await especiesModel.find({}, { createdAt: 0, updatedAt: 0 })
             .skip(skip)
             .limit(limit);
-            const total = await especiesModel.countDocuments();
+        const total = await especiesModel.countDocuments();
         res.send({
-            total:total,
+            total: total,
             page,
             limit,
             especies: modelo,

@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Modifycharacter } from '../../request/characters';
 
-const ModifyModelCharacter = ({ handleClose, fetchCharacter, currentPage, character }) => {
+const ModifyModelCharacter = ({ handleClose, fetchCharacter, currentPage, character,  onSuccess  }) => {
 
     //VALIDACIONES
     const validationSchema = Yup.object({
@@ -31,7 +31,6 @@ const ModifyModelCharacter = ({ handleClose, fetchCharacter, currentPage, charac
                 Color_de_Piel: character.Color_de_Piel || '',
             }}
 
-
             validationSchema={validationSchema}
             onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                 try {
@@ -40,9 +39,10 @@ const ModifyModelCharacter = ({ handleClose, fetchCharacter, currentPage, charac
                     await Modifycharacter(character._id, values);
                     resetForm();
                     handleClose();
+                    onSuccess();
                     fetchCharacter(currentPage); // ACTUALIZA LA TABLA
                 } catch (error) {
-                    setErrors({ submit: 'Ya hay un Personaje con ese Nombre.' }); // MENSAJE DE ERROR SI EL PERSONAJE "YA EXISTE"
+                    setErrors({ submit: 'Ya hay un Personaje con ese Nombre.' }); // MENSAJE DE ERROR SI EL PERSONAJE "YA EXISTE" //
                 } finally {
                     setSubmitting(false);
                 }

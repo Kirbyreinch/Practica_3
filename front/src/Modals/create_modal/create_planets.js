@@ -3,9 +3,9 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Createplanets } from '../../request/planets';
 
-const MyForm = ({ handleClose, fetchPlanets, currentPage }) => {
+const MyForm = ({ handleClose, fetchPlanets, currentPage,  onSuccess }) => {
 
-    //VALIDACIONES
+    //VALIDACIONES //
     const validationSchema = Yup.object({
         Nombre: Yup.string().required('El Nombre es requerido'),
         Diametro: Yup.string(),
@@ -25,14 +25,15 @@ const MyForm = ({ handleClose, fetchPlanets, currentPage }) => {
             validationSchema={validationSchema}
             onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                 try {
-                    // TIEMPO QUE GIRARA EL SPINNER
+                    // TIEMPO QUE GIRARA EL SPINNER //
                     await new Promise(resolve => setTimeout(resolve, 2000));
                     await Createplanets(values);
                     resetForm();
                     handleClose();
-                    fetchPlanets(currentPage); // ACTUALIZA LA TABLA
+                    onSuccess();
+                    fetchPlanets(currentPage); // ACTUALIZA LA TABLA //
                 } catch (error) {
-                    setErrors({ submit: 'Ya hay un Planeta con ese Nombre.' }); // MENSAJE DE ERROR SI EL PLANETA "YA EXISTE"
+                    setErrors({ submit: 'Ya hay un Planeta con ese Nombre.' }); // MENSAJE DE ERROR SI EL PLANETA "YA EXISTE"//
                 } finally {
                     setSubmitting(false);
                 }

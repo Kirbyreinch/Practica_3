@@ -10,12 +10,16 @@
     align-items: center;
     border-radius: 20px;
 }
+
+
+/*CUADRO MODAL*/
 .modal-main {
     background: rgb(128, 128, 128);
     padding: 20px;
     border-radius: 8px;
     height: 80%;
 }
+
 .display-block {
     display: block;
 }
@@ -25,18 +29,19 @@
 }
 
 
-/*Titulo de la ventana modal*/
-.titulo_modal{
-padding: 10PX;
-font-size: 25px;
+/*TITULO DE LA VENTANA MODAL*/
+.titulo_modal {
+    padding: 10PX;
+    font-size: 25px;
 }
-/*Descripcion de la ventana*/
-.p_accion{
+
+/* TEXTO ACCION DE LA VENTANA*/
+.p_accion {
     font-size: 20px;
 }
 
 
-/*Mensaje de error*/
+/* MENSAJES DE ERROR */
 .error-message {
     color: rgb(87, 26, 26);
     font-size: 0.875em;
@@ -44,39 +49,39 @@ font-size: 25px;
 
 
 /* BOTON DE ELIMINAR */
-.delete_button{
-        background: #531212;
-        border-radius: 999px;
-        box-shadow: #631919 0 10px 20px -10px;
-        box-sizing: border-box;
-        color: #f3f3f3;
-        cursor: pointer;
-        font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
-        font-size: 16px;
-        font-weight: 700;
-        line-height: 24px;
-        opacity: 1;
-        outline: 0 solid transparent;
-        padding: 8px 18px;
-        user-select: none;
-        -webkit-user-select: none;
-        touch-action: manipulation;
-        width: fit-content;
-        word-break: break-word;
-        border: 0;
-        color: rgb(219, 219, 219);
-        margin-right: 35%;
+.delete_button {
+    background: #531212;
+    border-radius: 999px;
+    box-shadow: #631919 0 10px 20px -10px;
+    box-sizing: border-box;
+    color: #f3f3f3;
+    cursor: pointer;
+    font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    opacity: 1;
+    outline: 0 solid transparent;
+    padding: 8px 18px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: fit-content;
+    word-break: break-word;
+    border: 0;
+    color: rgb(219, 219, 219);
+    margin-right: 35%;
 }
+
 .delete_button:hover {
-    background: #6a1c1c; /* Cambia el color de fondo al pasar el ratón */
-    box-shadow: #772626 0 10px 20px -10px; /* Cambia la sombra */
-    color: #ffffff; /* Cambia el color del texto si deseas */
+    background: #6a1c1c;
+    box-shadow: #772626 0 10px 20px -10px;
+    color: #ffffff;
 }
 
+/* BOTON DE CANCELAR */
+.cancel_button {
 
-
-.cancel_button{
-   
     background: #463c3c;
     border-radius: 999px;
     box-shadow: #050505 0 10px 20px -10px;
@@ -100,7 +105,7 @@ font-size: 25px;
 }
 
 .cancel_button:hover {
-    background: #6f5e5e; 
-    box-shadow: #191919 0 10px 20px -10px; 
-    color: #ffffff; 
+    background: #6f5e5e;
+    box-shadow: #191919 0 10px 20px -10px;
+    color: #ffffff;
 }

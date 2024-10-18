@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Modifyplanets } from '../../request/planets';
 
-const ModifyModelPlanets = ({ handleClose, fetchPlanets, currentPage, planet }) => {
+const ModifyModelPlanets = ({ handleClose, fetchPlanets, currentPage, planet,  onSuccess  }) => {
 
     //VALIDACIONES
     const validationSchema = Yup.object({
@@ -44,6 +44,7 @@ const ModifyModelPlanets = ({ handleClose, fetchPlanets, currentPage, planet }) 
                     await Modifyplanets(planet._id, values);
                     resetForm();
                     handleClose();
+                    onSuccess();
                     fetchPlanets(currentPage); // ACTUALIZA LA TABLA
                 } catch (error) {
                     setErrors({ submit: 'Ya hay un Planeta con ese Nombre.' }); // MENSAJE DE ERROR SI EL PLANETA "YA EXISTE"

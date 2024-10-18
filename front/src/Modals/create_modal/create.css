@@ -35,18 +35,18 @@
 
 
 
-/*Titulo de la ventana modal*/
+/*TITULO DE LA VENTANA MODAL*/
 .titulo_modal{
 font-size: 25px;
 }
 
-/*Mensaje de error*/
+/*MENSAJES DE ERROR*/
 .error-message {
     color: rgb(87, 26, 26);
     font-size: 0.875em;
 }
 
-
+/* BOTONES*/
 .button-container {
     display: flex;
     justify-content: space-between; 
@@ -65,8 +65,8 @@ font-size: 25px;
 .lds-hourglass {
   display: inline-block;
   position: relative;
-  width: 40px; /* Cambiado a 40px */
-  height: 40px; /* Cambiado a 40px */
+  width: 40px; 
+  height: 40px; 
 }
 .lds-hourglass:after {
   content: " ";

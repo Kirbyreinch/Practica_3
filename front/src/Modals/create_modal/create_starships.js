@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Createstarships } from '../../request/starships';
 
-const MyForm = ({ handleClose, fetchStarships, currentPage }) => {
+const MyForm = ({ handleClose, fetchStarships, currentPage,  onSuccess }) => {
 
     //VALIDACIONES
     const validationSchema = Yup.object({
@@ -31,6 +31,7 @@ const MyForm = ({ handleClose, fetchStarships, currentPage }) => {
                     await Createstarships(values);
                     resetForm();
                     handleClose();
+                    onSuccess();
                     fetchStarships(currentPage); // ACTUALIZA LA TABLA
                 } catch (error) {
                     setErrors({ submit: 'Ya hay una Nave con ese Nombre.' }); // MENSAJE DE ERROR SI LA NAVE "YA EXISTE"

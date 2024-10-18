@@ -1,14 +1,17 @@
 import './components.css';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faFilePen } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_film';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_films';
-import ModifyFilmForm from '../Modals/modify_modals/modify_films'
+import ModifyFilmForm from '../Modals/modify_modals/modify_films';
+import Register_complete from '../Modals/message_modal/registro_modal';
+import DeleteComplete from '../Modals/message_modal/delete_modal';
 import { deleteMovie } from '../request/films';
+
+
 
 function Films() {
     const [films, setFilms] = useState([]);
@@ -17,12 +20,12 @@ function Films() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showModifyModal, setShowModifyModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
+
     const [filmToDelete, setFilmToDelete] = useState(null);
     const [filmToModify, setFilmToModify] = useState(null);
 
-
-
-    //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
     const fetchFilms = async (page) => {
         try {
             const response = await axios.get(`http://localhost:5000/Peliculas/modulo/?page=${page}`);
@@ -36,7 +39,6 @@ function Films() {
     useEffect(() => {
         fetchFilms(currentPage);
     }, [currentPage]);
-
 
     // VENTANA DE REGITRAR
     const handleOpen = () => {
@@ -52,13 +54,13 @@ function Films() {
         setShowModifyModal(false);
     };
 
-
     //VENTANA DE ELIMINAR
     const openDeleteModal = (film) => {
-        handleClose(); // Cerrar todos los modales
+        handleClose();
         setFilmToDelete(film);
         setShowDeleteModal(true);
     };
+
     //CERRAR VENTANA DE ELIMINAR
     const closeDeleteModal = () => {
         setFilmToDelete(null);
@@ -68,37 +70,39 @@ function Films() {
 
     //VENTANA DE MODIFICAR
     const openModifyModal = (film) => {
-        handleClose(); // Cerrar todos los modales
+        handleClose();
         setFilmToModify(film);
         setShowModifyModal(true);
     };
-
-
-    //CERRAR VENTANA DE MODIFICAR
+    //SELECCIONAR ELIMINAR
     const closeModifyModal = () => {
         setFilmToModify(null);
         setShowModifyModal(false);
     };
 
-
-    //SELECCIONAR ELIMINAR
-
     const handleDelete = async () => {
         if (filmToDelete) {
             try {
                 await deleteMovie(filmToDelete._id);
-                fetchFilms(currentPage);
+                setShowDeleteSuccessModal(true);
             } catch (error) {
                 console.error("Error al eliminar la película: ", error.message);
             } finally {
                 closeDeleteModal();
+                fetchFilms(currentPage);
             }
         }
     };
 
 
+    const handleSuccessModalClose = () => {
+        setShowSuccessModal(false);
+        fetchFilms(currentPage);
+    };
+
+
+
     return (
-        //HTML
         <div className="contenedor">
             <div className="Titulo">
                 <h1>Peliculas</h1>
@@ -106,7 +110,15 @@ function Films() {
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose} fetchFilms={fetchFilms} currentPage={currentPage} />
+                    <MyForm
+                        handleClose={handleClose}
+                        fetchFilms={fetchFilms}
+                        currentPage={currentPage}
+                        onSuccess={() => {
+                            handleClose();
+                            setShowSuccessModal(true);
+                        }}
+                    />
                 </Modal>
             </div>
             <div className="DatosBD">
@@ -142,7 +154,6 @@ function Films() {
                     </tbody>
                 </table>
             </div>
-            {/* PAGINACION */}
             <div className="Paginacion">
                 <div className="pagination">
                     <br />
@@ -152,15 +163,22 @@ function Films() {
                 </div>
             </div>
 
-            {/* MOSTRAR VENTANA ELIMNAR */}
             <ConfirmDeleteModal
                 isOpen={showDeleteModal}
                 onRequestClose={closeDeleteModal}
                 onConfirm={handleDelete}
                 Film_Title={filmToDelete ? filmToDelete.Titulo : ''}
+
             />
 
-            {/* MOSTRAR VENTANA MODIFICAR */}
+            <DeleteComplete
+                show={showDeleteSuccessModal}
+                handleClose={() => {
+                    setShowDeleteSuccessModal(false);
+                    fetchFilms(currentPage); 
+                }}
+            />
+
             {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <ModifyFilmForm
@@ -168,14 +186,18 @@ function Films() {
                         fetchFilms={fetchFilms}
                         currentPage={currentPage}
                         film={filmToModify}
+                        onSuccess={() => {
+                            handleClose();
+                            setShowSuccessModal(true);
+                        }}
                     />
                 </Modal>
             )}
+
+            {/* MODAL DE REGISTRO EXITOSO */}
+            <Register_complete show={showSuccessModal} handleClose={handleSuccessModalClose} />
         </div>
     );
 }
 
 export default Films;
-
-
-

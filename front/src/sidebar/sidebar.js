@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShuttleSpace, faFeatherPointed, faCarSide, faEarthAsia, faUsers, faFilm, faArrowRight } from '@fortawesome/free-solid-svg-icons' //iMPORTAR ICONOS
 
 
-
 //FUNCION PARA LA BARRA LATERAL
 function Sidebar({ onSelect }) {
     return (
@@ -12,7 +11,7 @@ function Sidebar({ onSelect }) {
             <div className="optionsvar">
                 {/* SE PONEN LOS ICONOS Y SU VALOR AL SELECCIONAR  */}
                 <ul>
-                    <li><FontAwesomeIcon icon={faArrowRight} /></li>
+                    
                     <li onClick={() => onSelect('characters')}><FontAwesomeIcon icon={faUsers} /></li>
                     <li onClick={() => onSelect('starships')}><FontAwesomeIcon icon={faShuttleSpace} /></li>
                     <li onClick={() => onSelect('species')}><FontAwesomeIcon icon={faFeatherPointed} /></li>

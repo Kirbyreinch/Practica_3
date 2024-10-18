@@ -56,13 +56,13 @@ app.get("/modulo/", async (req, res) => {
         const modelo = await NavesModel.find({}, { createdAt: 0, updatedAt: 0 })
             .skip(skip)
             .limit(limit);
-            const total = await NavesModel.countDocuments();
+        const total = await NavesModel.countDocuments();
         res.send({
-            total:total,
+            total: total,
             page,
             limit,
             naves: modelo,
-            
+
         });
     } catch (error) {
         res.status(400).send("Error al obtener naves: " + error.message);

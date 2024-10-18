@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Modifyvehicles } from '../../request/vehicles';
 
-const ModifyModelVehicles = ({ handleClose, fetchVehicles, currentPage, vehicle }) => {
+const ModifyModelVehicles = ({ handleClose, fetchVehicles, currentPage, vehicle,  onSuccess  }) => {
     const validationSchema = Yup.object({
         Nombre: Yup.string().required('El Nombre es requerido'),
         Modelo: Yup.string().required('El Modelo es requerido'),
@@ -36,6 +36,7 @@ const ModifyModelVehicles = ({ handleClose, fetchVehicles, currentPage, vehicle 
                     await Modifyvehicles(vehicle._id, values);
                     resetForm();
                     handleClose();
+                    onSuccess();
                     fetchVehicles(currentPage);
                 } catch (error) {
                     setErrors({ submit: 'Ya hay un Vehiculo con ese Nombre.' }); // MENSAJE DE ERROR SI EL VEHICULO  "YA EXISTE"

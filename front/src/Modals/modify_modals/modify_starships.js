@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Modifystarships } from '../../request/starships';
 
-const ModifyModelStarships = ({ handleClose, fetchStarships, currentPage, starship }) => {
+const ModifyModelStarships = ({ handleClose, fetchStarships, currentPage, starship,  onSuccess  }) => {
     const validationSchema = Yup.object({
         Nombre: Yup.string().required('El Nombre es requerido'),
         Modelo: Yup.string().required('El Modelo es requerido'),
@@ -40,6 +40,7 @@ const ModifyModelStarships = ({ handleClose, fetchStarships, currentPage, starsh
                     await Modifystarships(starship._id, values);
                     resetForm();
                     handleClose();
+                    onSuccess();
                     fetchStarships(currentPage);
                 } catch (error) {
                     setErrors({ submit: 'Ya hay una Nave con ese Nombre.' }); // MENSAJE DE ERROR SI LA NAVE "YA EXISTE"

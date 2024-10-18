@@ -1,14 +1,15 @@
 import './components.css';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faFilePen } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_planets';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_planets';
 import ModifyModelPlanets from '../Modals/modify_modals/modify_planets'
+import Register_complete from '../Modals/message_modal/registro_modal';
 import { Deleteplanets } from '../request/planets';
+import DeleteComplete from '../Modals/message_modal/delete_modal';
 
 function Planets() {
     const [planets, setPlanets] = useState([]);
@@ -17,6 +18,8 @@ function Planets() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showModifyModal, setShowModifyModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
     const [planetToDelete, setPlanetToDelete] = useState(null);
     const [PlanetToModify, setPlanetToModify] = useState(null);
 
@@ -56,7 +59,7 @@ function Planets() {
 
     //VENTANA DE ELIMINAR
     const openDeleteModal = (planet) => {
-        handleClose(); // Cerrar todos los modales
+        handleClose();
         setPlanetToDelete(planet);
         setShowDeleteModal(true);
     };
@@ -69,7 +72,7 @@ function Planets() {
 
     //VENTANA DE MODIFICAR
     const openModifyModal = (planet) => {
-        handleClose(); // Cerrar todos los modales
+        handleClose();
         setPlanetToModify(planet);
         setShowModifyModal(true);
     };
@@ -82,20 +85,31 @@ function Planets() {
     };
 
 
+
+
+
+
     //SELECCIONAR ELIMINAR
     const handleDelete = async () => {
         if (planetToDelete) {
             try {
                 await Deleteplanets(planetToDelete._id);
-                fetchPlanets(currentPage);
+                setShowDeleteSuccessModal(true);
             } catch (error) {
-                console.error("Error al eliminar el Planet: ", error.message);
+                console.error("Error al eliminar el Planeta: ", error.message);
             } finally {
                 closeDeleteModal();
+                fetchPlanets(currentPage);
             }
         }
     };
 
+
+
+    const handleSuccessModalClose = () => {
+        setShowSuccessModal(false);
+        fetchPlanets(currentPage);
+    };
 
     return (
         //HTML
@@ -106,14 +120,20 @@ function Planets() {
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose} fetchPlanets={fetchPlanets} currentPage={currentPage} />
+                    <MyForm handleClose={handleClose}
+                        fetchPlanets={fetchPlanets}
+                        currentPage={currentPage}
+                        onSuccess={() => {
+                            handleClose();
+                            setShowSuccessModal(true);
+                        }} />
                 </Modal>
             </div>
             <div className="DatosBD">
                 <table className='Table'>
                     <thead>
                         <tr>
-                        <th>Nombre</th>
+                            <th>Nombre</th>
                             <th>Diametro</th>
                             <th>Periodo de Rotacion</th>
                             <th>Periodo Orbital</th>
@@ -128,7 +148,7 @@ function Planets() {
                     <tbody>
                         {planets.map(planet => (
                             <tr key={planet._id}>
-                                  <td>{planet.Nombre}</td>
+                                <td>{planet.Nombre}</td>
                                 <td>{planet.Diametro}</td>
                                 <td>{planet.Periodo_Rotacion}</td>
                                 <td>{planet.Periodo_Orbital}</td>
@@ -172,6 +192,15 @@ function Planets() {
                 Planet_Name={planetToDelete ? planetToDelete.Nombre : ''}
             />
 
+
+            <DeleteComplete
+                show={showDeleteSuccessModal}
+                handleClose={() => {
+                    setShowDeleteSuccessModal(false);
+                    fetchPlanets(currentPage); 
+                }}
+            />
+
             {/* MOSTRAR VENTANA MODIFICAR */}
             {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
@@ -180,9 +209,18 @@ function Planets() {
                         fetchPlanets={fetchPlanets}
                         currentPage={currentPage}
                         planet={PlanetToModify}
+                        onSuccess={() => {
+                            handleClose();
+                            setShowSuccessModal(true);
+                        }}
                     />
                 </Modal>
             )}
+
+
+            {/* MODAL DE REGISTRO EXITOSO */}
+            <Register_complete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+
         </div>
     );
 }

@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Modifyspecies } from '../../request/species';
 
-const ModifyModelSpecies = ({ handleClose, fetchSpecies, currentPage, specie }) => {
+const ModifyModelSpecies = ({ handleClose, fetchSpecies, currentPage, specie,  onSuccess  }) => {
     const validationSchema = Yup.object({
         Nombre: Yup.string().required('El Nombre es requerido'),
         Clasificacion: Yup.string(),
@@ -39,6 +39,7 @@ const ModifyModelSpecies = ({ handleClose, fetchSpecies, currentPage, specie }) 
                     await Modifyspecies(specie._id, values);
                     resetForm();
                     handleClose();
+                    onSuccess();
                     fetchSpecies(currentPage);
                 } catch (error) {
                     setErrors({ submit: error.message });

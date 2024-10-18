@@ -9,6 +9,8 @@ import MyForm from '../Modals/create_modal/create_vehicles';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_vehicles';
 import ModifyModelVehicles from '../Modals/modify_modals/modify_vehicles'
 import { Deletevehicles } from '../request/vehicles';
+import Register_complete from '../Modals/message_modal/registro_modal';
+import DeleteComplete from '../Modals/message_modal/delete_modal';
 
 function Vehicles() {
     const [vehicles, setVehicles] = useState([]);
@@ -17,6 +19,8 @@ function Vehicles() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showModifyModal, setShowModifyModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
     const [vehiclesToDelete, setvehiclesToDelete] = useState(null);
     const [vehiclesToModify, setvehiclesToModify] = useState(null);
 
@@ -82,18 +86,25 @@ function Vehicles() {
     };
 
 
-    //SELECCIONAR ELIMINAR
+    //SELECCIONAR ELIMINAR    
     const handleDelete = async () => {
         if (vehiclesToDelete) {
             try {
                 await Deletevehicles(vehiclesToDelete._id);
-                fetchVehicles(currentPage);
+                setShowDeleteSuccessModal(true);
             } catch (error) {
-                console.error("Error al eliminar la Nave: ", error.message);
+                console.error("Error al eliminar el Vehiculo: ", error.message);
             } finally {
                 closeDeleteModal();
+                fetchVehicles(currentPage);
             }
         }
+    };
+
+
+    const handleSuccessModalClose = () => {
+        setShowSuccessModal(false);
+        fetchVehicles(currentPage);
     };
     return (
         //HTML
@@ -104,14 +115,21 @@ function Vehicles() {
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose} fetchVehicles={fetchVehicles} currentPage={currentPage} />
+                    <MyForm handleClose={handleClose}
+                        fetchVehicles={fetchVehicles}
+                        currentPage={currentPage}
+                        onSuccess={() => {
+                            handleClose();
+                            setShowSuccessModal(true);
+                        }}
+                    />
                 </Modal>
             </div>
             <div className="DatosBD">
                 <table className='Table'>
                     <thead>
                         <tr>
-                        <th>Nombre</th>
+                            <th>Nombre</th>
                             <th>Modelo</th>
                             <th>Clase</th>
                             <th>Tamaño</th>
@@ -123,7 +141,7 @@ function Vehicles() {
                         </tr>
                     </thead>
                     <tbody>
-                    {vehicles.map(vehicle => (
+                        {vehicles.map(vehicle => (
                             <tr key={vehicle._id}>
                                 <td>{vehicle.Nombre}</td>
                                 <td>{vehicle.Modelo}</td>
@@ -168,6 +186,16 @@ function Vehicles() {
                 Vehicle_Name={vehiclesToDelete ? vehiclesToDelete.Nombre : ''}
             />
 
+
+            <DeleteComplete
+                show={showDeleteSuccessModal}
+                handleClose={() => {
+                    setShowDeleteSuccessModal(false);
+                    fetchVehicles(currentPage); 
+                }}
+            />
+
+
             {/* MOSTRAR VENTANA MODIFICAR */}
             {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
@@ -176,9 +204,16 @@ function Vehicles() {
                         fetchVehicles={fetchVehicles}
                         currentPage={currentPage}
                         vehicle={vehiclesToModify}
+                        onSuccess={() => {
+                            handleClose();
+                            setShowSuccessModal(true);
+                        }}
                     />
                 </Modal>
             )}
+
+            {/* MODAL DE REGISTRO EXITOSO */}
+            <Register_complete show={showSuccessModal} handleClose={handleSuccessModalClose} />
         </div>
     );
 }

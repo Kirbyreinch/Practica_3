@@ -46,7 +46,6 @@ const planetSchema = new mongoose.Schema(
     }
 )
 
-
 // Crear los modelos
 const PlanetasModel = mongoose.model("Planetas", planetSchema);
 

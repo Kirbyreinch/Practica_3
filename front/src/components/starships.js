@@ -9,6 +9,8 @@ import MyForm from '../Modals/create_modal/create_starships';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_starships';
 import ModifyModelStarships from '../Modals/modify_modals/modify_starships'
 import { Deletestarships } from '../request/starships';
+import Register_complete from '../Modals/message_modal/registro_modal';
+import DeleteComplete from '../Modals/message_modal/delete_modal';
 
 function Starships() {
     const [starships, setStarships] = useState([]);
@@ -17,6 +19,8 @@ function Starships() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showModifyModal, setShowModifyModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
     const [starshipsToDelete, setstarshipsToDelete] = useState(null);
     const [starshipsToModify, setstarshipsToModify] = useState(null);
 
@@ -82,20 +86,30 @@ function Starships() {
     };
 
 
-    //SELECCIONAR ELIMINAR
+    //SELECCIONAR ELIMINAR    
     const handleDelete = async () => {
         if (starshipsToDelete) {
             try {
                 await Deletestarships(starshipsToDelete._id);
-                fetchStarships(currentPage);
+                setShowDeleteSuccessModal(true);
             } catch (error) {
                 console.error("Error al eliminar la Nave: ", error.message);
             } finally {
                 closeDeleteModal();
+                fetchStarships(currentPage);
             }
         }
     };
 
+
+
+
+
+
+    const handleSuccessModalClose = () => {
+        setShowSuccessModal(false);
+        fetchStarships(currentPage);
+    };
 
     return (
         //HTML
@@ -106,14 +120,20 @@ function Starships() {
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose} fetchStarships={fetchStarships} currentPage={currentPage} />
+                    <MyForm handleClose={handleClose}
+                        fetchStarships={fetchStarships}
+                        currentPage={currentPage}
+                        onSuccess={() => {
+                            handleClose();
+                            setShowSuccessModal(true);
+                        }} />
                 </Modal>
             </div>
             <div className="DatosBD">
                 <table className='Table'>
                     <thead>
                         <tr>
-                        <th>Nombre</th>
+                            <th>Nombre</th>
                             <th>Modelo</th>
                             <th>Clase</th>
                             <th>Tamaño</th>
@@ -127,7 +147,7 @@ function Starships() {
                         </tr>
                     </thead>
                     <tbody>
-                    {starships.map(starship => (
+                        {starships.map(starship => (
                             <tr key={starship._id}>
                                 <td>{starship.Nombre}</td>
                                 <td>{starship.Modelo}</td>
@@ -174,6 +194,16 @@ function Starships() {
                 Starship_Name={starshipsToDelete ? starshipsToDelete.Nombre : ''}
             />
 
+
+            <DeleteComplete
+                show={showDeleteSuccessModal}
+                handleClose={() => {
+                    setShowDeleteSuccessModal(false);
+                    fetchStarships(currentPage); 
+                }}
+            />
+
+
             {/* MOSTRAR VENTANA MODIFICAR */}
             {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
@@ -182,9 +212,15 @@ function Starships() {
                         fetchStarships={fetchStarships}
                         currentPage={currentPage}
                         starship={starshipsToModify}
+                        onSuccess={() => {
+                            handleClose();
+                            setShowSuccessModal(true);
+                        }}
                     />
                 </Modal>
             )}
+            {/* MODAL DE REGISTRO EXITOSO */}
+            <Register_complete show={showSuccessModal} handleClose={handleSuccessModalClose} />
         </div>
     );
 }

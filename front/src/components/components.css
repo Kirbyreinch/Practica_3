@@ -1,5 +1,4 @@
 /* CSS GENERAL */
-
 /* CONTENEDOR  */
 .contenedor {
     display: flex;
@@ -20,8 +19,9 @@
     margin-left: 3rem;
     box-shadow: 0 10px 16px rgba(0, 0, 0, 0.3);
 }
+
 .Titulo h1 {
-    text-indent: 50px; /* Ajusta este valor según sea necesario */
+    text-indent: 50px;
 }
 
 
@@ -69,22 +69,22 @@
 }
 
 
-
 /* ESTILO PARA LA TABLA */
 .DatosBD {
     border-color: black;
 }
 
 .Table {
+    margin-left: 7%;
     margin-top: 20px;
-    width: 100%;
+    width: 90%;
     border-collapse: collapse;
-
+    min-height: 80%;
+    table-layout: fixed;
 }
 
 .Table th {
     background-color: #7a7a7a;
-
     padding: 10px;
     text-align: center;
 }
@@ -113,13 +113,11 @@ td:last-child {
 .Table td {
     padding: 10px;
     text-align: center;
-    max-width: 150px; 
-    width: 100px; 
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-    white-space: nowrap; 
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
-
 
 .Table tr:nth-child(odd) {
     background-color: #d6d6d6;
@@ -131,13 +129,14 @@ td:last-child {
 
 .icon {
     margin-right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.icon:hover{
+    background-color: #818181;
 }
 
-
-
-
 /* PAGINACION  */
-
 .pagination {
     text-align: center;
     font-size: 25px;

@@ -56,7 +56,7 @@ app.get("/modulo/", async (req, res) => {
         const modelo = await PlanetasModel.find({}, { createdAt: 0, updatedAt: 0 })
             .skip(skip)
             .limit(limit);
-            const total = await PlanetasModel.countDocuments(); 
+        const total = await PlanetasModel.countDocuments();
 
         res.send({
             page,

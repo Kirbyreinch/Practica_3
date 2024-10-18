@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { createMovie } from '../../request/films';
 
-const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
+const MyForm = ({ handleClose, fetchFilms, currentPage,  onSuccess }) => {
 
     // VALIDACIONES
     const validationSchema = Yup.object({
@@ -25,6 +25,7 @@ const MyForm = ({ handleClose, fetchFilms, currentPage }) => {
                     await createMovie(values);
                     resetForm();
                     handleClose();
+                    onSuccess();
                     fetchFilms(currentPage); // ACTUALIZA LA TABLA
                 } catch (error) {
 

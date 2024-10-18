@@ -47,15 +47,15 @@ app.get("/personajes/", async (req, res) => {
 });
 app.get("/modulo/", async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1; 
-        const limit = 10; 
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
         const skip = (page - 1) * limit;
 
         const modelo = await VehiculosModel.find({}, { createdAt: 0, updatedAt: 0 })
             .skip(skip)
             .limit(limit);
 
-        const total = await VehiculosModel.countDocuments(); 
+        const total = await VehiculosModel.countDocuments();
 
         res.send({
             page,

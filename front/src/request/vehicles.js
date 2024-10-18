@@ -8,7 +8,7 @@ const API_URL = 'http://localhost:5000/Vehiculos';
 export const Createvehicles = async (vehiculosdata) => {
     try {
         const response = await axios.post(API_URL, vehiculosdata);
-        return response.data; 
+        return response.data;
     } catch (error) {
         throw new Error(error.response.data.message || 'Error al crear el Vehiculo');
     }
@@ -18,7 +18,7 @@ export const Createvehicles = async (vehiculosdata) => {
 export const Deletevehicles = async (id) => {
     try {
         const response = await axios.delete(`${API_URL}/Delete/${id}`);
-        return response.data; 
+        return response.data;
     } catch (error) {
         throw new Error(error.response.data.message || 'Error al eliminar el Vehiculo');
     }
@@ -29,7 +29,7 @@ export const Deletevehicles = async (id) => {
 export const Modifyvehicles = async (id, vehiculosdata) => {
     try {
         const response = await axios.put(`${API_URL}/Modificar/${id}`, vehiculosdata);
-        return response.data; 
+        return response.data;
     } catch (error) {
         throw new Error(error.response.data.message || 'Error al modificar el Vehiculo');
     }

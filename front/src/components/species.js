@@ -9,6 +9,8 @@ import MyForm from '../Modals/create_modal/create_species';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_species';
 import ModifyModelSpecies from '../Modals/modify_modals/modify_species'
 import { Deletspecies } from '../request/species';
+import Register_complete from '../Modals/message_modal/registro_modal';
+import DeleteComplete from '../Modals/message_modal/delete_modal';
 
 function Species() {
     const [species, setSpecies] = useState([]);
@@ -18,6 +20,8 @@ function Species() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showModifyModal, setShowModifyModal] = useState(false);
     const [specieToDelete, setSpecieToDelete] = useState(null);
+    const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [specieToModify, setSpecieToModify] = useState(null);
 
 
@@ -87,16 +91,22 @@ function Species() {
         if (specieToDelete) {
             try {
                 await Deletspecies(specieToDelete._id);
-                fetchSpecies(currentPage);
+                setShowDeleteSuccessModal(true);
             } catch (error) {
-                console.error("Error al eliminar el Planet: ", error.message);
+                console.error("Error al eliminar la Especie: ", error.message);
             } finally {
                 closeDeleteModal();
+                fetchSpecies(currentPage);
             }
         }
     };
 
 
+
+    const handleSuccessModalClose = () => {
+        setShowSuccessModal(false);
+        fetchSpecies(currentPage);
+    };
     return (
         //HTML
         <div className="contenedor">
@@ -106,14 +116,20 @@ function Species() {
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose} fetchSpecies={fetchSpecies} currentPage={currentPage} />
+                    <MyForm handleClose={handleClose}
+                        fetchSpecies={fetchSpecies}
+                        currentPage={currentPage}
+                        onSuccess={() => {
+                            handleClose();
+                            setShowSuccessModal(true);
+                        }} />
                 </Modal>
             </div>
             <div className="DatosBD">
                 <table className='Table'>
                     <thead>
                         <tr>
-                        <th>Nombre</th>
+                            <th>Nombre</th>
                             <th>Clasificación</th>
                             <th>Designación</th>
                             <th>Estatura</th>
@@ -126,7 +142,7 @@ function Species() {
                         </tr>
                     </thead>
                     <tbody>
-                    {species.map(specie => (
+                        {species.map(specie => (
                             <tr key={specie._id}>
                                 <td>{specie.Nombre}</td>
                                 <td>{specie.Clasificacion}</td>
@@ -172,6 +188,15 @@ function Species() {
                 Specie_Name={specieToDelete ? specieToDelete.Nombre : ''}
             />
 
+
+            <DeleteComplete
+                show={showDeleteSuccessModal}
+                handleClose={() => {
+                    setShowDeleteSuccessModal(false);
+                    fetchSpecies(currentPage); 
+                }}
+            />
+
             {/* MOSTRAR VENTANA MODIFICAR */}
             {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
@@ -180,9 +205,17 @@ function Species() {
                         fetchSpecies={fetchSpecies}
                         currentPage={currentPage}
                         specie={specieToModify}
+                        onSuccess={() => {
+                            handleClose();
+                            setShowSuccessModal(true);
+                        }}
                     />
                 </Modal>
             )}
+
+            {/* MODAL DE REGISTRO EXITOSO */}
+            <Register_complete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+
         </div>
     );
 }
