@@ -1,60 +1,73 @@
-/*Contenedor Modal*/
+.Create_modal-content {
+  position: relative;
+  width: 400px;
+  background: rgb(128, 128, 128);
+  border-radius: 8px;
+  padding: 20px;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
 .modal {
-    position: fixed;
-    top: 16%;
-    left: 80%;
-    width: 20%;
-    height: 80%;
-    background: rgb(128, 128, 128);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 20px;
+  position: fixed;
+  top: 16%;
+  left: 75%;
+  height: 80%;
+
+  background: rgb(128, 128, 128);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
 }
+
 .modal-main {
-    background: rgb(128, 128, 128);
-    padding: 20px;
-    border-radius: 8px;
+  background: rgb(128, 128, 128);
+  padding: 20px;
+  border-radius: 8px;
 }
+
 .display-block {
-    display: block;
+  display: block;
 }
 
 .display-none {
-    display: none;
+  display: none;
 }
 
 .input_field {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
 
 
 /*TITULO DE LA VENTANA MODAL*/
-.titulo_modal{
-font-size: 25px;
+.titulo_modal {
+  font-size: 25px;
 }
 
 /*MENSAJES DE ERROR*/
 .error-message {
-    color: rgb(87, 26, 26);
-    font-size: 0.875em;
+  color: rgb(87, 26, 26);
+  font-size: 0.875em;
 }
 
 /* BOTONES*/
 .button-container {
-    display: flex;
-    justify-content: space-between; 
-    margin-top: 30px; 
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
 }
 
 .Btn_agregar {
-    margin-right: 5px; 
+  margin-right: 5px;
 }
 
 /* SPINNER CSS */
@@ -62,39 +75,36 @@ font-size: 25px;
 .lds-hourglass:after {
   box-sizing: border-box;
 }
+
 .lds-hourglass {
   display: inline-block;
   position: relative;
-  width: 40px; 
-  height: 40px; 
+  width: 40px;
+  height: 40px;
 }
+
 .lds-hourglass:after {
   content: " ";
   display: block;
   border-radius: 50%;
   width: 0;
   height: 0;
-  margin: 4px; 
+  margin: 4px;
   box-sizing: border-box;
   border: 20px solid currentColor;
   border-color: currentColor transparent currentColor transparent;
   animation: lds-hourglass 1.2s infinite;
 }
+
 @keyframes lds-hourglass {
   0% {
     transform: rotate(0);
     animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
   }
+
   50% {
     transform: rotate(900deg);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
 }
-
-
-
-
-
-
-

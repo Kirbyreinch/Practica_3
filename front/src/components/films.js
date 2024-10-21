@@ -2,14 +2,15 @@ import './components.css';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faFilePen, faEye } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_film';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_films';
 import ModifyFilmForm from '../Modals/modify_modals/modify_films';
-import Register_complete from '../Modals/message_modal/registro_modal';
+import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import { deleteMovie } from '../request/films';
+import ViewModal from '../Modals/view_modal/view_film';
 
 
 
@@ -22,9 +23,10 @@ function Films() {
     const [showModifyModal, setShowModifyModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
-
     const [filmToDelete, setFilmToDelete] = useState(null);
     const [filmToModify, setFilmToModify] = useState(null);
+    const [showViewModal, setShowViewModal] = useState(false);
+    const [view, setToView] = useState(null);
 
     const fetchFilms = async (page) => {
         try {
@@ -52,6 +54,7 @@ function Films() {
         setShowModal(false);
         setShowDeleteModal(false);
         setShowModifyModal(false);
+        setShowViewModal(false);
     };
 
     //VENTANA DE ELIMINAR
@@ -78,6 +81,17 @@ function Films() {
     const closeModifyModal = () => {
         setFilmToModify(null);
         setShowModifyModal(false);
+    };
+
+    const openViewModal = (film) => {
+        handleClose();
+        setToView(film);
+        setShowViewModal(true);
+    };
+
+    const closeViewModal = () => {
+        setToView(null);
+        setShowViewModal(false);
     };
 
     const handleDelete = async () => {
@@ -148,6 +162,11 @@ function Films() {
                                         icon={faFilePen}
                                         onClick={() => openModifyModal(film)}
                                     />
+                                    <FontAwesomeIcon
+                                        className="icon"
+                                        icon={faEye}
+                                        onClick={() => openViewModal(film)}
+                                    />
                                 </td>
                             </tr>
                         ))}
@@ -175,7 +194,7 @@ function Films() {
                 show={showDeleteSuccessModal}
                 handleClose={() => {
                     setShowDeleteSuccessModal(false);
-                    fetchFilms(currentPage); 
+                    fetchFilms(currentPage);
                 }}
             />
 
@@ -195,7 +214,16 @@ function Films() {
             )}
 
             {/* MODAL DE REGISTRO EXITOSO */}
-            <Register_complete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+            <RegisterComplete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+
+
+            {/* MODAL   VER */}
+            <ViewModal
+                isOpen={showViewModal}
+                onRequestClose={closeViewModal}
+                film={view}
+            />
+
         </div>
     );
 }

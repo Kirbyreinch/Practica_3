@@ -2,14 +2,15 @@ import './components.css';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faFilePen, faEye } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_planets';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_planets';
 import ModifyModelPlanets from '../Modals/modify_modals/modify_planets'
-import Register_complete from '../Modals/message_modal/registro_modal';
+import RegisterComplete from '../Modals/message_modal/registro_modal';
 import { Deleteplanets } from '../request/planets';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
+import ViewModal from '../Modals/view_modal/view_planets';
 
 function Planets() {
     const [planets, setPlanets] = useState([]);
@@ -22,7 +23,8 @@ function Planets() {
     const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
     const [planetToDelete, setPlanetToDelete] = useState(null);
     const [PlanetToModify, setPlanetToModify] = useState(null);
-
+    const [showViewModal, setShowViewModal] = useState(false);
+    const [view, setToView] = useState(null);
 
 
     //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
@@ -54,6 +56,7 @@ function Planets() {
         setShowModal(false);
         setShowDeleteModal(false);
         setShowModifyModal(false);
+        setShowViewModal(false);
     };
 
 
@@ -82,6 +85,18 @@ function Planets() {
     const closeModifyModal = () => {
         setPlanetToModify(null);
         setShowModifyModal(false);
+    };
+
+
+    const openViewModal = (planet) => {
+        handleClose();
+        setToView(planet);
+        setShowViewModal(true);
+    };
+
+    const closeViewModal = () => {
+        setToView(null);
+        setShowViewModal(false);
     };
 
 
@@ -168,6 +183,11 @@ function Planets() {
                                         icon={faFilePen}
                                         onClick={() => openModifyModal(planet)}
                                     />
+                                    <FontAwesomeIcon
+                                        className="icon"
+                                        icon={faEye}
+                                        onClick={() => openViewModal(planet)} // Open the view modal
+                                    />
                                 </td>
                             </tr>
                         ))}
@@ -197,7 +217,7 @@ function Planets() {
                 show={showDeleteSuccessModal}
                 handleClose={() => {
                     setShowDeleteSuccessModal(false);
-                    fetchPlanets(currentPage); 
+                    fetchPlanets(currentPage);
                 }}
             />
 
@@ -219,7 +239,15 @@ function Planets() {
 
 
             {/* MODAL DE REGISTRO EXITOSO */}
-            <Register_complete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+            <RegisterComplete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+
+            {/* MODAL   VER */}
+            <ViewModal
+                isOpen={showViewModal}
+                onRequestClose={closeViewModal}
+                planet={view}
+            />
+
 
         </div>
     );

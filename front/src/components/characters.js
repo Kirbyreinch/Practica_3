@@ -3,14 +3,15 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faFilePen, faEye } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_characters';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_characters';
-import ModifyModelCharacter from '../Modals/modify_modals/modify_characters'
+import ModifyModelCharacter from '../Modals/modify_modals/modify_characters';
 import { Deletecharacter } from '../request/characters';
-import Register_complete from '../Modals/message_modal/registro_modal';
+import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
+import ViewModal from '../Modals/view_modal/view_character';
 
 function Characters() {
     const [characters, setCharacter] = useState([]);
@@ -23,17 +24,16 @@ function Characters() {
     const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
     const [CharacterToDelete, setCharacterToDelete] = useState(null);
     const [CharacterToModify, setCharacterToModify] = useState(null);
+    const [showViewModal, setShowViewModal] = useState(false);
+    const [view, setToView] = useState(null);
 
-
-
-    //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
     const fetchCharacter = async (page) => {
         try {
             const response = await axios.get(`http://localhost:5000/Personajes/modulo/?page=${page}`);
             setCharacter(response.data.personajes);
             setTotalPages(Math.ceil(response.data.total / 10));
         } catch (error) {
-            console.error("Error al obtener las películas:", error);
+            console.error("Error al obtener los personajes:", error);
         }
     };
 
@@ -41,53 +41,53 @@ function Characters() {
         fetchCharacter(currentPage);
     }, [currentPage]);
 
-
-
-    // VENTANA DE REGITRAR
     const handleOpen = () => {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowModal(true);
+
     };
 
-    // CERRAR TODAS LAS VENTANAS
     const handleClose = () => {
         setShowModal(false);
         setShowDeleteModal(false);
         setShowModifyModal(false);
+        setShowViewModal(false);
     };
 
-
-    //VENTANA DE ELIMINAR
     const openDeleteModal = (character) => {
-        handleClose(); // Cerrar todos los modales
+        handleClose();
         setCharacterToDelete(character);
         setShowDeleteModal(true);
     };
-    //CERRAR VENTANA DE ELIMINAR
+
     const closeDeleteModal = () => {
         setCharacterToDelete(null);
         setShowDeleteModal(false);
     };
 
-
-    //VENTANA DE MODIFICAR
     const openModifyModal = (character) => {
-        handleClose(); // Cerrar todos los modales
+        handleClose();
         setCharacterToModify(character);
         setShowModifyModal(true);
     };
 
-
-    //CERRAR VENTANA DE MODIFICAR
     const closeModifyModal = () => {
         setCharacterToModify(null);
         setShowModifyModal(false);
     };
 
+    const openViewModal = (character) => {
+        handleClose();
+        setToView(character);
+        setShowViewModal(true);
+    };
 
+    const closeViewModal = () => {
+        setToView(null);
+        setShowViewModal(false);
+    };
 
-    //SELECCIONAR ELIMINAR
     const handleDelete = async () => {
         if (CharacterToDelete) {
             try {
@@ -102,23 +102,19 @@ function Characters() {
         }
     };
 
-
-
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
         fetchCharacter(currentPage);
     };
 
-
     return (
-        //HTML
         <div className="contenedor">
             <div className="Titulo">
                 <h1>Personajes</h1>
             </div>
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
-                <Modal show={showModal} handleClose={handleClose}>
+                <Modal show={showModal} handleClose={handleClose} >
                     <MyForm handleClose={handleClose} fetchCharacter={fetchCharacter} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
@@ -163,13 +159,17 @@ function Characters() {
                                         icon={faFilePen}
                                         onClick={() => openModifyModal(character)}
                                     />
+                                    <FontAwesomeIcon
+                                        className="icon"
+                                        icon={faEye}
+                                        onClick={() => openViewModal(character)}
+                                    />
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            {/* PAGINACION */}
             <div className="Paginacion">
                 <div className="pagination">
                     <br />
@@ -179,7 +179,6 @@ function Characters() {
                 </div>
             </div>
 
-            {/* MOSTRAR VENTANA ELIMNAR */}
             <ConfirmDeleteModal
                 isOpen={showDeleteModal}
                 onRequestClose={closeDeleteModal}
@@ -195,7 +194,6 @@ function Characters() {
                 }}
             />
 
-            {/* MOSTRAR VENTANA MODIFICAR */}
             {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <ModifyModelCharacter
@@ -211,13 +209,16 @@ function Characters() {
                 </Modal>
             )}
 
-            {/* MODAL DE REGISTRO EXITOSO */}
-            <Register_complete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+            <RegisterComplete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+
+            {/* MODAL   VER */}
+            <ViewModal
+                isOpen={showViewModal}
+                onRequestClose={closeViewModal}
+                character={view}
+            />
         </div>
     );
 }
 
 export default Characters;
-
-
-

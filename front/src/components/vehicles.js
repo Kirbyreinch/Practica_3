@@ -3,14 +3,15 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faFilePen, faEye } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_vehicles';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_vehicles';
 import ModifyModelVehicles from '../Modals/modify_modals/modify_vehicles'
 import { Deletevehicles } from '../request/vehicles';
-import Register_complete from '../Modals/message_modal/registro_modal';
+import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
+import ViewModal from '../Modals/view_modal/view_vehicles';
 
 function Vehicles() {
     const [vehicles, setVehicles] = useState([]);
@@ -23,7 +24,8 @@ function Vehicles() {
     const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
     const [vehiclesToDelete, setvehiclesToDelete] = useState(null);
     const [vehiclesToModify, setvehiclesToModify] = useState(null);
-
+    const [showViewModal, setShowViewModal] = useState(false);
+    const [view, setToView] = useState(null);
 
 
     //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
@@ -33,7 +35,7 @@ function Vehicles() {
             setVehicles(response.data.vehiculos);
             setTotalPages(Math.ceil(response.data.total / 10));
         } catch (error) {
-            console.error("Error al obtener las Naves:", error);
+            console.error("Error al obtener los Vhiculos:", error);
         }
     };
 
@@ -55,6 +57,7 @@ function Vehicles() {
         setShowModal(false);
         setShowDeleteModal(false);
         setShowModifyModal(false);
+        setShowViewModal(false);
     };
 
 
@@ -83,6 +86,18 @@ function Vehicles() {
     const closeModifyModal = () => {
         setvehiclesToModify(null);
         setShowModifyModal(false);
+    };
+
+
+    const openViewModal = (vehicles) => {
+        handleClose();
+        setToView(vehicles);
+        setShowViewModal(true);
+    };
+
+    const closeViewModal = () => {
+        setToView(null);
+        setShowViewModal(false);
     };
 
 
@@ -162,6 +177,11 @@ function Vehicles() {
                                         icon={faFilePen}
                                         onClick={() => openModifyModal(vehicle)}
                                     />
+                                    <FontAwesomeIcon
+                                        className="icon"
+                                        icon={faEye}
+                                        onClick={() => openViewModal(vehicle)}
+                                    />
                                 </td>
                             </tr>
                         ))}
@@ -191,7 +211,7 @@ function Vehicles() {
                 show={showDeleteSuccessModal}
                 handleClose={() => {
                     setShowDeleteSuccessModal(false);
-                    fetchVehicles(currentPage); 
+                    fetchVehicles(currentPage);
                 }}
             />
 
@@ -213,7 +233,15 @@ function Vehicles() {
             )}
 
             {/* MODAL DE REGISTRO EXITOSO */}
-            <Register_complete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+            <RegisterComplete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+
+            {/* MODAL   VER */}
+            <ViewModal
+                isOpen={showViewModal}
+                onRequestClose={closeViewModal}
+                vehicle={view}
+            />
+
         </div>
     );
 }

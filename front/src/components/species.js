@@ -3,14 +3,15 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faFilePen, faEye } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_species';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_species';
 import ModifyModelSpecies from '../Modals/modify_modals/modify_species'
 import { Deletspecies } from '../request/species';
-import Register_complete from '../Modals/message_modal/registro_modal';
+import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
+import ViewModal from '../Modals/view_modal/view_species';
 
 function Species() {
     const [species, setSpecies] = useState([]);
@@ -23,7 +24,8 @@ function Species() {
     const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [specieToModify, setSpecieToModify] = useState(null);
-
+    const [showViewModal, setShowViewModal] = useState(false);
+    const [view, setToView] = useState(null);
 
 
     //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
@@ -55,6 +57,7 @@ function Species() {
         setShowModal(false);
         setShowDeleteModal(false);
         setShowModifyModal(false);
+        setShowViewModal(false);
     };
 
 
@@ -83,6 +86,18 @@ function Species() {
     const closeModifyModal = () => {
         setSpecieToModify(null);
         setShowModifyModal(false);
+    };
+
+
+    const openViewModal = (specie) => {
+        handleClose();
+        setToView(specie);
+        setShowViewModal(true);
+    };
+
+    const closeViewModal = () => {
+        setToView(null);
+        setShowViewModal(false);
     };
 
 
@@ -164,6 +179,11 @@ function Species() {
                                         icon={faFilePen}
                                         onClick={() => openModifyModal(specie)}
                                     />
+                                    <FontAwesomeIcon
+                                        className="icon"
+                                        icon={faEye}
+                                        onClick={() => openViewModal(specie)}
+                                    />
                                 </td>
                             </tr>
                         ))}
@@ -193,7 +213,7 @@ function Species() {
                 show={showDeleteSuccessModal}
                 handleClose={() => {
                     setShowDeleteSuccessModal(false);
-                    fetchSpecies(currentPage); 
+                    fetchSpecies(currentPage);
                 }}
             />
 
@@ -214,7 +234,15 @@ function Species() {
             )}
 
             {/* MODAL DE REGISTRO EXITOSO */}
-            <Register_complete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+            <RegisterComplete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+
+            {/* MODAL   VER */}
+            <ViewModal
+                isOpen={showViewModal}
+                onRequestClose={closeViewModal}
+                specie={view}
+            />
+
 
         </div>
     );

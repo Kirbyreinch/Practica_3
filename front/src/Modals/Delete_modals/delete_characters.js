@@ -9,17 +9,16 @@ const ConfirmDeleteModal = ({ isOpen, onRequestClose, onConfirm, Character_Name 
             onRequestClose={onRequestClose}
             ariaHideApp={false}
             className="modal_delete"
-            overlayClassName="overlay"
+            overlayClassName="overlay" // Asegúrate de que esta clase esté aquí
         >
-            {/* VENTANA DE ELIMINAR */}
+            {/* Ventana de eliminar */}
             <div className="modal-main">
                 <h2 className="titulo_modal">Confirmar Eliminación</h2>
                 <p className='p_accion'>¿Estás seguro de que deseas eliminar el Personaje "{Character_Name}"?</p>
-                <div className='button-conatiner'>
+                <div className='button-container'>
                     <button className="delete_button" onClick={onConfirm}>Eliminar</button>
                     <button className="cancel_button" onClick={onRequestClose}>Cancelar</button>
                 </div>
-
             </div>
         </Modal>
     );

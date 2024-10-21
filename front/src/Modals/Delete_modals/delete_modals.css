@@ -1,7 +1,18 @@
+/* Fondo que cubre toda la pantalla */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
 .modal_delete {
     position: fixed;
-    top: 25%;
-    left: 80%;
     width: 20%;
     height: 30%;
     background: rgb(128, 128, 128);
