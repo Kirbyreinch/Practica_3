@@ -13,7 +13,6 @@
 
 /* BARRA TITULO COMPONENTE  */
 .Titulo {
-
     background-color: #ffffff;
     border-radius: 9px;
     width: 93%;
@@ -21,7 +20,6 @@
     box-shadow: 0 10px 16px rgba(0, 0, 0, 0.3);
     margin-top: 1rem
 }
-
 .Titulo h1 {
     text-indent: 50px;
 }

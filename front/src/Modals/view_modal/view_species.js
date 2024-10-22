@@ -12,17 +12,31 @@ const ViewModal = ({ isOpen, onRequestClose, specie }) => {
         >
             <div className='modal-content'>
                 <h2>{specie?.Nombre}</h2>
-                <p><strong>Clasificacion:</strong> {specie?.Clasificacion}</p>
-                <p><strong>Designacion:</strong> {specie?.Designacion}</p>
-                <p><strong>Estatura:</strong> {specie?.Estatura}</p>
-                <p><strong>Color de piel:</strong> {specie?.Color_de_piel}</p>
-                <p><strong>Color de cabello:</strong> {specie?.Color_de_cabello}</p>
-                <p><strong>Color de ojos:</strong> {specie?.Color_de_ojos}</p>
-                <p><strong>Promedio de vida:</strong> {specie?.Promedio_de_vida}</p>
-                <p><strong>Lenguaje:</strong> {specie?.Lenguaje}</p>
+                <div className="field">
+                    <strong>Clasificación:</strong> <span>{specie?.Clasificacion}</span>
+                </div>
+                <div className="field">
+                    <strong>Designación:</strong> <span>{specie?.Designacion}</span>
+                </div>
+                <div className="field">
+                    <strong>Estatura:</strong> <span>{specie?.Estatura}</span>
+                </div>
+                <div className="field">
+                    <strong>Color de piel:</strong> <span>{specie?.Color_de_piel}</span>
+                </div>
+                <div className="field">
+                    <strong>Color de cabello:</strong> <span>{specie?.Color_de_cabello}</span>
+                </div>
+                <div className="field">
+                    <strong>Color de ojos:</strong> <span>{specie?.Color_de_ojos}</span>
+                </div>
+                <div className="field">
+                    <strong>Promedio de vida:</strong> <span>{specie?.Promedio_de_vida}</span>
+                </div>
+                <div className="field">
+                    <strong>Lenguaje:</strong> <span>{specie?.Lenguaje}</span>
+                </div>
                 <button className="Btn_agregar" onClick={onRequestClose}>Cerrar</button>
-
-
             </div>
         </Modal>
     );

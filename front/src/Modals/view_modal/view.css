@@ -1,4 +1,4 @@
-/* Ventana Ver*/
+/* VENTANA MODAL VER*/
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -11,7 +11,7 @@
     align-items: center;
 }
 
-/* Estilo para el modal */
+/* ESTILO DE VENTANA */
 .view-modal {
     position: relative;
     margin: auto;
@@ -28,4 +28,17 @@
     border-radius: 8px;
     height: auto;
 
+}
+
+/*CAMPOS PARA MOSTRA INFO*/
+.field {
+    margin: 10px 0; 
+}
+.field span {
+    display: inline-block;
+    padding: 5px 10px;
+    background: #e0e0e0; 
+    border-radius: 5px;
+    border: 1px solid #ccc; 
+    width: calc(100% - 20px); 
 }

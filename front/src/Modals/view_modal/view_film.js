@@ -12,8 +12,12 @@ const ViewModal = ({ isOpen, onRequestClose, film }) => {
         >
             <div className='modal-content'>
                 <h2>{film?.Titulo}</h2>
-                <p><strong>Director:</strong> {film?.Director}</p>
-                <p><strong>Productor:</strong> {film?.Productor}</p>
+                <div className="field">
+                    <strong>Director:</strong> <span>{film?.Director}</span>
+                </div>
+                <div className="field">
+                    <strong>Productor:</strong> <span>{film?.Productor}</span>
+                </div>
                 <button className="Btn_agregar" onClick={onRequestClose}>Cerrar</button>
             </div>
         </Modal>

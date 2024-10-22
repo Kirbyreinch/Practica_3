@@ -12,15 +12,28 @@ const ViewModal = ({ isOpen, onRequestClose, vehicle }) => {
         >
             <div className='modal-content'>
                 <h2>{vehicle?.Nombre}</h2>
-                <p><strong>Modelo:</strong> {vehicle?.Modelo}</p>
-                <p><strong>Clase:</strong> {vehicle?.Clase}</p>
-                <p><strong>Tamaño:</strong> {vehicle?.Tamaño}</p>
-                <p><strong>Numero de Pasajeros:</strong> {vehicle?.Numero_de_Pasajeros}</p>
-                <p><strong>Maxima velocidad atmosferica:</strong> {vehicle?.Maxima_velocidad_atmosferica}</p>
-                <p><strong>Capacidad_Maxima:</strong> {vehicle?.Capacidad_Maxima}</p>
-                <p><strong>Tiempo Maximo de Cobustibles:</strong> {vehicle?.Tiempo_Maximo_Cobustibles}</p>
+                <div className="field">
+                    <strong>Modelo:</strong> <span>{vehicle?.Modelo}</span>
+                </div>
+                <div className="field">
+                    <strong>Clase:</strong> <span>{vehicle?.Clase}</span>
+                </div>
+                <div className="field">
+                    <strong>Tamaño:</strong> <span>{vehicle?.Tamaño}</span>
+                </div>
+                <div className="field">
+                    <strong>Número de Pasajeros:</strong> <span>{vehicle?.Numero_de_Pasajeros}</span>
+                </div>
+                <div className="field">
+                    <strong>Máxima Velocidad Atmosférica:</strong> <span>{vehicle?.Maxima_velocidad_atmosferica}</span>
+                </div>
+                <div className="field">
+                    <strong>Capacidad Máxima:</strong> <span>{vehicle?.Capacidad_Maxima}</span>
+                </div>
+                <div className="field">
+                    <strong>Tiempo Máximo de Combustibles:</strong> <span>{vehicle?.Tiempo_Maximo_Cobustibles}</span>
+                </div>
                 <button className="Btn_agregar" onClick={onRequestClose}>Cerrar</button>
-
             </div>
         </Modal>
     );
