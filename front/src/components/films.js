@@ -11,7 +11,7 @@ import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import { deleteMovie } from '../request/films';
 import ViewModal from '../Modals/view_modal/view_film';
-
+import Header from '../header/header';
 
 
 function Films() {
@@ -27,11 +27,14 @@ function Films() {
     const [filmToModify, setFilmToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
+    const [filteredFilms, setFilteredFilms] = useState([]);
+
 
     const fetchFilms = async (page) => {
         try {
             const response = await axios.get(`http://localhost:5000/Peliculas/modulo/?page=${page}`);
             setFilms(response.data.pelis);
+            setFilteredFilms(response.data.pelis);
             setTotalPages(Math.ceil(response.data.total / 10));
         } catch (error) {
             console.error("Error al obtener las películas:", error);
@@ -94,6 +97,25 @@ function Films() {
         setShowViewModal(false);
     };
 
+
+// FUNCIONAMIENTO DE BUSQUEDA //
+const handleSearch = (text) => {
+    const trimmedText = text.trim();
+
+    if (trimmedText) {
+        const filtered = films.filter(film => 
+            film.Titulo.toLowerCase().startsWith(trimmedText.toLowerCase())
+        );
+        setFilteredFilms(filtered);
+    } else {
+        setFilteredFilms(films);
+    }
+};
+
+
+
+
+// FUNCIONAMIENTO DE ELIMINAR //
     const handleDelete = async () => {
         if (filmToDelete) {
             try {
@@ -117,7 +139,9 @@ function Films() {
 
 
     return (
+        
         <div className="contenedor">
+            <Header onSearch={handleSearch} /> 
             <div className="Titulo">
                 <h1>Peliculas</h1>
             </div>
@@ -146,7 +170,7 @@ function Films() {
                         </tr>
                     </thead>
                     <tbody>
-                        {films.map(film => (
+                        {filteredFilms.map(film => (
                             <tr key={film._id}>
                                 <td>{film.Titulo}</td>
                                 <td>{film.Director}</td>

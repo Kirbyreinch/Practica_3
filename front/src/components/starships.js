@@ -12,6 +12,7 @@ import { Deletestarships } from '../request/starships';
 import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import ViewModal from '../Modals/view_modal/view_starships';
+import Header from '../header/header';
 
 function Starships() {
     const [starships, setStarships] = useState([]);
@@ -26,6 +27,7 @@ function Starships() {
     const [starshipsToModify, setstarshipsToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
+    const [filteredFilms, setFilteredFilms] = useState([]);
 
 
     //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
@@ -33,6 +35,7 @@ function Starships() {
         try {
             const response = await axios.get(`http://localhost:5000/Naves/modulo/?page=${page}`);
             setStarships(response.data.naves);
+            setFilteredFilms(response.data.naves);
             setTotalPages(Math.ceil(response.data.total / 10));
         } catch (error) {
             console.error("Error al obtener las Naves:", error);
@@ -101,7 +104,27 @@ function Starships() {
         setShowViewModal(false);
     };
 
-    //SELECCIONAR ELIMINAR    
+
+
+
+   // FUNCIONAMIENTO DE BUSQUEDA //
+   const handleSearch = (text) => {
+    const trimmedText = text.trim();
+
+    if (trimmedText) {
+        const filtered = starships.filter(starship => 
+            starship.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
+        );
+        setFilteredFilms(filtered);
+    } else {
+        setFilteredFilms(starships);
+    }
+};
+
+
+
+
+// FUNCIONAMIENTO DE ELIMINAR //
     const handleDelete = async () => {
         if (starshipsToDelete) {
             try {
@@ -129,6 +152,7 @@ function Starships() {
     return (
         //HTML
         <div className="contenedor">
+              <Header onSearch={handleSearch} /> 
             <div className="Titulo">
                 <h1>Naves</h1>
             </div>
@@ -162,7 +186,7 @@ function Starships() {
                         </tr>
                     </thead>
                     <tbody>
-                        {starships.map(starship => (
+                        {filteredFilms.map(starship => (
                             <tr key={starship._id}>
                                 <td>{starship.Nombre}</td>
                                 <td>{starship.Modelo}</td>

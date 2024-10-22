@@ -12,6 +12,8 @@ import { Deletevehicles } from '../request/vehicles';
 import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import ViewModal from '../Modals/view_modal/view_vehicles';
+import Header from '../header/header';
+
 
 function Vehicles() {
     const [vehicles, setVehicles] = useState([]);
@@ -26,6 +28,7 @@ function Vehicles() {
     const [vehiclesToModify, setvehiclesToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
+    const [filteredFilms, setFilteredFilms] = useState([]);
 
 
     //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
@@ -33,6 +36,7 @@ function Vehicles() {
         try {
             const response = await axios.get(`http://localhost:5000/Vehiculos/modulo/?page=${page}`);
             setVehicles(response.data.vehiculos);
+            setFilteredFilms(response.data.vehiculos);
             setTotalPages(Math.ceil(response.data.total / 10));
         } catch (error) {
             console.error("Error al obtener los Vhiculos:", error);
@@ -101,7 +105,25 @@ function Vehicles() {
     };
 
 
-    //SELECCIONAR ELIMINAR    
+
+   // FUNCIONAMIENTO DE BUSQUEDA //
+   const handleSearch = (text) => {
+    const trimmedText = text.trim();
+
+    if (trimmedText) {
+        const filtered = vehicles.filter(vehicle => 
+            vehicle.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
+        );
+        setFilteredFilms(filtered);
+    } else {
+        setFilteredFilms(vehicles);
+    }
+};
+
+
+
+
+// FUNCIONAMIENTO DE ELIMINAR // 
     const handleDelete = async () => {
         if (vehiclesToDelete) {
             try {
@@ -124,6 +146,7 @@ function Vehicles() {
     return (
         //HTML
         <div className="contenedor">
+              <Header onSearch={handleSearch} /> 
             <div className="Titulo">
                 <h1>Vehiculos</h1>
             </div>
@@ -156,7 +179,7 @@ function Vehicles() {
                         </tr>
                     </thead>
                     <tbody>
-                        {vehicles.map(vehicle => (
+                        {filteredFilms.map(vehicle => (
                             <tr key={vehicle._id}>
                                 <td>{vehicle.Nombre}</td>
                                 <td>{vehicle.Modelo}</td>

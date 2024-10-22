@@ -12,6 +12,8 @@ import { Deletspecies } from '../request/species';
 import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import ViewModal from '../Modals/view_modal/view_species';
+import Header from '../header/header';
+
 
 function Species() {
     const [species, setSpecies] = useState([]);
@@ -26,6 +28,7 @@ function Species() {
     const [specieToModify, setSpecieToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
+    const [filteredFilms, setFilteredFilms] = useState([]);
 
 
     //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
@@ -33,6 +36,7 @@ function Species() {
         try {
             const response = await axios.get(`http://localhost:5000/Especies/modulo/?page=${page}`);
             setSpecies(response.data.especies);
+            setFilteredFilms(response.data.especies);
             setTotalPages(Math.ceil(response.data.total / 10));
         } catch (error) {
             console.error("Error al obtener las Especies:", error);
@@ -100,8 +104,24 @@ function Species() {
         setShowViewModal(false);
     };
 
+   // FUNCIONAMIENTO DE BUSQUEDA //
+const handleSearch = (text) => {
+    const trimmedText = text.trim();
 
-    //SELECCIONAR ELIMINAR
+    if (trimmedText) {
+        const filtered = species.filter(specie => 
+            specie.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
+        );
+        setFilteredFilms(filtered);
+    } else {
+        setFilteredFilms(species);
+    }
+};
+
+
+
+
+// FUNCIONAMIENTO DE ELIMINAR //
     const handleDelete = async () => {
         if (specieToDelete) {
             try {
@@ -125,6 +145,7 @@ function Species() {
     return (
         //HTML
         <div className="contenedor">
+              <Header onSearch={handleSearch} /> 
             <div className="Titulo">
                 <h1>Especies</h1>
             </div>
@@ -157,7 +178,7 @@ function Species() {
                         </tr>
                     </thead>
                     <tbody>
-                        {species.map(specie => (
+                        {filteredFilms.map(specie => (
                             <tr key={specie._id}>
                                 <td>{specie.Nombre}</td>
                                 <td>{specie.Clasificacion}</td>

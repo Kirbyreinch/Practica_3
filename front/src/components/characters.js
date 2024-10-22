@@ -12,6 +12,8 @@ import { Deletecharacter } from '../request/characters';
 import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import ViewModal from '../Modals/view_modal/view_character';
+import Header from '../header/header';
+
 
 function Characters() {
     const [characters, setCharacter] = useState([]);
@@ -26,11 +28,13 @@ function Characters() {
     const [CharacterToModify, setCharacterToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
+    const [filteredFilms, setFilteredFilms] = useState([]);
 
     const fetchCharacter = async (page) => {
         try {
             const response = await axios.get(`http://localhost:5000/Personajes/modulo/?page=${page}`);
             setCharacter(response.data.personajes);
+            setFilteredFilms(response.data.personajes);
             setTotalPages(Math.ceil(response.data.total / 10));
         } catch (error) {
             console.error("Error al obtener los personajes:", error);
@@ -88,6 +92,25 @@ function Characters() {
         setShowViewModal(false);
     };
 
+
+   // FUNCIONAMIENTO DE BUSQUEDA //
+const handleSearch = (text) => {
+    const trimmedText = text.trim();
+
+    if (trimmedText) {
+        const filtered = characters.filter(character => 
+            character.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
+        );
+        setFilteredFilms(filtered);
+    } else {
+        setFilteredFilms(characters);
+    }
+};
+
+
+
+
+// FUNCIONAMIENTO DE ELIMINAR //
     const handleDelete = async () => {
         if (CharacterToDelete) {
             try {
@@ -109,6 +132,7 @@ function Characters() {
 
     return (
         <div className="contenedor">
+              <Header onSearch={handleSearch} /> 
             <div className="Titulo">
                 <h1>Personajes</h1>
             </div>
@@ -138,7 +162,7 @@ function Characters() {
                         </tr>
                     </thead>
                     <tbody>
-                        {characters.map(character => (
+                        {filteredFilms.map(character => (
                             <tr key={character._id}>
                                 <td>{character.Nombre}</td>
                                 <td>{character.Altura}</td>

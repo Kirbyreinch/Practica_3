@@ -2,13 +2,12 @@ import './header.css';
 import 'font-awesome/css/font-awesome.min.css';
 import React, { useState } from 'react';
 
-// COMPONENTE A MOSTRAR HASTA ARRIBA
-function Header() {
+function Header({ onSearch }) {
     const [placeholder, setPlaceholder] = useState('BUSQUEDA');
     const [searchText, setSearchText] = useState('');
 
     const handleFocus = () => {
-        setPlaceholder('ADVERTENCIA: NO FUNCIONA');
+        setPlaceholder('BUSCAR');
     };
 
     const handleBlur = () => {
@@ -18,25 +17,20 @@ function Header() {
     };
 
     const handleChange = (e) => {
-        setSearchText(e.target.value);
-        if (e.target.value) {
+        const value = e.target.value;
+        setSearchText(value);
+        onSearch(value); 
+
+        if (value) {
             setPlaceholder('');
         } else {
-            setPlaceholder('ERROR 404');
-        }
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            setSearchText(''); 
-            setPlaceholder('ERROR 404'); 
+            setPlaceholder('INICIAR BUSQUEDA');
         }
     };
 
     return (
         <div className="header">
             <div className="options">
-                {/* ICONO Y BARRA DE BUSQUEDA */}
                 <i className="fa fa-search" aria-hidden="true" />
                 <input 
                     type='text' 
@@ -46,7 +40,7 @@ function Header() {
                     onFocus={handleFocus} 
                     onBlur={handleBlur} 
                     onChange={handleChange} 
-                    onKeyPress={handleKeyPress} 
+            
                 />
             </div>
         </div>

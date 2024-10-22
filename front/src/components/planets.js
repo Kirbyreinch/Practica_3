@@ -11,6 +11,8 @@ import RegisterComplete from '../Modals/message_modal/registro_modal';
 import { Deleteplanets } from '../request/planets';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import ViewModal from '../Modals/view_modal/view_planets';
+import Header from '../header/header';
+
 
 function Planets() {
     const [planets, setPlanets] = useState([]);
@@ -25,6 +27,7 @@ function Planets() {
     const [PlanetToModify, setPlanetToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
+    const [filteredFilms, setFilteredFilms] = useState([]);
 
 
     //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
@@ -32,6 +35,7 @@ function Planets() {
         try {
             const response = await axios.get(`http://localhost:5000/Planetas/modulo/?page=${page}`);
             setPlanets(response.data.planets);
+            setFilteredFilms(response.data.planets);
             setTotalPages(Math.ceil(response.data.total / 10));
         } catch (error) {
             console.error("Error al obtener los Planetas:", error);
@@ -100,11 +104,24 @@ function Planets() {
     };
 
 
+// FUNCIONAMIENTO DE BUSQUEDA //
+const handleSearch = (text) => {
+    const trimmedText = text.trim();
+
+    if (trimmedText) {
+        const filtered = planets.filter(planet => 
+            planet.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
+        );
+        setFilteredFilms(filtered);
+    } else {
+        setFilteredFilms(planets);
+    }
+};
 
 
 
 
-    //SELECCIONAR ELIMINAR
+// FUNCIONAMIENTO DE ELIMINAR //
     const handleDelete = async () => {
         if (planetToDelete) {
             try {
@@ -129,6 +146,7 @@ function Planets() {
     return (
         //HTML
         <div className="contenedor">
+              <Header onSearch={handleSearch} /> 
             <div className="Titulo">
                 <h1>Planetas</h1>
             </div>
@@ -161,7 +179,7 @@ function Planets() {
                         </tr>
                     </thead>
                     <tbody>
-                        {planets.map(planet => (
+                        {filteredFilms.map(planet => (
                             <tr key={planet._id}>
                                 <td>{planet.Nombre}</td>
                                 <td>{planet.Diametro}</td>
