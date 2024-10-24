@@ -91,7 +91,7 @@ app.put("/Modificar/:id", async (req, res) => {
         if (!modelo) {
             return res.status(404).send("especie no encontrada");
         }
-        const existe = await especiesModel.findOne({ Nombre: req.body.Nombre });
+        const existe = await especiesModel.findOne({ Nombre: req.body.Nombre, _id:{ $ne: id } });
         if (existe) {
             console.log(`La especie ${req.body.Nombre} ya existe. No se guardará.`);
             return res.status(409).send(`La especie ${req.body.Nombre} ya existe.`); // Código 409: Conflicto

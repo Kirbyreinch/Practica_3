@@ -92,7 +92,7 @@ app.put("/Modificar/:id", async (req, res) => {
         if (!planets) {
             return res.status(404).send("Planeta no encontrado");
         }
-        const existe = await PlanetasModel.findOne({ Nombre: req.body.Nombre });
+        const existe = await PlanetasModel.findOne({ Nombre: req.body.Nombre, _id:{ $ne: id } });
         if (existe) {
             console.log(`El Planeta ${req.body.Nombre} ya existe. No se guardará.`);
             return res.status(409).send(`El Planeta ${req.body.Nombre} ya existe.`); // Código 409: Conflicto

@@ -92,7 +92,7 @@ app.put("/Modificar/:id", async (req, res) => {
         if (!modelo) {
             return res.status(404).send("nave no encontrada");
         }
-        const existe = await NavesModel.findOne({ Nombre: req.body.Nombre });
+        const existe = await NavesModel.findOne({ Nombre: req.body.Nombre, _id:{ $ne: id } });
         if (existe) {
             console.log(`La nave ${req.body.Nombre} ya existe. No se guardará.`);
             return res.status(409).send(`La nave ${req.body.Nombre} ya existe.`); // Código 409: Conflicto

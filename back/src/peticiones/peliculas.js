@@ -94,7 +94,7 @@ app.put("/Modificar/:id", async (req, res) => {
             return res.status(404).send("Película no encontrada");
         }
 
-        const existe = await PelisModel.findOne({ Titulo: req.body.Titulo });
+        const existe = await PelisModel.findOne({ Titulo: req.body.Titulo, _id:{ $ne: id } });
         if (existe) {
             console.log(`La película ${req.body.Titulo} ya existe. No se guardará.`);
             return res.status(409).send(`La película ${req.body.Titulo} ya existe.`);
