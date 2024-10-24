@@ -14,7 +14,7 @@ const ConfirmDeleteModal = ({ isOpen, onRequestClose, onConfirm, Vehicle_Name })
             {/* VENTANA DE ELIMINAR */}
             <div className="modal-main">
                 <h2 className="titulo_modal">Confirmar Eliminación</h2>
-                <p className='p_accion'>¿Estás seguro de que deseas eliminar el Vehiculo "{Vehicle_Name}"?</p>
+                <p className='p_accion'>¿Estás seguro de que deseas eliminar el Vehículo "{Vehicle_Name}"?</p>
                 <div className='button-conatiner'>
                     <button className="delete_button" onClick={onConfirm}>Eliminar</button>
                     <button className="cancel_button" onClick={onRequestClose}>Cancelar</button>

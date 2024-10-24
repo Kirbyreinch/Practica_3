@@ -56,7 +56,7 @@ const MyForm = ({ handleClose, fetchPlanets, currentPage, onSuccess }) => {
                                 <Field name="Diametro" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Periodo_Rotacion">Periodo_Rotacion</label>
+                                <label htmlFor="Periodo_Rotacion">Periodo_Rotación</label>
                                 <Field name="Periodo_Rotacion" className="input_field" />
                             </div>
                             <div>
@@ -68,7 +68,7 @@ const MyForm = ({ handleClose, fetchPlanets, currentPage, onSuccess }) => {
                                 <Field name="Gravedad" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Poblacion">Poblacion</label>
+                                <label htmlFor="Poblacion">Población</label>
                                 <Field name="Poblacion" className="input_field" />
                             </div>
                             <div>

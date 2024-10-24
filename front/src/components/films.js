@@ -143,7 +143,7 @@ const handleSearch = (text) => {
         <div className="contenedor">
             <Header onSearch={handleSearch} /> 
             <div className="Titulo">
-                <h1>Peliculas</h1>
+                <h1>Películas</h1>
             </div>
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
@@ -163,7 +163,7 @@ const handleSearch = (text) => {
                 <table className='Table'>
                     <thead>
                         <tr>
-                            <th>Titulo</th>
+                            <th>Título</th>
                             <th>Director</th>
                             <th>Productor</th>
                             <th>Acciones</th>

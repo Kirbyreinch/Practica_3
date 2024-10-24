@@ -169,10 +169,10 @@ const handleSearch = (text) => {
                             <th>Clasificación</th>
                             <th>Designación</th>
                             <th>Estatura</th>
-                            <th>Color de piel</th>
-                            <th>Color de ojos</th>
-                            <th>Fecha de ojos</th>
-                            <th>Promedio de vida</th>
+                            <th>Color de Piel</th>
+                            <th>Color de Cabello</th>
+                            <th>Color de Ojos</th>
+                            <th>Promedio de Vida</th>
                             <th>Lenguaje</th>
                             <th>Acciones</th>
                         </tr>

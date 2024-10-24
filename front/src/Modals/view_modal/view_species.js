@@ -22,16 +22,16 @@ const ViewModal = ({ isOpen, onRequestClose, specie }) => {
                     <strong>Estatura:</strong> <span>{specie?.Estatura}</span>
                 </div>
                 <div className="field">
-                    <strong>Color de piel:</strong> <span>{specie?.Color_de_piel}</span>
+                    <strong>Color de Piel:</strong> <span>{specie?.Color_de_piel}</span>
                 </div>
                 <div className="field">
-                    <strong>Color de cabello:</strong> <span>{specie?.Color_de_cabello}</span>
+                    <strong>Color de Cabello:</strong> <span>{specie?.Color_de_cabello}</span>
                 </div>
                 <div className="field">
-                    <strong>Color de ojos:</strong> <span>{specie?.Color_de_ojos}</span>
+                    <strong>Color de Ojos:</strong> <span>{specie?.Color_de_ojos}</span>
                 </div>
                 <div className="field">
-                    <strong>Promedio de vida:</strong> <span>{specie?.Promedio_de_vida}</span>
+                    <strong>Promedio de Vida:</strong> <span>{specie?.Promedio_de_vida}</span>
                 </div>
                 <div className="field">
                     <strong>Lenguaje:</strong> <span>{specie?.Lenguaje}</span>

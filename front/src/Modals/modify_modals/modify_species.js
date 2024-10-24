@@ -60,11 +60,11 @@ const ModifyModelSpecies = ({ handleClose, fetchSpecies, currentPage, specie, on
                                 <ErrorMessage name="Nombre" component="div" className="error-message" />
                             </div>
                             <div>
-                                <label htmlFor="Clasificacion">Clasificacion</label>
+                                <label htmlFor="Clasificacion">Clasificación</label>
                                 <Field name="Clasificacion" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Designacion">Designacion</label>
+                                <label htmlFor="Designacion">Designación</label>
                                 <Field name="Designacion" className="input_field" />
                             </div>
                             <div>
@@ -72,19 +72,19 @@ const ModifyModelSpecies = ({ handleClose, fetchSpecies, currentPage, specie, on
                                 <Field name="Estatura" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Color_de_piel">Color_de_piel</label>
+                                <label htmlFor="Color_de_piel">Color de Piel</label>
                                 <Field name="Color_de_piel" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Color_de_cabello">Color_de_cabello</label>
+                                <label htmlFor="Color_de_cabello">Color de Cabello</label>
                                 <Field name="Color_de_cabello" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Color_de_ojos">Color_de_ojos</label>
+                                <label htmlFor="Color_de_ojos">Color de Ojos</label>
                                 <Field name="Color_de_ojos" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Promedio_de_vida">Promedio_de_vida</label>
+                                <label htmlFor="Promedio_de_vida">Promedio de vida</label>
                                 <Field name="Promedio_de_vida" className="input_field" />
                             </div>
                             <div>

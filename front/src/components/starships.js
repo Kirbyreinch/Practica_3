@@ -176,12 +176,12 @@ function Starships() {
                             <th>Modelo</th>
                             <th>Clase</th>
                             <th>Tamaño</th>
-                            <th>Numero de pasajeros</th>
-                            <th>Maxima velocidad atmosferica</th>
+                            <th>Número de Pasajeros</th>
+                            <th>Máxima Velocidad Atmosférica</th>
                             <th>Hiperimpulsor</th>
                             <th>MGLT</th>
-                            <th>Capacidad de carga</th>
-                            <th>Tiempo maximo de combustible</th>
+                            <th>Capacidad de Carga</th>
+                            <th>Tiempo Máximo de Combustible</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>

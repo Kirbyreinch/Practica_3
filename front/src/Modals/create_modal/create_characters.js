@@ -52,11 +52,11 @@ const MyForm = ({ handleClose, fetchCharacter, currentPage, onSuccess }) => {
                                 <ErrorMessage name="Nombre" component="div" className="error-message" />
                             </div>
                             <div>
-                                <label htmlFor="Fecha_Nacimiento">Fecha_Nacimiento</label>
+                                <label htmlFor="Fecha_Nacimiento">Fecha de Nacimiento</label>
                                 <Field name="Fecha_Nacimiento" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Color_Ojos">Color_Ojos</label>
+                                <label htmlFor="Color_Ojos">Color de Ojos</label>
                                 <Field name="Color_Ojos" className="input_field" />
                             </div>
                             <div>
@@ -64,7 +64,7 @@ const MyForm = ({ handleClose, fetchCharacter, currentPage, onSuccess }) => {
                                 <Field name="Genero" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Color_Cabello">Color_Cabello</label>
+                                <label htmlFor="Color_Cabello">Color de Cabello</label>
                                 <Field name="Color_Cabello" className="input_field" />
                             </div>
                             <div>
@@ -76,7 +76,7 @@ const MyForm = ({ handleClose, fetchCharacter, currentPage, onSuccess }) => {
                                 <Field name="Masa" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Color_de_Piel">Color_de_Piel</label>
+                                <label htmlFor="Color_de_Piel">Color de Piel</label>
                                 <Field name="Color_de_Piel" className="input_field" />
                             </div>
                             {/* SECCION DE BOTONES*/}

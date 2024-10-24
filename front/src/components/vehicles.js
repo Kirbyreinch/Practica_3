@@ -148,7 +148,7 @@ function Vehicles() {
         <div className="contenedor">
               <Header onSearch={handleSearch} /> 
             <div className="Titulo">
-                <h1>Vehiculos</h1>
+                <h1>Vehículos</h1>
             </div>
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
@@ -171,10 +171,10 @@ function Vehicles() {
                             <th>Modelo</th>
                             <th>Clase</th>
                             <th>Tamaño</th>
-                            <th>Numero de pasajeros</th>
-                            <th>Maxima velocidad atmosferica</th>
-                            <th>Capacidad Maxima</th>
-                            <th>Tiempo maximo de combustibles</th>
+                            <th>Número de pasajeros</th>
+                            <th>Máxima velocidad atmosférica</th>
+                            <th>Capacidad Máxima</th>
+                            <th>Tiempo máximo de combustibles</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>

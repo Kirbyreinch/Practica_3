@@ -52,7 +52,7 @@ const ModifyModelVehicles = ({ handleClose, fetchVehicles, currentPage, vehicle,
                         // FORMULARIO  HTML//
 
                         <Form>
-                            <label className='titulo_modal' htmlFor="Titulo">Modificar Vehiculo</label>
+                            <label className='titulo_modal' htmlFor="Titulo">Modificar Vehículo</label>
                             <div className='Crear'>
                                 <label htmlFor="Nombre">Nombre</label>
                                 <Field name="Nombre" className="input_field" />
@@ -72,15 +72,15 @@ const ModifyModelVehicles = ({ handleClose, fetchVehicles, currentPage, vehicle,
                                 <Field name="Tamaño" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Numero_de_Pasajeros">Numero de Pasajeros</label>
+                                <label htmlFor="Numero_de_Pasajeros">Número de Pasajeros</label>
                                 <Field name="Numero_de_Pasajeros" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Maxima_velocidad_atmosferica">Maxima velocidad atmosferica</label>
+                                <label htmlFor="Maxima_velocidad_atmosferica">Máxima Velocidad Atmosférica</label>
                                 <Field name="Maxima_velocidad_atmosferica" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Tiempo_Maximo_Cobustibles">Tiempo Maximo de Cobustibles</label>
+                                <label htmlFor="Tiempo_Maximo_Cobustibles">Tiempo Máximo de Cobustibles</label>
                                 <Field name="Tiempo_Maximo_Cobustibles" className="input_field" />
                             </div>
                             {/* SECCION DE BOTONES*/}

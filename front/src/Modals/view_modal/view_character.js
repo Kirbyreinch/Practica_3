@@ -19,16 +19,16 @@ const ViewModal = ({ isOpen, onRequestClose, character }) => {
                     <strong>Peso:</strong> <span>{character?.Masa}</span>
                 </div>
                 <div className="field">
-                    <strong>Color de cabello:</strong> <span>{character?.Color_Cabello}</span>
+                    <strong>Color de Cabello:</strong> <span>{character?.Color_Cabello}</span>
                 </div>
                 <div className="field">
-                    <strong>Color de piel:</strong> <span>{character?.Color_de_Piel}</span>
+                    <strong>Color de Piel:</strong> <span>{character?.Color_de_Piel}</span>
                 </div>
                 <div className="field">
-                    <strong>Color de ojos:</strong> <span>{character?.Color_Ojos}</span>
+                    <strong>Color de Ojos:</strong> <span>{character?.Color_Ojos}</span>
                 </div>
                 <div className="field">
-                    <strong>Fecha de nacimiento:</strong> <span>{character?.Fecha_Nacimiento}</span>
+                    <strong>Fecha de Nacimiento:</strong> <span>{character?.Fecha_Nacimiento}</span>
                 </div>
                 <div className="field">
                     <strong>Género:</strong> <span>{character?.Genero}</span>

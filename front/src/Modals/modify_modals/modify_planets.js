@@ -70,7 +70,7 @@ const ModifyModelPlanets = ({ handleClose, fetchPlanets, currentPage, planet, on
                                 <Field name="Diametro" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Periodo_Rotacion">Periodo de Rotacion</label>
+                                <label htmlFor="Periodo_Rotacion">Periodo de Rotación</label>
                                 <Field name="Periodo_Rotacion" className="input_field" />
                             </div>
                             <div>
@@ -82,7 +82,7 @@ const ModifyModelPlanets = ({ handleClose, fetchPlanets, currentPage, planet, on
                                 <Field name="Gravedad" className="input_field" />
                             </div>
                             <div>
-                                <label htmlFor="Poblacion">Poblacion</label>
+                                <label htmlFor="Poblacion">Población</label>
                                 <Field name="Poblacion" className="input_field" />
                             </div>
                             <div>
