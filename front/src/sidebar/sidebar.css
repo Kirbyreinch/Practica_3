@@ -38,3 +38,32 @@
 .optionsvar ul li:hover {
     background-color: rgba(255, 255, 255, 0.3);
 }
+
+
+.sidebar li.active {
+    background-color: #757575; /* Color de fondo resaltado */
+
+}
+.sidebar li {
+    cursor: pointer;
+    padding: 10px;
+    position: relative; 
+    display: flex; 
+    align-items: center; 
+}
+
+.tooltip {
+    position: absolute;
+    left: 100%; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    background-color: rgba(0, 0, 0, 0.7); 
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap; 
+    pointer-events: none; 
+    z-index: 1000; 
+    margin-left: 5px;
+}

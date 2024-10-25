@@ -119,6 +119,13 @@ const handleSearch = (text) => {
 };
 
 
+//HOMOLOGACIÓN
+const GetHomologation = (value) => {
+    if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none"|| value === "") {
+        return "-----";
+    }
+    return value || "-----";
+};
 
 
 // FUNCIONAMIENTO DE ELIMINAR //
@@ -181,15 +188,15 @@ const handleSearch = (text) => {
                     <tbody>
                         {filteredFilms.map(planet => (
                             <tr key={planet._id}>
-                                <td>{planet.Nombre}</td>
-                                <td>{planet.Diametro}</td>
-                                <td>{planet.Periodo_Rotacion}</td>
-                                <td>{planet.Periodo_Orbital}</td>
-                                <td>{planet.Gravedad}</td>
-                                <td>{planet.Poblacion}</td>
-                                <td>{planet.Clima}</td>
-                                <td>{planet.Terreno}</td>
-                                <td>{planet.Superficie_Agua}</td>
+                                <td>{GetHomologation(planet.Nombre)}</td>
+                                <td>{GetHomologation(planet.Diametro)}</td>
+                                <td>{GetHomologation(planet.Periodo_Rotacion)}</td>
+                                <td>{GetHomologation(planet.Periodo_Orbital)}</td>
+                                <td>{GetHomologation(planet.Gravedad)}</td>
+                                <td>{GetHomologation(planet.Poblacion)}</td>
+                                <td>{GetHomologation(planet.Clima)}</td>
+                                <td>{GetHomologation(planet.Terreno)}</td>
+                                <td>{GetHomologation(planet.Superficie_Agua)}</td>
                                 <td>
                                     <FontAwesomeIcon
                                         className="icon"

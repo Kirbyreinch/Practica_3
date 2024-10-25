@@ -1,16 +1,17 @@
-import Header from './header/header'
-import Sidebar from './sidebar/sidebar'
-import Characters from './components/characters'
-import Planets from './components/planets'
-import Films from './components/films'
-import Species from './components/species'
-import Starships from './components/starships'
-import Vehicles from './components/vehicles'
+import Header from './header/header';
+import Sidebar from './sidebar/sidebar';
+import Characters from './components/characters';
+import Planets from './components/planets';
+import Films from './components/films';
+import Species from './components/species';
+import Starships from './components/starships';
+import Vehicles from './components/vehicles';
 import React, { useState } from 'react';
 import './App.css';
 
 function App() {
   const [currentComponent, setCurrentComponent] = useState('characters');
+
   const renderComponent = () => {
     switch (currentComponent) {
       case 'characters':
@@ -29,16 +30,13 @@ function App() {
         return <Characters />;
     }
   };
+
   return (
     <div className="app">
-
       <div className="content">
         {renderComponent()}
       </div>
-      <Sidebar onSelect={setCurrentComponent} />
-
-
-
+      <Sidebar onSelect={setCurrentComponent} selectedComponent={currentComponent} />
     </div>
   );
 }

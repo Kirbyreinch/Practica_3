@@ -32,7 +32,7 @@ const MyForm = ({ handleClose, fetchFilms, currentPage, onSuccess }) => {
                         }
                     }}
                 >
-                    {({ isSubmitting, errors }) => (
+                    {({ isSubmitting, errors, resetForm }) => (
                         <Form>
                             <label className='titulo_modal' htmlFor="Titulo">Agregar Película</label>
                             <div className='Crear'>
@@ -55,7 +55,7 @@ const MyForm = ({ handleClose, fetchFilms, currentPage, onSuccess }) => {
                                 <button className='Btn_agregar' type="submit" disabled={isSubmitting}>
                                     {isSubmitting ? <div className="lds-hourglass"></div> : 'Enviar'}
                                 </button>
-                                <button className='Btn_agregar' type="button" onClick={handleClose} disabled={isSubmitting}>
+                                <button className='Btn_agregar' type="button" onClick ={() => { resetForm(); handleClose();}} disabled={isSubmitting}>
                                     Cerrar
                                 </button>
                             </div>

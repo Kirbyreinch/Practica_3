@@ -43,7 +43,7 @@ const MyForm = ({ handleClose, fetchStarships, currentPage, onSuccess }) => {
                         }
                     }}
                 >
-                    {({ isSubmitting, errors }) => (
+                    {({ isSubmitting, errors,resetForm }) => (
                         // FORMULARIO  HTML//
                         <Form>
                             <label className='titulo_modal' htmlFor="Titulo">Agregar Nave</label>
@@ -95,7 +95,7 @@ const MyForm = ({ handleClose, fetchStarships, currentPage, onSuccess }) => {
                                 <button className='Btn_agregar' type="submit" disabled={isSubmitting}>
                                     {isSubmitting ? <div class="lds-hourglass"></div> : 'Enviar'}
                                 </button>
-                                <button className='Btn_agregar' type="button" onClick={handleClose} disabled={isSubmitting}>
+                                <button className='Btn_agregar' type="button" onClick ={() => { resetForm(); handleClose();}} disabled={isSubmitting}>
                                     Cerrar
                                 </button>
                             </div>

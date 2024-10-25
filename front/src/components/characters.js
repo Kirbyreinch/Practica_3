@@ -28,13 +28,14 @@ function Characters() {
     const [CharacterToModify, setCharacterToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
-    const [filteredFilms, setFilteredFilms] = useState([]);
+    const [filtered, setFiltered] = useState([]);
 
     const fetchCharacter = async (page) => {
         try {
             const response = await axios.get(`http://localhost:5000/Personajes/modulo/?page=${page}`);
             setCharacter(response.data.personajes);
-            setFilteredFilms(response.data.personajes);
+            setFiltered(response.data.personajes);
+            console.log(response.data.personajes)
             setTotalPages(Math.ceil(response.data.total / 10));
         } catch (error) {
             console.error("Error al obtener los personajes:", error);
@@ -93,21 +94,32 @@ function Characters() {
     };
 
 
-   // FUNCIONAMIENTO DE BUSQUEDA //
-const handleSearch = (text) => {
-    const trimmedText = text.trim();
+
+
+
+ // FUNCIONAMIENTO DE BUSQUEDA //
+ const handleSearch = (text) => {
+    const trimmedText = text.trim().toLowerCase();
 
     if (trimmedText) {
-        const filtered = characters.filter(character => 
-            character.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
+        const filteredResults = characters.filter(character =>
+            character.Nombre.toLowerCase().startsWith(trimmedText)
         );
-        setFilteredFilms(filtered);
+        setFiltered(filteredResults);
     } else {
-        setFilteredFilms(characters);
+        setFiltered(characters);
     }
 };
 
 
+
+//HOMOLOGACIÓN
+const GetHomologation = (value) => {
+    if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none"|| value === "") {
+        return "-----";
+    }
+    return value || "-----";
+};
 
 
 // FUNCIONAMIENTO DE ELIMINAR //
@@ -153,25 +165,25 @@ const handleSearch = (text) => {
                             <th>Nombre</th>
                             <th>Altura</th>
                             <th>Peso</th>
-                            <th>Color de cabello</th>
-                            <th>Color de piel</th>
-                            <th>Color de ojos</th>
-                            <th>Fecha de nacimiento</th>
+                            <th>Color de Cabello</th>
+                            <th>Color de Piel</th>
+                            <th>Color de Ojos</th>
+                            <th>Fecha de Nacimiento</th>
                             <th>Género</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredFilms.map(character => (
+                        {filtered.map(character => (
                             <tr key={character._id}>
-                                <td>{character.Nombre}</td>
-                                <td>{character.Altura}</td>
-                                <td>{character.Masa}</td>
-                                <td>{character.Color_Cabello}</td>
-                                <td>{character.Color_de_Piel}</td>
-                                <td>{character.Color_Ojos}</td>
-                                <td>{character.Fecha_Nacimiento}</td>
-                                <td>{character.Genero}</td>
+                                <td>{GetHomologation(character.Nombre)}</td>
+                                <td>{GetHomologation(character.Altura)}</td>
+                                <td>{GetHomologation(character.Masa)}</td>
+                                <td>{GetHomologation(character.Color_Cabello)}</td>
+                                <td>{GetHomologation(character.Color_de_Piel)}</td>
+                                <td>{GetHomologation(character.Color_Ojos)}</td>
+                                <td>{GetHomologation(character.Fecha_Nacimiento)}</td>
+                                <td>{GetHomologation(character.Genero)}</td>
                                 <td>
                                     <FontAwesomeIcon
                                         className="icon"

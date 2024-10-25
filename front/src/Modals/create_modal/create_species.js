@@ -39,7 +39,7 @@ const MyForm = ({ handleClose, fetchSpecies, currentPage, onSuccess }) => {
                         }
                     }}
                 >
-                    {({ isSubmitting, errors }) => (
+                    {({ isSubmitting, errors,resetForm }) => (
                         <Form>
                             <label className='titulo_modal' htmlFor="Titulo">Agregar Especie</label>
                             <div className='Crear'>
@@ -85,7 +85,7 @@ const MyForm = ({ handleClose, fetchSpecies, currentPage, onSuccess }) => {
                                 <button className='Btn_agregar' type="submit" disabled={isSubmitting}>
                                     {isSubmitting ? <div class="lds-hourglass"></div> : 'Enviar'}
                                 </button>
-                                <button className='Btn_agregar' type="button" onClick={handleClose} disabled={isSubmitting}>
+                                <button className='Btn_agregar' type="button" onClick ={() => { resetForm(); handleClose();}} disabled={isSubmitting}>
                                     Cerrar
                                 </button>
                             </div>

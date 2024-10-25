@@ -119,6 +119,13 @@ const handleSearch = (text) => {
 };
 
 
+//HOMOLOGACIÓN
+const GetHomologation = (value) => {
+    if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none"|| value === "") {
+        return "-----";
+    }
+    return value || "-----";
+};
 
 
 // FUNCIONAMIENTO DE ELIMINAR //
@@ -180,15 +187,15 @@ const handleSearch = (text) => {
                     <tbody>
                         {filteredFilms.map(specie => (
                             <tr key={specie._id}>
-                                <td>{specie.Nombre}</td>
-                                <td>{specie.Clasificacion}</td>
-                                <td>{specie.Designacion}</td>
-                                <td>{specie.Estatura}</td>
-                                <td>{specie.Color_de_piel}</td>
-                                <td>{specie.Color_de_cabello}</td>
-                                <td>{specie.Color_de_ojos}</td>
-                                <td>{specie.Promedio_de_vida}</td>
-                                <td>{specie.Lenguaje}</td>
+                                <td>{GetHomologation(specie.Nombre)}</td>
+                                <td>{GetHomologation(specie.Clasificacion)}</td>
+                                <td>{GetHomologation(specie.Designacion)}</td>
+                                <td>{GetHomologation(specie.Estatura)}</td>
+                                <td>{GetHomologation(specie.Color_de_piel)}</td>
+                                <td>{GetHomologation(specie.Color_de_cabello)}</td>
+                                <td>{GetHomologation(specie.Color_de_ojos)}</td>
+                                <td>{GetHomologation(specie.Promedio_de_vida)}</td>
+                                <td>{GetHomologation(specie.Lenguaje)}</td>
                                 <td>
                                     <FontAwesomeIcon
                                         className="icon"

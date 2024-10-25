@@ -112,6 +112,13 @@ const handleSearch = (text) => {
     }
 };
 
+//HOMOLOGACIÓN
+const GetHomologation = (value) => {
+    if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none"|| value === "") {
+        return "-----";
+    }
+    return value || "-----";
+};
 
 
 
@@ -171,10 +178,10 @@ const handleSearch = (text) => {
                     </thead>
                     <tbody>
                         {filteredFilms.map(film => (
-                            <tr key={film._id}>
-                                <td>{film.Titulo}</td>
-                                <td>{film.Director}</td>
-                                <td>{film.Productor}</td>
+                            <tr key={GetHomologation(film._id)}>
+                                <td>{GetHomologation(film.Titulo)}</td>
+                                <td>{GetHomologation(film.Director)}</td>
+                                <td>{GetHomologation(film.Productor)}</td>
                                 <td>
                                     <FontAwesomeIcon
                                         className="icon"

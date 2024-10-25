@@ -122,6 +122,13 @@ function Starships() {
 };
 
 
+//HOMOLOGACIÓN
+const GetHomologation = (value) => {
+    if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none"|| value === "") {
+        return "-----";
+    }
+    return value || "-----";
+};
 
 
 // FUNCIONAMIENTO DE ELIMINAR //
@@ -188,16 +195,16 @@ function Starships() {
                     <tbody>
                         {filteredFilms.map(starship => (
                             <tr key={starship._id}>
-                                <td>{starship.Nombre}</td>
-                                <td>{starship.Modelo}</td>
-                                <td>{starship.Clase}</td>
-                                <td>{starship.Tamaño}</td>
-                                <td>{starship.Numero_de_Pasajeros}</td>
-                                <td>{starship.Maxima_velocidad_atmosferica}</td>
-                                <td>{starship.Hiperimpulsor}</td>
-                                <td>{starship.MGLT}</td>
-                                <td>{starship.Capacidad_de_carga}</td>
-                                <td>{starship.Tiempo_Maximo_Cobustibles}</td>
+                                <td>{GetHomologation(starship.Nombre)}</td>
+                                <td>{GetHomologation(starship.Modelo)}</td>
+                                <td>{GetHomologation(starship.Clase)}</td>
+                                <td>{GetHomologation(starship.Tamaño)}</td>
+                                <td>{GetHomologation(starship.Numero_de_Pasajeros)}</td>
+                                <td>{GetHomologation(starship.Maxima_velocidad_atmosferica)}</td>
+                                <td>{GetHomologation(starship.Hiperimpulsor)}</td>
+                                <td>{GetHomologation(starship.MGLT)}</td>
+                                <td>{GetHomologation(starship.Capacidad_de_carga)}</td>
+                                <td>{GetHomologation(starship.Tiempo_Maximo_Cobustibles)}</td>
                                 <td>
                                     <FontAwesomeIcon
                                         className="icon"

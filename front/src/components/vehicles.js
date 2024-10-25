@@ -121,6 +121,13 @@ function Vehicles() {
 };
 
 
+//HOMOLOGACIÓN
+const GetHomologation = (value) => {
+    if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none"|| value === "") {
+        return "-----";
+    }
+    return value || "-----";
+};
 
 
 // FUNCIONAMIENTO DE ELIMINAR // 
@@ -171,24 +178,24 @@ function Vehicles() {
                             <th>Modelo</th>
                             <th>Clase</th>
                             <th>Tamaño</th>
-                            <th>Número de pasajeros</th>
-                            <th>Máxima velocidad atmosférica</th>
+                            <th>Número de Pasajeros</th>
+                            <th>Máxima Velocidad Atmosférica</th>
                             <th>Capacidad Máxima</th>
-                            <th>Tiempo máximo de combustibles</th>
+                            <th>Tiempo Máximo de Combustibles</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredFilms.map(vehicle => (
-                            <tr key={vehicle._id}>
-                                <td>{vehicle.Nombre}</td>
-                                <td>{vehicle.Modelo}</td>
-                                <td>{vehicle.Clase}</td>
-                                <td>{vehicle.Tamaño}</td>
-                                <td>{vehicle.Numero_de_Pasajeros}</td>
-                                <td>{vehicle.Maxima_velocidad_atmosferica}</td>
-                                <td>{vehicle.Capacidad_Maxima}</td>
-                                <td>{vehicle.Tiempo_Maximo_Cobustibles}</td>
+                            <tr key={GetHomologation(vehicle._id)}>
+                                <td>{GetHomologation(vehicle.Nombre)}</td>
+                                <td>{GetHomologation(vehicle.Modelo)}</td>
+                                <td>{GetHomologation(vehicle.Clase)}</td>
+                                <td>{GetHomologation(vehicle.Tamaño)}</td>
+                                <td>{GetHomologation(vehicle.Numero_de_Pasajeros)}</td>
+                                <td>{GetHomologation(vehicle.Maxima_velocidad_atmosferica)}</td>
+                                <td>{GetHomologation(vehicle.Capacidad_Maxima)}</td>
+                                <td>{GetHomologation(vehicle.Tiempo_Maximo_Cobustibles)}</td>
                                 <td>
                                     <FontAwesomeIcon
                                         className="icon"
