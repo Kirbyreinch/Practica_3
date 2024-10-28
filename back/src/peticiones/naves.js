@@ -71,6 +71,20 @@ app.get("/modulo/", async (req, res) => {
 
 
 
+app.get("/modulo/todos", async (req, res) => {
+    try {
+        const modelo = await NavesModel.find({}, { createdAt: 0, updatedAt: 0 });
+        res.send({
+            total: modelo.length,
+            naves: modelo,
+        });
+    } catch (error) {
+        res.status(400).send("Error al obtener todos las naves: " + error.message);
+    }
+});
+
+
+
 app.delete("/Delete/:id", async (req, res) => {
     try {
         const id = req.params.id;

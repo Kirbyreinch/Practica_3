@@ -89,6 +89,17 @@ app.get("/modulo/", async (req, res) => {
 });
 
 
+app.get("/modulo/todos", async (req, res) => {
+    try {
+        const modelo = await PersonajesModel.find({}, { createdAt: 0, updatedAt: 0 });
+        res.send({
+            total: modelo.length,
+            personajes: modelo,
+        });
+    } catch (error) {
+        res.status(400).send("Error al obtener todos los personajes: " + error.message);
+    }
+});
 
 
 

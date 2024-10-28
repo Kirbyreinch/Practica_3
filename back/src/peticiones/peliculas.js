@@ -71,6 +71,22 @@ app.get("/modulo/", async (req, res) => {
 });
 
 
+
+app.get("/modulo/todos", async (req, res) => {
+    try {
+        const modelo = await PelisModel.find({}, { createdAt: 0, updatedAt: 0 });
+        res.send({
+            total: modelo.length,
+            pelis: modelo,
+        });
+    } catch (error) {
+        res.status(400).send("Error al obtener todos las películas: " + error.message);
+    }
+});
+
+
+
+
 app.delete("/Delete/:id", async (req, res) => {
     try {
         const id = req.params.id;

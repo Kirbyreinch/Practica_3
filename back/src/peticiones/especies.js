@@ -68,6 +68,20 @@ app.get("/modulo/", async (req, res) => {
 });
 
 
+app.get("/modulo/todos", async (req, res) => {
+    try {
+        const modelo = await especiesModel.find({}, { createdAt: 0, updatedAt: 0 });
+        res.send({
+            total: modelo.length,
+            especies: modelo,
+        });
+    } catch (error) {
+        res.status(400).send("Error al obtener todos las especies: " + error.message);
+    }
+});
+
+
+
 app.delete("/Delete/:id", async (req, res) => {
     try {
         const id = req.params.id;

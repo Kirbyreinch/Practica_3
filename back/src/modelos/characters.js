@@ -10,7 +10,6 @@ const PersonajeSchemas = new mongoose.Schema(
         },
         Fecha_Nacimiento: {
             type: String,
-            required: true,
         },
         Color_Ojos: {
             type: String,
