@@ -28,16 +28,24 @@ function Vehicles() {
     const [vehiclesToModify, setvehiclesToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
-    const [filteredFilms, setFilteredFilms] = useState([]);
-
+    const [filtered, setFiltered] = useState([]);
+    const [allRegisters, setAllRegisters] = useState([]);    //ESTADO  PARA TODOS LOS REGISTROS
 
     //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
     const fetchVehicles = async (page) => {
         try {
             const response = await axios.get(`http://localhost:5000/Vehiculos/modulo/?page=${page}`);
             setVehicles(response.data.vehiculos);
-            setFilteredFilms(response.data.vehiculos);
+            setFiltered(response.data.vehiculos);
             setTotalPages(Math.ceil(response.data.total / 10));
+            setAllRegisters(prev => {
+                const newvehiculos = response.data.vehiculos.filter(
+                    newvehiculo => !prev.some(vehiculo => vehiculo._id === newvehiculo._id)
+                );
+                return [...prev, ...newvehiculos]; 
+            });
+            
+            setFiltered(response.data.vehiculos);
         } catch (error) {
             console.error("Error al obtener los Vhiculos:", error);
         }
@@ -111,12 +119,12 @@ function Vehicles() {
     const trimmedText = text.trim();
 
     if (trimmedText) {
-        const filtered = vehicles.filter(vehicle => 
+        const filtered = allRegisters.filter(vehicle => 
             vehicle.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
         );
-        setFilteredFilms(filtered);
+        setFiltered(filtered);
     } else {
-        setFilteredFilms(vehicles);
+        setFiltered(vehicles);
     }
 };
 
@@ -186,7 +194,7 @@ const GetHomologation = (value) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredFilms.map(vehicle => (
+                        {filtered.map(vehicle => (
                             <tr key={GetHomologation(vehicle._id)}>
                                 <td>{GetHomologation(vehicle.Nombre)}</td>
                                 <td>{GetHomologation(vehicle.Modelo)}</td>

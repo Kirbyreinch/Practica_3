@@ -24,8 +24,6 @@ const MyForm = ({ handleClose, fetchSpecies, currentPage, onSuccess }) => {
                     validationSchema={validationSchema}
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
-                            // TIEMPO QUE GIRARA EL SPINNER
-                            await new Promise(resolve => setTimeout(resolve, 2000));
                             await Createspecies(values);
                             console.log("Enviando datos:", values);
                             resetForm();

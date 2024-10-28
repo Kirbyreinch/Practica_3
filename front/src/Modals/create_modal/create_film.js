@@ -19,7 +19,6 @@ const MyForm = ({ handleClose, fetchFilms, currentPage, onSuccess }) => {
                     validationSchema={validationSchema}
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
-                            await new Promise(resolve => setTimeout(resolve, 2000));
                             await createMovie(values);
                             resetForm();
                             handleClose();

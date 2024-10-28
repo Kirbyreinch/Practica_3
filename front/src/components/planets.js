@@ -6,13 +6,12 @@ import { faTrash, faFilePen, faEye } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_planets';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_planets';
-import ModifyModelPlanets from '../Modals/modify_modals/modify_planets'
+import ModifyModelPlanets from '../Modals/modify_modals/modify_planets';
 import RegisterComplete from '../Modals/message_modal/registro_modal';
 import { Deleteplanets } from '../request/planets';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import ViewModal from '../Modals/view_modal/view_planets';
 import Header from '../header/header';
-
 
 function Planets() {
     const [planets, setPlanets] = useState([]);
@@ -27,35 +26,46 @@ function Planets() {
     const [PlanetToModify, setPlanetToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
-    const [filteredFilms, setFilteredFilms] = useState([]);
+    const [filtered, setFiltered] = useState([]);
+    const [allRegisters, setAllRegisters] = useState([]);    
 
+    const limit = 10;
 
-    //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
-    const fetchPlanets = async (page) => {
+    const fetchregister = async (page) => {
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        const paginatedPlanets = filtered.slice(startIndex, endIndex);
+        
+        setPlanets(paginatedPlanets);
+        setTotalPages(Math.ceil(filtered.length / limit));
+    };
+
+    const fetchAllRegisters = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/Planetas/modulo/?page=${page}`);
-            setPlanets(response.data.planets);
-            setFilteredFilms(response.data.planets);
-            setTotalPages(Math.ceil(response.data.total / 10));
+            const response = await axios.get(`http://localhost:5000/Planetas/modulo/todos`);
+            setAllRegisters(response.data.planets);
+            setFiltered(response.data.planets); 
+            setTotalPages(Math.ceil(response.data.total / limit));
+            fetchregister(1); 
         } catch (error) {
-            console.error("Error al obtener los Planetas:", error);
+            console.error("Error al obtener todos los planetas:", error);
         }
     };
 
     useEffect(() => {
-        fetchPlanets(currentPage);
-    }, [currentPage]);
+        fetchAllRegisters(); 
+    }, []);
 
+    useEffect(() => {
+        fetchregister(currentPage); 
+    }, [filtered, currentPage]);
 
-
-    // VENTANA DE REGITRAR
     const handleOpen = () => {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowModal(true);
     };
 
-    // CERRAR TODAS LAS VENTANAS
     const handleClose = () => {
         setShowModal(false);
         setShowDeleteModal(false);
@@ -63,34 +73,27 @@ function Planets() {
         setShowViewModal(false);
     };
 
-
-    //VENTANA DE ELIMINAR
     const openDeleteModal = (planet) => {
         handleClose();
         setPlanetToDelete(planet);
         setShowDeleteModal(true);
     };
-    //CERRAR VENTANA DE ELIMINAR
+
     const closeDeleteModal = () => {
         setPlanetToDelete(null);
         setShowDeleteModal(false);
     };
 
-
-    //VENTANA DE MODIFICAR
     const openModifyModal = (planet) => {
         handleClose();
         setPlanetToModify(planet);
         setShowModifyModal(true);
     };
 
-
-    //CERRAR VENTANA DE MODIFICAR
     const closeModifyModal = () => {
         setPlanetToModify(null);
         setShowModifyModal(false);
     };
-
 
     const openViewModal = (planet) => {
         handleClose();
@@ -103,66 +106,56 @@ function Planets() {
         setShowViewModal(false);
     };
 
+    const handleSearch = (text) => {
+        const trimmedText = text.trim().toLowerCase();
+        let filteredResults = allRegisters;
 
-// FUNCIONAMIENTO DE BUSQUEDA //
-const handleSearch = (text) => {
-    const trimmedText = text.trim();
+        if (trimmedText) {
+            filteredResults = allRegisters.filter(planet =>
+                planet.Nombre.toLowerCase().startsWith(trimmedText)
+            );
+        }
 
-    if (trimmedText) {
-        const filtered = planets.filter(planet => 
-            planet.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
-        );
-        setFilteredFilms(filtered);
-    } else {
-        setFilteredFilms(planets);
-    }
-};
+        setFiltered(filteredResults);
+        setCurrentPage(1); // Reiniciar a la primera página
+    };
 
+    const GetHomologation = (value) => {
+        if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none" || value === "") {
+            return "-----";
+        }
+        return value || "-----";
+    };
 
-//HOMOLOGACIÓN
-const GetHomologation = (value) => {
-    if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none"|| value === "") {
-        return "-----";
-    }
-    return value || "-----";
-};
-
-
-// FUNCIONAMIENTO DE ELIMINAR //
     const handleDelete = async () => {
         if (planetToDelete) {
             try {
                 await Deleteplanets(planetToDelete._id);
                 setShowDeleteSuccessModal(true);
+                fetchAllRegisters(); 
             } catch (error) {
-                console.error("Error al eliminar el Planeta: ", error.message);
+                console.error("Error al eliminar el planeta: ", error.message);
             } finally {
                 closeDeleteModal();
-                fetchPlanets(currentPage);
             }
         }
     };
 
-
-
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
-        fetchPlanets(currentPage);
+        fetchregister(currentPage);
     };
 
     return (
-        //HTML
         <div className="contenedor">
-              <Header onSearch={handleSearch} /> 
+            <Header onSearch={handleSearch} /> 
             <div className="Titulo">
                 <h1>Planetas</h1>
             </div>
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose}
-                        fetchPlanets={fetchPlanets}
-                        currentPage={currentPage}
+                    <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
                             setShowSuccessModal(true);
@@ -186,7 +179,7 @@ const GetHomologation = (value) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredFilms.map(planet => (
+                        {planets.map(planet => (
                             <tr key={planet._id}>
                                 <td>{GetHomologation(planet.Nombre)}</td>
                                 <td>{GetHomologation(planet.Diametro)}</td>
@@ -211,7 +204,7 @@ const GetHomologation = (value) => {
                                     <FontAwesomeIcon
                                         className="icon"
                                         icon={faEye}
-                                        onClick={() => openViewModal(planet)} // Open the view modal
+                                        onClick={() => openViewModal(planet)}
                                     />
                                 </td>
                             </tr>
@@ -219,7 +212,6 @@ const GetHomologation = (value) => {
                     </tbody>
                 </table>
             </div>
-            {/* PAGINACION */}
             <div className="Paginacion">
                 <div className="pagination">
                     <br />
@@ -229,7 +221,6 @@ const GetHomologation = (value) => {
                 </div>
             </div>
 
-            {/* MOSTRAR VENTANA ELIMNAR */}
             <ConfirmDeleteModal
                 isOpen={showDeleteModal}
                 onRequestClose={closeDeleteModal}
@@ -237,21 +228,19 @@ const GetHomologation = (value) => {
                 Planet_Name={planetToDelete ? planetToDelete.Nombre : ''}
             />
 
-
             <DeleteComplete
                 show={showDeleteSuccessModal}
                 handleClose={() => {
                     setShowDeleteSuccessModal(false);
-                    fetchPlanets(currentPage);
+                    fetchregister(currentPage); 
                 }}
             />
 
-            {/* MOSTRAR VENTANA MODIFICAR */}
             {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <ModifyModelPlanets
                         handleClose={closeModifyModal}
-                        fetchPlanets={fetchPlanets}
+                        fetchregister={fetchregister}
                         currentPage={currentPage}
                         planet={PlanetToModify}
                         onSuccess={() => {
@@ -262,23 +251,15 @@ const GetHomologation = (value) => {
                 </Modal>
             )}
 
-
-            {/* MODAL DE REGISTRO EXITOSO */}
             <RegisterComplete show={showSuccessModal} handleClose={handleSuccessModalClose} />
 
-            {/* MODAL   VER */}
             <ViewModal
                 isOpen={showViewModal}
                 onRequestClose={closeViewModal}
                 planet={view}
             />
-
-
         </div>
     );
 }
 
 export default Planets;
-
-
-

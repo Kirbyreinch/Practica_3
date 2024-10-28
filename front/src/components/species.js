@@ -28,7 +28,8 @@ function Species() {
     const [specieToModify, setSpecieToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
-    const [filteredFilms, setFilteredFilms] = useState([]);
+    const [filtered, setFiltered] = useState([]);
+    const [allRegisters, setAllRegisters] = useState([]);    //ESTADO  PARA TODOS LOS REGISTROS
 
 
     //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
@@ -36,8 +37,17 @@ function Species() {
         try {
             const response = await axios.get(`http://localhost:5000/Especies/modulo/?page=${page}`);
             setSpecies(response.data.especies);
-            setFilteredFilms(response.data.especies);
+            setFiltered(response.data.especies);
             setTotalPages(Math.ceil(response.data.total / 10));
+            setAllRegisters(prev => {
+                const newespecies = response.data.especies.filter(
+                    newespecie => !prev.some(especie => especie._id === newespecie._id)
+                );
+                return [...prev, ...newespecies]; 
+            });
+            
+            setFiltered(response.data.especies);
+
         } catch (error) {
             console.error("Error al obtener las Especies:", error);
         }
@@ -109,14 +119,17 @@ const handleSearch = (text) => {
     const trimmedText = text.trim();
 
     if (trimmedText) {
-        const filtered = species.filter(specie => 
+        const filtered = allRegisters.filter(specie => 
             specie.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
         );
-        setFilteredFilms(filtered);
+        setFiltered(filtered);
     } else {
-        setFilteredFilms(species);
+        setFiltered(species);
     }
 };
+
+
+
 
 
 //HOMOLOGACIÓN
@@ -185,7 +198,7 @@ const GetHomologation = (value) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredFilms.map(specie => (
+                        {filtered.map(specie => (
                             <tr key={specie._id}>
                                 <td>{GetHomologation(specie.Nombre)}</td>
                                 <td>{GetHomologation(specie.Clasificacion)}</td>

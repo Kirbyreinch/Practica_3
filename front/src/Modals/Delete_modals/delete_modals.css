@@ -13,13 +13,15 @@
 
 .modal_delete {
     position: fixed;
-    width: 20%;
-    height: 30%;
+    width: 80%; 
+    max-width: 500px; 
+    height: auto; 
     background: rgb(128, 128, 128);
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 20px;
+    padding: 20px; 
 }
 
 

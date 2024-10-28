@@ -27,15 +27,23 @@ function Films() {
     const [filmToModify, setFilmToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
-    const [filteredFilms, setFilteredFilms] = useState([]);
-
+    const [filtered, setFiltered] = useState([]);
+    const [allRegisters, setAllRegisters] = useState([]);    //ESTADO  PARA TODOS LOS REGISTROS
 
     const fetchFilms = async (page) => {
         try {
             const response = await axios.get(`http://localhost:5000/Peliculas/modulo/?page=${page}`);
             setFilms(response.data.pelis);
-            setFilteredFilms(response.data.pelis);
+            setFiltered(response.data.pelis);
             setTotalPages(Math.ceil(response.data.total / 10));
+            setAllRegisters(prev => {
+                const newpelis = response.data.pelis.filter(
+                    newPlanet => !prev.some(peli => peli._id === newPlanet._id)
+                );
+                return [...prev, ...newpelis]; 
+            });
+            
+            setFiltered(response.data.pelis);
         } catch (error) {
             console.error("Error al obtener las películas:", error);
         }
@@ -103,12 +111,12 @@ const handleSearch = (text) => {
     const trimmedText = text.trim();
 
     if (trimmedText) {
-        const filtered = films.filter(film => 
+        const filtered = allRegisters.filter(film => 
             film.Titulo.toLowerCase().startsWith(trimmedText.toLowerCase())
         );
-        setFilteredFilms(filtered);
+        setFiltered(filtered);
     } else {
-        setFilteredFilms(films);
+        setFiltered(films);
     }
 };
 
@@ -177,7 +185,7 @@ const GetHomologation = (value) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredFilms.map(film => (
+                        {filtered.map(film => (
                             <tr key={GetHomologation(film._id)}>
                                 <td>{GetHomologation(film.Titulo)}</td>
                                 <td>{GetHomologation(film.Director)}</td>

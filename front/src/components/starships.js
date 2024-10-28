@@ -27,16 +27,24 @@ function Starships() {
     const [starshipsToModify, setstarshipsToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
-    const [filteredFilms, setFilteredFilms] = useState([]);
-
+    const [filtered, setFiltered] = useState([]);
+    const [allRegisters, setAllRegisters] = useState([]);    //ESTADO  PARA TODOS LOS REGISTROS
 
     //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
     const fetchStarships = async (page) => {
         try {
             const response = await axios.get(`http://localhost:5000/Naves/modulo/?page=${page}`);
             setStarships(response.data.naves);
-            setFilteredFilms(response.data.naves);
+            setFiltered(response.data.naves);
             setTotalPages(Math.ceil(response.data.total / 10));
+            setAllRegisters(prev => {
+                const newnaves = response.data.naves.filter(
+                    newnave => !prev.some(nave => nave._id === newnave._id)
+                );
+                return [...prev, ...newnaves]; 
+            });
+            
+            setFiltered(response.data.naves);
         } catch (error) {
             console.error("Error al obtener las Naves:", error);
         }
@@ -112,12 +120,12 @@ function Starships() {
     const trimmedText = text.trim();
 
     if (trimmedText) {
-        const filtered = starships.filter(starship => 
+        const filtered = allRegisters.filter(starship => 
             starship.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
         );
-        setFilteredFilms(filtered);
+        setFiltered(filtered);
     } else {
-        setFilteredFilms(starships);
+        setFiltered(starships);
     }
 };
 
@@ -193,7 +201,7 @@ const GetHomologation = (value) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredFilms.map(starship => (
+                        {filtered.map(starship => (
                             <tr key={starship._id}>
                                 <td>{GetHomologation(starship.Nombre)}</td>
                                 <td>{GetHomologation(starship.Modelo)}</td>

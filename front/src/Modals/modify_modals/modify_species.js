@@ -37,8 +37,6 @@ const ModifyModelSpecies = ({ handleClose, fetchSpecies, currentPage, specie, on
                     enableReinitialize={true} // Permite que los valores iniciales se actualicen cuando la prop cambie
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
-                            // TIEMPO QUE GIRARA EL SPINNER
-                            await new Promise(resolve => setTimeout(resolve, 2000));
                             await Modifyspecies(specie._id, values);
                             resetForm();
                             handleClose();

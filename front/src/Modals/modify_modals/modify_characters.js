@@ -37,8 +37,6 @@ const ModifyModelCharacter = ({ handleClose, fetchCharacter, currentPage, charac
                     validationSchema={validationSchema}
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
-                            // TIEMPO QUE GIRARA EL SPINNER
-                            await new Promise(resolve => setTimeout(resolve, 2000));
                             await Modifycharacter(character._id, values);
                             resetForm();
                             handleClose();

@@ -42,8 +42,6 @@ const ModifyModelPlanets = ({ handleClose, fetchPlanets, currentPage, planet, on
                     enableReinitialize={true}
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
-                            // TIEMPO QUE GIRARA EL SPINNER
-                            await new Promise(resolve => setTimeout(resolve, 2000));
                             await Modifyplanets(planet._id, values);
                             resetForm();
                             handleClose();

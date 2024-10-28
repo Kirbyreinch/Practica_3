@@ -34,8 +34,6 @@ const ModifyModelVehicles = ({ handleClose, fetchVehicles, currentPage, vehicle,
                     enableReinitialize={true} // Permite que los valores iniciales se actualicen cuando la prop cambie
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
-                            // TIEMPO QUE GIRARA EL SPINNER
-                            await new Promise(resolve => setTimeout(resolve, 2000));
                             await Modifyvehicles(vehicle._id, values);
                             resetForm();
                             handleClose();

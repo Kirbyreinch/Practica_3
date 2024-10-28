@@ -28,8 +28,6 @@ const MyForm = ({ handleClose, fetchPlanets, currentPage, onSuccess }) => {
                     validationSchema={validationSchema}
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
-                            // TIEMPO QUE GIRARA EL SPINNER //
-                            await new Promise(resolve => setTimeout(resolve, 2000));
                             await Createplanets(values);
                             resetForm();
                             handleClose();

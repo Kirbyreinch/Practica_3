@@ -29,8 +29,6 @@ const MyForm = ({ handleClose, fetchStarships, currentPage, onSuccess }) => {
                     validationSchema={validationSchema}
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
-                            // TIEMPO QUE GIRARA EL SPINNER
-                            await new Promise(resolve => setTimeout(resolve, 2000));
                             await Createstarships(values);
                             resetForm();
                             handleClose();

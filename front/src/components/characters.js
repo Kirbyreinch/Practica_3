@@ -14,7 +14,6 @@ import DeleteComplete from '../Modals/message_modal/delete_modal';
 import ViewModal from '../Modals/view_modal/view_character';
 import Header from '../header/header';
 
-
 function Characters() {
     const [characters, setCharacter] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -29,28 +28,42 @@ function Characters() {
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
     const [filtered, setFiltered] = useState([]);
+    const [allRegisters, setAllRegisters] = useState([]);    
 
-    const fetchCharacter = async (page) => {
+    const fetchregister = async (page) => {
+        const limit = 10; 
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        const paginatedCharacters = filtered.slice(startIndex, endIndex);
+
+        setCharacter(paginatedCharacters);
+        setTotalPages(Math.ceil(filtered.length / limit));
+    };
+
+    const fetchAllRegisters = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/Personajes/modulo/?page=${page}`);
-            setCharacter(response.data.personajes);
-            setFiltered(response.data.personajes);
-            console.log(response.data.personajes)
+            const response = await axios.get(`http://localhost:5000/Personajes/modulo/todos`);
+            setAllRegisters(response.data.personajes);
+            setFiltered(response.data.personajes); 
             setTotalPages(Math.ceil(response.data.total / 10));
+            fetchregister(1); 
         } catch (error) {
-            console.error("Error al obtener los personajes:", error);
+            console.error("Error al obtener todos los personajes:", error);
         }
     };
 
     useEffect(() => {
-        fetchCharacter(currentPage);
-    }, [currentPage]);
+        fetchAllRegisters(); 
+    }, []);
+
+    useEffect(() => {
+        fetchregister(currentPage); 
+    }, );
 
     const handleOpen = () => {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowModal(true);
-
     };
 
     const handleClose = () => {
@@ -93,65 +106,57 @@ function Characters() {
         setShowViewModal(false);
     };
 
+    const handleSearch = (text) => {
+        const trimmedText = text.trim().toLowerCase();
 
+        if (trimmedText) {
+            const filteredResults = allRegisters.filter(character =>
+                character.Nombre.toLowerCase().startsWith(trimmedText)
+            );
+            setFiltered(filteredResults);
+            setCurrentPage(1); 
+        } else {
+            setFiltered(allRegisters); 
+            setCurrentPage(1);
+        }
+    };
 
+    const GetHomologation = (value) => {
+        if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none" || value === "") {
+            return "-----";
+        }
+        return value || "-----";
+    };
 
-
- // FUNCIONAMIENTO DE BUSQUEDA //
- const handleSearch = (text) => {
-    const trimmedText = text.trim().toLowerCase();
-
-    if (trimmedText) {
-        const filteredResults = characters.filter(character =>
-            character.Nombre.toLowerCase().startsWith(trimmedText)
-        );
-        setFiltered(filteredResults);
-    } else {
-        setFiltered(characters);
-    }
-};
-
-
-
-//HOMOLOGACIÓN
-const GetHomologation = (value) => {
-    if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none"|| value === "") {
-        return "-----";
-    }
-    return value || "-----";
-};
-
-
-// FUNCIONAMIENTO DE ELIMINAR //
     const handleDelete = async () => {
         if (CharacterToDelete) {
             try {
                 await Deletecharacter(CharacterToDelete._id);
                 setShowDeleteSuccessModal(true);
+                fetchAllRegisters(); 
             } catch (error) {
                 console.error("Error al eliminar el Personaje: ", error.message);
             } finally {
                 closeDeleteModal();
-                fetchCharacter(currentPage);
             }
         }
     };
 
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
-        fetchCharacter(currentPage);
+        fetchregister(currentPage);
     };
 
     return (
         <div className="contenedor">
-              <Header onSearch={handleSearch} /> 
+            <Header onSearch={handleSearch} /> 
             <div className="Titulo">
                 <h1>Personajes</h1>
             </div>
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose} >
-                    <MyForm handleClose={handleClose} fetchCharacter={fetchCharacter} currentPage={currentPage}
+                    <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
                             setShowSuccessModal(true);
@@ -174,7 +179,7 @@ const GetHomologation = (value) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filtered.map(character => (
+                        {characters.map(character => (
                             <tr key={character._id}>
                                 <td>{GetHomologation(character.Nombre)}</td>
                                 <td>{GetHomologation(character.Altura)}</td>
@@ -226,7 +231,7 @@ const GetHomologation = (value) => {
                 show={showDeleteSuccessModal}
                 handleClose={() => {
                     setShowDeleteSuccessModal(false);
-                    fetchCharacter(currentPage);
+                    fetchregister(currentPage); 
                 }}
             />
 
@@ -234,7 +239,7 @@ const GetHomologation = (value) => {
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <ModifyModelCharacter
                         handleClose={closeModifyModal}
-                        fetchCharacter={fetchCharacter}
+                        fetchCharacter={fetchregister}
                         currentPage={currentPage}
                         character={CharacterToModify}
                         onSuccess={() => {
