@@ -9,7 +9,6 @@ import MyForm from '../Modals/create_modal/create_characters';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_characters';
 import ModifyModelCharacter from '../Modals/modify_modals/modify_characters';
 import { Deletecharacter } from '../request/characters';
-import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import ViewModal from '../Modals/view_modal/view_character';
 import Header from '../header/header';
@@ -21,7 +20,6 @@ function Characters() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showModifyModal, setShowModifyModal] = useState(false);
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
     const [CharacterToDelete, setCharacterToDelete] = useState(null);
     const [CharacterToModify, setCharacterToModify] = useState(null);
@@ -29,6 +27,9 @@ function Characters() {
     const [view, setToView] = useState(null);
     const [filtered, setFiltered] = useState([]);
     const [allRegisters, setAllRegisters] = useState([]);    
+    const [modalType, setModalType] = useState(null); //    ESTADO PARA MENSAJES MODAL  //
+
+
 
     const fetchregister = async (page) => {
         const limit = 10; 
@@ -67,6 +68,7 @@ function Characters() {
     };
 
     const handleClose = () => {
+        fetchAllRegisters(); 
         setShowModal(false);
         setShowDeleteModal(false);
         setShowModifyModal(false);
@@ -76,6 +78,7 @@ function Characters() {
     const openDeleteModal = (character) => {
         handleClose();
         setCharacterToDelete(character);
+        setModalType('delete');
         setShowDeleteModal(true);
     };
 
@@ -87,6 +90,7 @@ function Characters() {
     const openModifyModal = (character) => {
         handleClose();
         setCharacterToModify(character);
+        setModalType('modify');
         setShowModifyModal(true);
     };
 
@@ -132,6 +136,7 @@ function Characters() {
         if (CharacterToDelete) {
             try {
                 await Deletecharacter(CharacterToDelete._id);
+                setModalType('delete');
                 setShowDeleteSuccessModal(true);
                 fetchAllRegisters(); 
             } catch (error) {
@@ -142,10 +147,6 @@ function Characters() {
         }
     };
 
-    const handleSuccessModalClose = () => {
-        setShowSuccessModal(false);
-        fetchregister(currentPage);
-    };
 
     return (
         <div className="contenedor">
@@ -159,7 +160,6 @@ function Characters() {
                     <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
-                            setShowSuccessModal(true);
                         }} />
                 </Modal>
             </div>
@@ -225,6 +225,7 @@ function Characters() {
                 onRequestClose={closeDeleteModal}
                 onConfirm={handleDelete}
                 Character_Name={CharacterToDelete ? CharacterToDelete.Nombre : ''}
+                modalType={modalType}
             />
 
             <DeleteComplete
@@ -232,7 +233,9 @@ function Characters() {
                 handleClose={() => {
                     setShowDeleteSuccessModal(false);
                     fetchregister(currentPage); 
+           
                 }}
+                modalType={modalType}
             />
 
             {showModifyModal && (
@@ -244,13 +247,15 @@ function Characters() {
                         character={CharacterToModify}
                         onSuccess={() => {
                             handleClose();
-                            setShowSuccessModal(true);
+                            setShowDeleteSuccessModal(true);
+                            fetchAllRegisters(); 
                         }}
+                        modalType={modalType}
                     />
                 </Modal>
             )}
 
-            <RegisterComplete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+
 
             {/* MODAL   VER */}
             <ViewModal

@@ -90,7 +90,7 @@ const ModifyModelCharacter = ({ handleClose, fetchCharacter, currentPage, charac
                             {errors.submit && <div className="error-message">{errors.submit}</div>}
                             <div className="button-container">
                                 <button className='Btn_agregar' type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? <div class="lds-hourglass"></div> : 'Enviar'}
+                                    {isSubmitting ? <div class="lds-hourglass"></div> : 'Modificar'}
                                 </button>
                                 <button className='Btn_agregar' type="button" onClick={handleClose} disabled={isSubmitting}>
                                     Cerrar

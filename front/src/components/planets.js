@@ -7,7 +7,6 @@ import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_planets';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_planets';
 import ModifyModelPlanets from '../Modals/modify_modals/modify_planets';
-import RegisterComplete from '../Modals/message_modal/registro_modal';
 import { Deleteplanets } from '../request/planets';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import ViewModal from '../Modals/view_modal/view_planets';
@@ -20,7 +19,6 @@ function Planets() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showModifyModal, setShowModifyModal] = useState(false);
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
     const [planetToDelete, setPlanetToDelete] = useState(null);
     const [PlanetToModify, setPlanetToModify] = useState(null);
@@ -28,14 +26,14 @@ function Planets() {
     const [view, setToView] = useState(null);
     const [filtered, setFiltered] = useState([]);
     const [allRegisters, setAllRegisters] = useState([]);    
+    const [modalType, setModalType] = useState(null); //    ESTADO PARA MENSAJES MODAL  //
+
 
     const limit = 10;
-
     const fetchregister = async (page) => {
         const startIndex = (page - 1) * limit;
         const endIndex = startIndex + limit;
         const paginatedPlanets = filtered.slice(startIndex, endIndex);
-        
         setPlanets(paginatedPlanets);
         setTotalPages(Math.ceil(filtered.length / limit));
     };
@@ -58,7 +56,7 @@ function Planets() {
 
     useEffect(() => {
         fetchregister(currentPage); 
-    }, [filtered, currentPage]);
+    }, );
 
     const handleOpen = () => {
         setShowDeleteModal(false);
@@ -67,6 +65,7 @@ function Planets() {
     };
 
     const handleClose = () => {
+        fetchAllRegisters();
         setShowModal(false);
         setShowDeleteModal(false);
         setShowModifyModal(false);
@@ -87,6 +86,7 @@ function Planets() {
     const openModifyModal = (planet) => {
         handleClose();
         setPlanetToModify(planet);
+        setModalType('modify');
         setShowModifyModal(true);
     };
 
@@ -117,7 +117,7 @@ function Planets() {
         }
 
         setFiltered(filteredResults);
-        setCurrentPage(1); // Reiniciar a la primera página
+        setCurrentPage(1); 
     };
 
     const GetHomologation = (value) => {
@@ -131,6 +131,7 @@ function Planets() {
         if (planetToDelete) {
             try {
                 await Deleteplanets(planetToDelete._id);
+                setModalType('delete');
                 setShowDeleteSuccessModal(true);
                 fetchAllRegisters(); 
             } catch (error) {
@@ -139,11 +140,6 @@ function Planets() {
                 closeDeleteModal();
             }
         }
-    };
-
-    const handleSuccessModalClose = () => {
-        setShowSuccessModal(false);
-        fetchregister(currentPage);
     };
 
     return (
@@ -158,7 +154,6 @@ function Planets() {
                     <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
-                            setShowSuccessModal(true);
                         }} />
                 </Modal>
             </div>
@@ -226,6 +221,7 @@ function Planets() {
                 onRequestClose={closeDeleteModal}
                 onConfirm={handleDelete}
                 Planet_Name={planetToDelete ? planetToDelete.Nombre : ''}
+                modalType={modalType}
             />
 
             <DeleteComplete
@@ -234,6 +230,7 @@ function Planets() {
                     setShowDeleteSuccessModal(false);
                     fetchregister(currentPage); 
                 }}
+                modalType={modalType}
             />
 
             {showModifyModal && (
@@ -245,13 +242,15 @@ function Planets() {
                         planet={PlanetToModify}
                         onSuccess={() => {
                             handleClose();
-                            setShowSuccessModal(true);
+                            setShowDeleteSuccessModal(true);
+                            fetchAllRegisters(); 
                         }}
+                        modalType={modalType}
                     />
                 </Modal>
             )}
 
-            <RegisterComplete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+
 
             <ViewModal
                 isOpen={showViewModal}

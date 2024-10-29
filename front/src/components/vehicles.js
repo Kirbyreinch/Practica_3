@@ -1,3 +1,4 @@
+
 import './components.css';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -9,11 +10,9 @@ import MyForm from '../Modals/create_modal/create_vehicles';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_vehicles';
 import ModifyModelVehicles from '../Modals/modify_modals/modify_vehicles'
 import { Deletevehicles } from '../request/vehicles';
-import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import ViewModal from '../Modals/view_modal/view_vehicles';
 import Header from '../header/header';
-
 
 function Vehicles() {
     const [vehicles, setVehicles] = useState([]);
@@ -22,38 +21,45 @@ function Vehicles() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showModifyModal, setShowModifyModal] = useState(false);
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
     const [vehiclesToDelete, setvehiclesToDelete] = useState(null);
     const [vehiclesToModify, setvehiclesToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
     const [filtered, setFiltered] = useState([]);
-    const [allRegisters, setAllRegisters] = useState([]);    //ESTADO  PARA TODOS LOS REGISTROS
+    const [allRegisters, setAllRegisters] = useState([]);
+    const [modalType, setModalType] = useState(null); //    ESTADO PARA MENSAJES MODAL  //
 
-    //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
-    const fetchVehicles = async (page) => {
+
+    const limit = 10;
+    const fetchregister = async (page) => {
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        const paginatedVehicles = filtered.slice(startIndex, endIndex);
+        setVehicles(paginatedVehicles);
+        setTotalPages(Math.ceil(filtered.length / limit));
+    };
+
+    const fetchAllRegisters = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/Vehiculos/modulo/?page=${page}`);
-            setVehicles(response.data.vehiculos);
+            const response = await axios.get(`http://localhost:5000/Vehiculos/modulo/todos`);
+            setAllRegisters(response.data.vehiculos);
             setFiltered(response.data.vehiculos);
-            setTotalPages(Math.ceil(response.data.total / 10));
-            setAllRegisters(prev => {
-                const newvehiculos = response.data.vehiculos.filter(
-                    newvehiculo => !prev.some(vehiculo => vehiculo._id === newvehiculo._id)
-                );
-                return [...prev, ...newvehiculos]; 
-            });
-            
-            setFiltered(response.data.vehiculos);
+            setTotalPages(Math.ceil(response.data.total / limit));
+            fetchregister(1);
         } catch (error) {
-            console.error("Error al obtener los Vhiculos:", error);
+            console.error("Error al obtener todas las Naves:", error);
         }
     };
 
     useEffect(() => {
-        fetchVehicles(currentPage);
-    }, [currentPage]);
+        fetchAllRegisters();
+    }, []);
+
+    useEffect(() => {
+        fetchregister(currentPage);
+    },);
+
 
 
 
@@ -66,6 +72,7 @@ function Vehicles() {
 
     // CERRAR TODAS LAS VENTANAS
     const handleClose = () => {
+        fetchAllRegisters();
         setShowModal(false);
         setShowDeleteModal(false);
         setShowModifyModal(false);
@@ -88,8 +95,9 @@ function Vehicles() {
 
     //VENTANA DE MODIFICAR
     const openModifyModal = (vehicles) => {
-        handleClose(); // Cerrar todos los modales
+        handleClose();
         setvehiclesToModify(vehicles);
+        setModalType('modify');
         setShowModifyModal(true);
     };
 
@@ -114,75 +122,68 @@ function Vehicles() {
 
 
 
-   // FUNCIONAMIENTO DE BUSQUEDA //
-   const handleSearch = (text) => {
-    const trimmedText = text.trim();
+    // FUNCIONAMIENTO DE BUSQUEDA //
+    const handleSearch = (text) => {
+        const trimmedText = text.trim().toLowerCase();
+        let filteredResults = allRegisters;
 
-    if (trimmedText) {
-        const filtered = allRegisters.filter(vehicle => 
-            vehicle.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
-        );
-        setFiltered(filtered);
-    } else {
-        setFiltered(vehicles);
-    }
-};
+        if (trimmedText) {
+            filteredResults = allRegisters.filter(vehicles =>
+                vehicles.Nombre.toLowerCase().startsWith(trimmedText)
+            );
+        }
+
+        setFiltered(filteredResults);
+        setCurrentPage(1);
+    };
+
+    //HOMOLOGACIÓN
+    const GetHomologation = (value) => {
+        if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none" || value === "") {
+            return "-----";
+        }
+        return value || "-----";
+    };
 
 
-//HOMOLOGACIÓN
-const GetHomologation = (value) => {
-    if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none"|| value === "") {
-        return "-----";
-    }
-    return value || "-----";
-};
-
-
-// FUNCIONAMIENTO DE ELIMINAR // 
+    // FUNCIONAMIENTO DE ELIMINAR //
     const handleDelete = async () => {
         if (vehiclesToDelete) {
             try {
                 await Deletevehicles(vehiclesToDelete._id);
+                setModalType('delete');
                 setShowDeleteSuccessModal(true);
+                fetchAllRegisters();
             } catch (error) {
-                console.error("Error al eliminar el Vehiculo: ", error.message);
+                console.error("Error al eliminar el vehiculo: ", error.message);
             } finally {
                 closeDeleteModal();
-                fetchVehicles(currentPage);
             }
         }
     };
 
+ 
 
-    const handleSuccessModalClose = () => {
-        setShowSuccessModal(false);
-        fetchVehicles(currentPage);
-    };
     return (
-        //HTML
         <div className="contenedor">
-              <Header onSearch={handleSearch} /> 
+            <Header onSearch={handleSearch} />
             <div className="Titulo">
                 <h1>Vehículos</h1>
             </div>
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose}
-                        fetchVehicles={fetchVehicles}
-                        currentPage={currentPage}
+                    <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
-                            setShowSuccessModal(true);
-                        }}
-                    />
+                        }} />
                 </Modal>
             </div>
             <div className="DatosBD">
                 <table className='Table'>
                     <thead>
                         <tr>
-                            <th>Nombre</th>
+                        <th>Nombre</th>
                             <th>Modelo</th>
                             <th>Clase</th>
                             <th>Tamaño</th>
@@ -194,16 +195,16 @@ const GetHomologation = (value) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filtered.map(vehicle => (
-                            <tr key={GetHomologation(vehicle._id)}>
-                                <td>{GetHomologation(vehicle.Nombre)}</td>
-                                <td>{GetHomologation(vehicle.Modelo)}</td>
-                                <td>{GetHomologation(vehicle.Clase)}</td>
-                                <td>{GetHomologation(vehicle.Tamaño)}</td>
-                                <td>{GetHomologation(vehicle.Numero_de_Pasajeros)}</td>
-                                <td>{GetHomologation(vehicle.Maxima_velocidad_atmosferica)}</td>
-                                <td>{GetHomologation(vehicle.Capacidad_Maxima)}</td>
-                                <td>{GetHomologation(vehicle.Tiempo_Maximo_Cobustibles)}</td>
+                        {vehicles.map(vehicle => (
+                          <tr key={GetHomologation(vehicle._id)}>
+                          <td>{GetHomologation(vehicle.Nombre)}</td>
+                          <td>{GetHomologation(vehicle.Modelo)}</td>
+                          <td>{GetHomologation(vehicle.Clase)}</td>
+                          <td>{GetHomologation(vehicle.Tamaño)}</td>
+                          <td>{GetHomologation(vehicle.Numero_de_Pasajeros)}</td>
+                          <td>{GetHomologation(vehicle.Maxima_velocidad_atmosferica)}</td>
+                          <td>{GetHomologation(vehicle.Capacidad_Maxima)}</td>
+                          <td>{GetHomologation(vehicle.Tiempo_Maximo_Cobustibles)}</td>
                                 <td>
                                     <FontAwesomeIcon
                                         className="icon"
@@ -226,6 +227,7 @@ const GetHomologation = (value) => {
                     </tbody>
                 </table>
             </div>
+
             {/* PAGINACION */}
             <div className="Paginacion">
                 <div className="pagination">
@@ -242,36 +244,36 @@ const GetHomologation = (value) => {
                 onRequestClose={closeDeleteModal}
                 onConfirm={handleDelete}
                 Vehicle_Name={vehiclesToDelete ? vehiclesToDelete.Nombre : ''}
+                modalType={modalType}
             />
-
 
             <DeleteComplete
                 show={showDeleteSuccessModal}
                 handleClose={() => {
                     setShowDeleteSuccessModal(false);
-                    fetchVehicles(currentPage);
+                    fetchregister(currentPage);
                 }}
+                modalType={modalType}
             />
-
 
             {/* MOSTRAR VENTANA MODIFICAR */}
             {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <ModifyModelVehicles
                         handleClose={closeModifyModal}
-                        fetchVehicles={fetchVehicles}
+                        fetchregister={fetchregister}
                         currentPage={currentPage}
                         vehicle={vehiclesToModify}
                         onSuccess={() => {
                             handleClose();
-                            setShowSuccessModal(true);
+                            setShowDeleteSuccessModal(true);
+                            fetchAllRegisters(); 
                         }}
+                        modalType={modalType}
                     />
                 </Modal>
             )}
 
-            {/* MODAL DE REGISTRO EXITOSO */}
-            <RegisterComplete show={showSuccessModal} handleClose={handleSuccessModalClose} />
 
             {/* MODAL   VER */}
             <ViewModal
@@ -279,12 +281,8 @@ const GetHomologation = (value) => {
                 onRequestClose={closeViewModal}
                 vehicle={view}
             />
-
         </div>
     );
 }
 
 export default Vehicles;
-
-
-

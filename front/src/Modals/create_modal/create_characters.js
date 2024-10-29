@@ -3,7 +3,10 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Createcharacter } from '../../request/characters';
 
-const MyForm = ({ handleClose, fetchCharacter, currentPage, onSuccess }) => {
+
+
+
+const MyForm = ({ handleClose, fetchAllRegisters, currentPage, onSuccess }) => {
 
     //VALIDACIONES
     const validationSchema = Yup.object({
@@ -33,7 +36,7 @@ const MyForm = ({ handleClose, fetchCharacter, currentPage, onSuccess }) => {
                             resetForm();
                             handleClose();
                             onSuccess();
-                            fetchCharacter(currentPage); // ACTUALIZA LA TABLA
+                            fetchAllRegisters();  // ACTUALIZA LA TABLA
                         } catch (error) {
                             setErrors({ submit: 'Ya hay un Personaje con ese Nombre.' }); // MENSAJE DE ERROR SI EL PERSONAJE "YA EXISTE"
                         } finally {

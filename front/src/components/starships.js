@@ -1,3 +1,4 @@
+
 import './components.css';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -9,7 +10,6 @@ import MyForm from '../Modals/create_modal/create_starships';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_starships';
 import ModifyModelStarships from '../Modals/modify_modals/modify_starships'
 import { Deletestarships } from '../request/starships';
-import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import ViewModal from '../Modals/view_modal/view_starships';
 import Header from '../header/header';
@@ -21,38 +21,44 @@ function Starships() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showModifyModal, setShowModifyModal] = useState(false);
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
     const [starshipsToDelete, setstarshipsToDelete] = useState(null);
     const [starshipsToModify, setstarshipsToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
     const [filtered, setFiltered] = useState([]);
-    const [allRegisters, setAllRegisters] = useState([]);    //ESTADO  PARA TODOS LOS REGISTROS
+    const [allRegisters, setAllRegisters] = useState([]);
+    const [modalType, setModalType] = useState(null); //    ESTADO PARA MENSAJES MODAL  //
 
-    //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
-    const fetchStarships = async (page) => {
+    const limit = 10;
+    const fetchregister = async (page) => {
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        const paginatedStarships = filtered.slice(startIndex, endIndex);
+        setStarships(paginatedStarships);
+        setTotalPages(Math.ceil(filtered.length / limit));
+    };
+
+    const fetchAllRegisters = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/Naves/modulo/?page=${page}`);
-            setStarships(response.data.naves);
+            const response = await axios.get(`http://localhost:5000/Naves/modulo/todos`);
+            setAllRegisters(response.data.naves);
             setFiltered(response.data.naves);
-            setTotalPages(Math.ceil(response.data.total / 10));
-            setAllRegisters(prev => {
-                const newnaves = response.data.naves.filter(
-                    newnave => !prev.some(nave => nave._id === newnave._id)
-                );
-                return [...prev, ...newnaves]; 
-            });
-            
-            setFiltered(response.data.naves);
+            setTotalPages(Math.ceil(response.data.total / limit));
+            fetchregister(1);
         } catch (error) {
-            console.error("Error al obtener las Naves:", error);
+            console.error("Error al obtener todas las Naves:", error);
         }
     };
 
     useEffect(() => {
-        fetchStarships(currentPage);
-    }, [currentPage]);
+        fetchAllRegisters();
+    }, []);
+
+    useEffect(() => {
+        fetchregister(currentPage);
+    },);
+
 
 
 
@@ -65,6 +71,7 @@ function Starships() {
 
     // CERRAR TODAS LAS VENTANAS
     const handleClose = () => {
+        fetchAllRegisters();
         setShowModal(false);
         setShowDeleteModal(false);
         setShowModifyModal(false);
@@ -73,9 +80,9 @@ function Starships() {
 
 
     //VENTANA DE ELIMINAR
-    const openDeleteModal = (starship) => {
-        handleClose(); // 
-        setstarshipsToDelete(starship);
+    const openDeleteModal = (nave) => {
+        handleClose(); // Cerrar todos los modales
+        setstarshipsToDelete(nave);
         setShowDeleteModal(true);
     };
     //CERRAR VENTANA DE ELIMINAR
@@ -86,9 +93,10 @@ function Starships() {
 
 
     //VENTANA DE MODIFICAR
-    const openModifyModal = (starship) => {
-        handleClose(); 
-        setstarshipsToModify(starship);
+    const openModifyModal = (nave) => {
+        handleClose();
+        setstarshipsToModify(nave);
+        setModalType('modify');
         setShowModifyModal(true);
     };
 
@@ -100,10 +108,9 @@ function Starships() {
     };
 
 
-
-    const openViewModal = (starship) => {
+    const openViewModal = (nave) => {
         handleClose();
-        setToView(starship);
+        setToView(nave);
         setShowViewModal(true);
     };
 
@@ -114,72 +121,62 @@ function Starships() {
 
 
 
+    // FUNCIONAMIENTO DE BUSQUEDA //
+    const handleSearch = (text) => {
+        const trimmedText = text.trim().toLowerCase();
+        let filteredResults = allRegisters;
 
-   // FUNCIONAMIENTO DE BUSQUEDA //
-   const handleSearch = (text) => {
-    const trimmedText = text.trim();
+        if (trimmedText) {
+            filteredResults = allRegisters.filter(nave =>
+                nave.Nombre.toLowerCase().startsWith(trimmedText)
+            );
+        }
 
-    if (trimmedText) {
-        const filtered = allRegisters.filter(starship => 
-            starship.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
-        );
-        setFiltered(filtered);
-    } else {
-        setFiltered(starships);
-    }
-};
+        setFiltered(filteredResults);
+        setCurrentPage(1);
+    };
 
-
-//HOMOLOGACIÓN
-const GetHomologation = (value) => {
-    if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none"|| value === "") {
-        return "-----";
-    }
-    return value || "-----";
-};
+    //HOMOLOGACIÓN
+    const GetHomologation = (value) => {
+        if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none" || value === "") {
+            return "-----";
+        }
+        return value || "-----";
+    };
 
 
-// FUNCIONAMIENTO DE ELIMINAR //
+    // FUNCIONAMIENTO DE ELIMINAR //
     const handleDelete = async () => {
         if (starshipsToDelete) {
             try {
                 await Deletestarships(starshipsToDelete._id);
+                setModalType('delete');
                 setShowDeleteSuccessModal(true);
+                fetchAllRegisters();
             } catch (error) {
-                console.error("Error al eliminar la Nave: ", error.message);
+                console.error("Error al eliminar la nave: ", error.message);
             } finally {
                 closeDeleteModal();
-                fetchStarships(currentPage);
             }
         }
     };
 
-
-
-
-
-
-    const handleSuccessModalClose = () => {
-        setShowSuccessModal(false);
-        fetchStarships(currentPage);
-    };
+ 
 
     return (
-        //HTML
         <div className="contenedor">
-              <Header onSearch={handleSearch} /> 
+            <Header onSearch={handleSearch} />
             <div className="Titulo">
                 <h1>Naves</h1>
             </div>
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose}
-                        fetchStarships={fetchStarships}
-                        currentPage={currentPage}
+                    <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage} setShowDeleteSuccessModal={setShowDeleteSuccessModal}  setModalType={setModalType}
+              
                         onSuccess={() => {
                             handleClose();
-                            setShowSuccessModal(true);
+                     
                         }} />
                 </Modal>
             </div>
@@ -201,7 +198,7 @@ const GetHomologation = (value) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filtered.map(starship => (
+                        {starships.map(starship => (
                             <tr key={starship._id}>
                                 <td>{GetHomologation(starship.Nombre)}</td>
                                 <td>{GetHomologation(starship.Modelo)}</td>
@@ -235,6 +232,7 @@ const GetHomologation = (value) => {
                     </tbody>
                 </table>
             </div>
+
             {/* PAGINACION */}
             <div className="Paginacion">
                 <div className="pagination">
@@ -250,36 +248,38 @@ const GetHomologation = (value) => {
                 isOpen={showDeleteModal}
                 onRequestClose={closeDeleteModal}
                 onConfirm={handleDelete}
-                Starship_Name={starshipsToDelete ? starshipsToDelete.Nombre : ''}
+                Specie_Name={starshipsToDelete ? starshipsToDelete.Nombre : ''}
+                modalType={modalType}
             />
-
 
             <DeleteComplete
                 show={showDeleteSuccessModal}
                 handleClose={() => {
                     setShowDeleteSuccessModal(false);
-                    fetchStarships(currentPage);
+                    fetchregister(currentPage);
                 }}
+                modalType={modalType}
             />
-
 
             {/* MOSTRAR VENTANA MODIFICAR */}
             {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <ModifyModelStarships
                         handleClose={closeModifyModal}
-                        fetchStarships={fetchStarships}
+                        fetchregister={fetchregister}
                         currentPage={currentPage}
                         starship={starshipsToModify}
                         onSuccess={() => {
                             handleClose();
-                            setShowSuccessModal(true);
+                            setShowDeleteSuccessModal(true);
+                            fetchAllRegisters(); 
                         }}
+                        modalType={modalType}
                     />
                 </Modal>
             )}
-            {/* MODAL DE REGISTRO EXITOSO */}
-            <RegisterComplete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+
+
 
             {/* MODAL   VER */}
             <ViewModal
@@ -287,12 +287,8 @@ const GetHomologation = (value) => {
                 onRequestClose={closeViewModal}
                 starship={view}
             />
-
         </div>
     );
 }
 
 export default Starships;
-
-
-

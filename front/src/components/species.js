@@ -9,11 +9,9 @@ import MyForm from '../Modals/create_modal/create_species';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_species';
 import ModifyModelSpecies from '../Modals/modify_modals/modify_species'
 import { Deletspecies } from '../request/species';
-import RegisterComplete from '../Modals/message_modal/registro_modal';
 import DeleteComplete from '../Modals/message_modal/delete_modal';
 import ViewModal from '../Modals/view_modal/view_species';
 import Header from '../header/header';
-
 
 function Species() {
     const [species, setSpecies] = useState([]);
@@ -22,40 +20,45 @@ function Species() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showModifyModal, setShowModifyModal] = useState(false);
-    const [specieToDelete, setSpecieToDelete] = useState(null);
+
     const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [specieToDelete, setSpecieToDelete] = useState(null);
     const [specieToModify, setSpecieToModify] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
     const [filtered, setFiltered] = useState([]);
-    const [allRegisters, setAllRegisters] = useState([]);    //ESTADO  PARA TODOS LOS REGISTROS
+    const [allRegisters, setAllRegisters] = useState([]);
+    const [modalType, setModalType] = useState(null); //    ESTADO PARA MENSAJES MODAL  //
 
+    const limit = 10;
+    const fetchregister = async (page) => {
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        const paginatedEspecies = filtered.slice(startIndex, endIndex);
+        setSpecies(paginatedEspecies);
+        setTotalPages(Math.ceil(filtered.length / limit));
+    };
 
-    //SE GUARDA LA RUTA PARA TOMAR LOS DATOS POR PAGINA //
-    const fetchSpecies = async (page) => {
+    const fetchAllRegisters = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/Especies/modulo/?page=${page}`);
-            setSpecies(response.data.especies);
+            const response = await axios.get(`http://localhost:5000/Especies/modulo/todos`);
+            setAllRegisters(response.data.especies);
             setFiltered(response.data.especies);
-            setTotalPages(Math.ceil(response.data.total / 10));
-            setAllRegisters(prev => {
-                const newespecies = response.data.especies.filter(
-                    newespecie => !prev.some(especie => especie._id === newespecie._id)
-                );
-                return [...prev, ...newespecies]; 
-            });
-            
-            setFiltered(response.data.especies);
-
+            setTotalPages(Math.ceil(response.data.total / limit));
+            fetchregister(1);
         } catch (error) {
-            console.error("Error al obtener las Especies:", error);
+            console.error("Error al obtener todas las Especies:", error);
         }
     };
 
     useEffect(() => {
-        fetchSpecies(currentPage);
-    }, [currentPage]);
+        fetchAllRegisters();
+    }, []);
+
+    useEffect(() => {
+        fetchregister(currentPage);
+    },);
+
 
 
 
@@ -68,6 +71,7 @@ function Species() {
 
     // CERRAR TODAS LAS VENTANAS
     const handleClose = () => {
+        fetchAllRegisters();
         setShowModal(false);
         setShowDeleteModal(false);
         setShowModifyModal(false);
@@ -91,7 +95,8 @@ function Species() {
     //VENTANA DE MODIFICAR
     const openModifyModal = (specie) => {
         handleClose(); // Cerrar todos los modales
-        setSpecieToModify(specie);
+        setSpecieToModify(specie)
+        setModalType('modify');;
         setShowModifyModal(true);
     };
 
@@ -114,70 +119,62 @@ function Species() {
         setShowViewModal(false);
     };
 
-   // FUNCIONAMIENTO DE BUSQUEDA //
-const handleSearch = (text) => {
-    const trimmedText = text.trim();
-
-    if (trimmedText) {
-        const filtered = allRegisters.filter(specie => 
-            specie.Nombre.toLowerCase().startsWith(trimmedText.toLowerCase())
-        );
-        setFiltered(filtered);
-    } else {
-        setFiltered(species);
-    }
-};
 
 
+    // FUNCIONAMIENTO DE BUSQUEDA //
+    const handleSearch = (text) => {
+        const trimmedText = text.trim().toLowerCase();
+        let filteredResults = allRegisters;
+
+        if (trimmedText) {
+            filteredResults = allRegisters.filter(specie =>
+                specie.Nombre.toLowerCase().startsWith(trimmedText)
+            );
+        }
+
+        setFiltered(filteredResults);
+        setCurrentPage(1);
+    };
+
+    //HOMOLOGACIÓN
+    const GetHomologation = (value) => {
+        if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none" || value === "") {
+            return "-----";
+        }
+        return value || "-----";
+    };
 
 
-
-//HOMOLOGACIÓN
-const GetHomologation = (value) => {
-    if (value === "unknown" || value === "N/A" || value === "n/a" || value === "none"|| value === "") {
-        return "-----";
-    }
-    return value || "-----";
-};
-
-
-// FUNCIONAMIENTO DE ELIMINAR //
+    // FUNCIONAMIENTO DE ELIMINAR //
     const handleDelete = async () => {
         if (specieToDelete) {
             try {
                 await Deletspecies(specieToDelete._id);
+                setModalType('delete');
                 setShowDeleteSuccessModal(true);
+                fetchAllRegisters();
             } catch (error) {
                 console.error("Error al eliminar la Especie: ", error.message);
             } finally {
                 closeDeleteModal();
-                fetchSpecies(currentPage);
             }
         }
     };
 
 
 
-    const handleSuccessModalClose = () => {
-        setShowSuccessModal(false);
-        fetchSpecies(currentPage);
-    };
     return (
-        //HTML
         <div className="contenedor">
-              <Header onSearch={handleSearch} /> 
+            <Header onSearch={handleSearch} />
             <div className="Titulo">
                 <h1>Especies</h1>
             </div>
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose}
-                        fetchSpecies={fetchSpecies}
-                        currentPage={currentPage}
+                    <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
-                            setShowSuccessModal(true);
                         }} />
                 </Modal>
             </div>
@@ -198,7 +195,7 @@ const GetHomologation = (value) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filtered.map(specie => (
+                        {species.map(specie => (
                             <tr key={specie._id}>
                                 <td>{GetHomologation(specie.Nombre)}</td>
                                 <td>{GetHomologation(specie.Clasificacion)}</td>
@@ -231,6 +228,7 @@ const GetHomologation = (value) => {
                     </tbody>
                 </table>
             </div>
+
             {/* PAGINACION */}
             <div className="Paginacion">
                 <div className="pagination">
@@ -247,15 +245,16 @@ const GetHomologation = (value) => {
                 onRequestClose={closeDeleteModal}
                 onConfirm={handleDelete}
                 Specie_Name={specieToDelete ? specieToDelete.Nombre : ''}
+                modalType={modalType}
             />
-
 
             <DeleteComplete
                 show={showDeleteSuccessModal}
                 handleClose={() => {
                     setShowDeleteSuccessModal(false);
-                    fetchSpecies(currentPage);
+                    fetchregister(currentPage);
                 }}
+                modalType={modalType}
             />
 
             {/* MOSTRAR VENTANA MODIFICAR */}
@@ -263,19 +262,20 @@ const GetHomologation = (value) => {
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <ModifyModelSpecies
                         handleClose={closeModifyModal}
-                        fetchSpecies={fetchSpecies}
+                        fetchregister={fetchregister}
                         currentPage={currentPage}
                         specie={specieToModify}
                         onSuccess={() => {
                             handleClose();
-                            setShowSuccessModal(true);
+                            setShowDeleteSuccessModal(true);
+                            fetchAllRegisters(); 
                         }}
+                        modalType={modalType}
                     />
                 </Modal>
             )}
 
-            {/* MODAL DE REGISTRO EXITOSO */}
-            <RegisterComplete show={showSuccessModal} handleClose={handleSuccessModalClose} />
+
 
             {/* MODAL   VER */}
             <ViewModal
@@ -283,13 +283,8 @@ const GetHomologation = (value) => {
                 onRequestClose={closeViewModal}
                 specie={view}
             />
-
-
         </div>
     );
 }
 
 export default Species;
-
-
-

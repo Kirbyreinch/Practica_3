@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { createMovie } from '../../request/films';
 
-const MyForm = ({ handleClose, fetchFilms, currentPage, onSuccess }) => {
+const MyForm = ({ handleClose,  fetchAllRegisters, currentPage, onSuccess }) => {
     const validationSchema = Yup.object({
         Titulo: Yup.string().required('El Título es requerido'),
         Director: Yup.string().required('El Director es requerido'),
@@ -23,7 +23,7 @@ const MyForm = ({ handleClose, fetchFilms, currentPage, onSuccess }) => {
                             resetForm();
                             handleClose();
                             onSuccess();
-                            fetchFilms(currentPage);
+                            fetchAllRegisters();
                         } catch (error) {
                             setErrors({ submit: 'Ya hay una película con ese Título.' });
                         } finally {
