@@ -6,10 +6,8 @@ import { faTrash, faFilePen, faEye } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_planets';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_planets';
-import ModifyModelPlanets from '../Modals/modify_modals/modify_planets';
 import { Deleteplanets } from '../request/planets';
-import DeleteComplete from '../Modals/message_modal/delete_modal';
-import ViewModal from '../Modals/view_modal/view_planets';
+import DeleteComplete from '../Modals/message_modal/complete_message';
 import Header from '../header/header';
 
 function Planets() {
@@ -62,6 +60,7 @@ function Planets() {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowModal(true);
+        closeViewModal()
     };
 
     const handleClose = () => {
@@ -70,6 +69,7 @@ function Planets() {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowViewModal(false);
+        closeViewModal()
     };
 
     const openDeleteModal = (planet) => {
@@ -154,10 +154,16 @@ function Planets() {
                     <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
-                        }} />
+                        }} 
+                        setShowDeleteSuccessModal={setShowDeleteSuccessModal}
+                        setModalType={setModalType}
+                        />
                 </Modal>
             </div>
             <div className="DatosBD">
+            {planets.length === 0 ? (
+                <div className="no_registers">No hay ningun registro</div>
+            ) : (
                 <table className='Table'>
                     <thead>
                         <tr>
@@ -206,13 +212,14 @@ function Planets() {
                         ))}
                     </tbody>
                 </table>
+            )}
             </div>
             <div className="Paginacion">
                 <div className="pagination">
                     <br />
                     <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Anterior</button>
                     <span> Página {currentPage} de {totalPages} </span>
-                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>Siguiente</button>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages || planets.length === 0}>Siguiente</button>
                 </div>
             </div>
 
@@ -233,30 +240,38 @@ function Planets() {
                 modalType={modalType}
             />
 
-            {showModifyModal && (
+      {/* MOSTRAR VENTANA MODIFICAR */}
+      {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
-                    <ModifyModelPlanets
-                        handleClose={closeModifyModal}
-                        fetchregister={fetchregister}
-                        currentPage={currentPage}
-                        planet={PlanetToModify}
-                        onSuccess={() => {
-                            handleClose();
-                            setShowDeleteSuccessModal(true);
-                            fetchAllRegisters(); 
+                    <MyForm
+                        handleClose={() => {
+                            closeModifyModal();
+                            fetchAllRegisters();
                         }}
-                        modalType={modalType}
+                        fetchAllRegisters={fetchAllRegisters}
+                        viewData={PlanetToModify}
+                        isModifyMode={true}
+                        setShowDeleteSuccessModal={setShowDeleteSuccessModal}
+                        setModalType={setModalType}
+                        onSuccess={() => {
+                            setShowDeleteSuccessModal(true);
+                            fetchAllRegisters();
+                        }}
                     />
                 </Modal>
             )}
 
 
-
-            <ViewModal
-                isOpen={showViewModal}
-                onRequestClose={closeViewModal}
-                planet={view}
-            />
+           {/* MODAL   VER */}
+           {showViewModal && (
+                <Modal show={showViewModal} handleClose={closeViewModal}>
+                    <MyForm
+                        handleClose={closeViewModal}
+                        viewData={view}
+                        isViewMode={true} 
+                    />
+                </Modal>
+            )}
         </div>
     );
 }

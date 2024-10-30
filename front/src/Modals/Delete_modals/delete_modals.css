@@ -25,13 +25,7 @@
 }
 
 
-/*CUADRO MODAL*/
-.modal-main {
-    background: rgb(128, 128, 128);
-    padding: 20px;
-    border-radius: 8px;
-    height: 80%;
-}
+
 
 .display-block {
     display: block;

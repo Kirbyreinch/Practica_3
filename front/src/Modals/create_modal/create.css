@@ -1,41 +1,30 @@
 .Create_modal-content {
   position: relative;
-  width: 400px;
+  width: 100%; 
   background: rgb(128, 128, 128);
   border-radius: 8px;
-  padding: 20px;
+  padding: 50px;
   margin: auto;
-  top: 50%;
   transform: translateY(-50%);
   z-index: 1000;
+  right: 10%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .modal {
+  width: 20%;
   position: fixed;
-  top: 16%;
-  left: 75%;
-  height: 80%;
-
-  background: rgb(128, 128, 128);
+  top: 50%; 
+  left: 88%;
+  transform: translate(-50%, -10%); 
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 20px;
+  z-index: 1000;
+  max-height: 10%;
 }
 
-.modal-main {
-  background: rgb(128, 128, 128);
-  padding: 20px;
-  border-radius: 8px;
-}
 
-.display-block {
-  display: block;
-}
-
-.display-none {
-  display: none;
-}
 
 .input_field {
   width: 100%;
@@ -46,24 +35,22 @@
   box-sizing: border-box;
 }
 
-
-
-/*TITULO DE LA VENTANA MODAL*/
+/* Estilos adicionales */
 .titulo_modal {
-  font-size: 25px;
+  font-size: 1.5em; 
 }
 
-/*MENSAJES DE ERROR*/
+/* MENSAJES DE ERROR */
 .error-message {
   color: rgb(87, 26, 26);
   font-size: 0.875em;
 }
 
-/* BOTONES*/
+/* BOTONES */
 .button-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 30px;
+  margin-top: 20px; 
 }
 
 .Btn_agregar {
@@ -106,5 +93,12 @@
     transform: rotate(900deg);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
+}
 
+/* Media Queries para pantallas pequeñas */
+@media (max-width: 600px) {
+  .Create_modal-content {
+    width: 95%; 
+    padding: 15px; 
+  }
 }

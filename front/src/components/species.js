@@ -1,16 +1,13 @@
 import './components.css';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faFilePen, faEye } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_species';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_species';
-import ModifyModelSpecies from '../Modals/modify_modals/modify_species'
 import { Deletspecies } from '../request/species';
-import DeleteComplete from '../Modals/message_modal/delete_modal';
-import ViewModal from '../Modals/view_modal/view_species';
+import DeleteComplete from '../Modals/message_modal/complete_message';
 import Header from '../header/header';
 
 function Species() {
@@ -67,6 +64,7 @@ function Species() {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowModal(true);
+        closeViewModal()
     };
 
     // CERRAR TODAS LAS VENTANAS
@@ -76,6 +74,7 @@ function Species() {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowViewModal(false);
+        closeViewModal()
     };
 
 
@@ -175,10 +174,16 @@ function Species() {
                     <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
-                        }} />
+                        }} 
+                        setShowDeleteSuccessModal={setShowDeleteSuccessModal}
+                        setModalType={setModalType}
+                        />
                 </Modal>
             </div>
             <div className="DatosBD">
+            {species.length === 0 ? (
+                <div className="no_registers">No hay ningun registro</div>
+            ) : (
                 <table className='Table'>
                     <thead>
                         <tr>
@@ -227,6 +232,7 @@ function Species() {
                         ))}
                     </tbody>
                 </table>
+            )}
             </div>
 
             {/* PAGINACION */}
@@ -235,7 +241,7 @@ function Species() {
                     <br />
                     <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Anterior</button>
                     <span> Página {currentPage} de {totalPages} </span>
-                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>Siguiente</button>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages || species.length === 0}>Siguiente</button>
                 </div>
             </div>
 
@@ -257,20 +263,23 @@ function Species() {
                 modalType={modalType}
             />
 
-            {/* MOSTRAR VENTANA MODIFICAR */}
-            {showModifyModal && (
+      {/* MOSTRAR VENTANA MODIFICAR */}
+      {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
-                    <ModifyModelSpecies
-                        handleClose={closeModifyModal}
-                        fetchregister={fetchregister}
-                        currentPage={currentPage}
-                        specie={specieToModify}
-                        onSuccess={() => {
-                            handleClose();
-                            setShowDeleteSuccessModal(true);
-                            fetchAllRegisters(); 
+                    <MyForm
+                        handleClose={() => {
+                            closeModifyModal();
+                            fetchAllRegisters();
                         }}
-                        modalType={modalType}
+                        fetchAllRegisters={fetchAllRegisters}
+                        viewData={specieToModify}
+                        isModifyMode={true}
+                        setShowDeleteSuccessModal={setShowDeleteSuccessModal}
+                        setModalType={setModalType}
+                        onSuccess={() => {
+                            setShowDeleteSuccessModal(true);
+                            fetchAllRegisters();
+                        }}
                     />
                 </Modal>
             )}
@@ -278,11 +287,15 @@ function Species() {
 
 
             {/* MODAL   VER */}
-            <ViewModal
-                isOpen={showViewModal}
-                onRequestClose={closeViewModal}
-                specie={view}
-            />
+            {showViewModal && (
+                <Modal show={showViewModal} handleClose={closeViewModal}>
+                    <MyForm
+                        handleClose={closeViewModal}
+                        viewData={view}
+                        isViewMode={true} 
+                    />
+                </Modal>
+            )}
         </div>
     );
 }

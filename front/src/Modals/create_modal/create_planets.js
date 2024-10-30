@@ -1,11 +1,21 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Createplanets } from '../../request/planets';
+import { Createplanets  } from '../../request/planets';
+import {  Modifyplanets } from '../../request/planets';
+const MyForm = ({ 
+    handleClose, 
+    fetchPlanets, 
+    currentPage, 
+    onSuccess, 
+    setShowDeleteSuccessModal, 
+    setModalType,  
+    viewData, 
+    isViewMode, 
+    isModifyMode 
+}) => {
 
-const MyForm = ({ handleClose, fetchPlanets, currentPage, onSuccess }) => {
-
-    //VALIDACIONES //
+    // VALIDACIONES
     const validationSchema = Yup.object({
         Nombre: Yup.string().required('El Nombre es requerido'),
         Diametro: Yup.string(),
@@ -19,75 +29,92 @@ const MyForm = ({ handleClose, fetchPlanets, currentPage, onSuccess }) => {
     });
 
     return (
-        // FORMULARIO //
         <>
             <div className="modal-overlay" onClick={handleClose} />
             <div className="Create_modal-content">
                 <Formik
-                    initialValues={{ Nombre: '', Diametro: '', Periodo_Rotacion: '', Periodo_Orbital: '', Gravedad: '', Poblacion: '', Clima: '', Terreno: '', Superficie_Agua: '' }}
+                    initialValues={{
+                        Nombre: viewData?.Nombre || '',
+                        Diametro: viewData?.Diametro || '',
+                        Periodo_Rotacion: viewData?.Periodo_Rotacion || '',
+                        Periodo_Orbital: viewData?.Periodo_Orbital || '',
+                        Gravedad: viewData?.Gravedad || '',
+                        Poblacion: viewData?.Poblacion || '',
+                        Clima: viewData?.Clima || '',
+                        Terreno: viewData?.Terreno || '',
+                        Superficie_Agua: viewData?.Superficie_Agua || '',
+                    }}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
-                            await Createplanets(values);
+                            if (isModifyMode) {
+                                await Modifyplanets(viewData._id, values); 
+                            } else {
+                                await Createplanets(values); 
+                            }
                             resetForm();
                             handleClose();
+                            setShowDeleteSuccessModal(true); 
+                            setModalType(isModifyMode ? 'modify' : 'register');  
                             onSuccess();
-                            fetchPlanets(currentPage); // ACTUALIZA LA TABLA //
+                            fetchPlanets(currentPage); // Actualiza la tabla
                         } catch (error) {
-                            setErrors({ submit: 'Ya hay un Planeta con ese Nombre.' }); // MENSAJE DE ERROR SI EL PLANETA "YA EXISTE"//
+                            setErrors({ submit: 'Ya hay un Planeta con ese Nombre.' }); 
                         } finally {
                             setSubmitting(false);
                         }
                     }}
+                    enableReinitialize // Permite reiniciar el formulario cuando cambian los datos de vista
                 >
-                    {({ isSubmitting, errors,resetForm }) => (
-                        // FORMULARIO  HTML//
+                    {({ isSubmitting, errors, resetForm }) => (
                         <Form>
-                            <label className='titulo_modal' htmlFor="Titulo">Agregar Planeta</label>
+                            <label className='titulo_modal' htmlFor="Nombre">{isViewMode ? 'Ver Planeta' : (isModifyMode ? 'Modificar Planeta' : 'Agregar Planeta')}</label>
                             <div className='Crear'>
                                 <label htmlFor="Nombre">Nombre</label>
-                                <Field name="Nombre" className="input_field" />
+                                <Field name="Nombre" className="input_field" disabled={isViewMode} />
                                 <ErrorMessage name="Nombre" component="div" className="error-message" />
                             </div>
                             <div>
-                                <label htmlFor="Diametro">Diametro</label>
-                                <Field name="Diametro" className="input_field" />
+                                <label htmlFor="Diametro">Diámetro</label>
+                                <Field name="Diametro" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
-                                <label htmlFor="Periodo_Rotacion">Periodo_Rotación</label>
-                                <Field name="Periodo_Rotacion" className="input_field" />
+                                <label htmlFor="Periodo_Rotacion">Periodo de Rotación</label>
+                                <Field name="Periodo_Rotacion" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
-                                <label htmlFor="Periodo_Orbital">Periodo_Orbital</label>
-                                <Field name="Periodo_Orbital" className="input_field" />
+                                <label htmlFor="Periodo_Orbital">Periodo Orbital</label>
+                                <Field name="Periodo_Orbital" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
                                 <label htmlFor="Gravedad">Gravedad</label>
-                                <Field name="Gravedad" className="input_field" />
+                                <Field name="Gravedad" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
                                 <label htmlFor="Poblacion">Población</label>
-                                <Field name="Poblacion" className="input_field" />
+                                <Field name="Poblacion" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
                                 <label htmlFor="Clima">Clima</label>
-                                <Field name="Clima" className="input_field" />
+                                <Field name="Clima" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
                                 <label htmlFor="Terreno">Terreno</label>
-                                <Field name="Terreno" className="input_field" />
+                                <Field name="Terreno" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
-                                <label htmlFor="Superficie_Agua">Superficie_Agua</label>
-                                <Field name="Superficie_Agua" className="input_field" />
+                                <label htmlFor="Superficie_Agua">Superficie de Agua</label>
+                                <Field name="Superficie_Agua" className="input_field" disabled={isViewMode} />
                             </div>
-                            {/* SECCION DE BOTONES*/}
+                            {/* SECCIÓN DE BOTONES */}
                             {errors.submit && <div className="error-message">{errors.submit}</div>}
                             <div className="button-container">
-                                <button className='Btn_agregar' type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? <div class="lds-hourglass"></div> : 'Enviar'}
-                                </button>
-                                <button className='Btn_agregar' type="button" onClick ={() => { resetForm(); handleClose();}} disabled={isSubmitting}>
+                                {!isViewMode && (
+                                    <button className='Btn_agregar' type="submit" disabled={isSubmitting}>
+                                        {isSubmitting ? <div className="lds-hourglass"></div> : (isModifyMode ? 'Modificar' : 'Enviar')}
+                                    </button>
+                                )}
+                                <button className='Btn_agregar' type="button" onClick={() => { resetForm(); handleClose(); }} disabled={isSubmitting}>
                                     Cerrar
                                 </button>
                             </div>

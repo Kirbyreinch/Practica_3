@@ -2,8 +2,18 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Createspecies } from '../../request/species';
-
-const MyForm = ({ handleClose, fetchSpecies, currentPage, onSuccess }) => {
+import {  Modifyspecies } from '../../request/species';
+const MyForm = ({ 
+    handleClose, 
+    fetchSpecies, 
+    currentPage, 
+    onSuccess, 
+    setShowDeleteSuccessModal, 
+    setModalType,  
+    viewData, 
+    isViewMode, 
+    isModifyMode 
+}) => {
     const validationSchema = Yup.object({
         Nombre: Yup.string().required('El Nombre es requerido'),
         Clasificacion: Yup.string(),
@@ -15,75 +25,94 @@ const MyForm = ({ handleClose, fetchSpecies, currentPage, onSuccess }) => {
         Promedio_de_vida: Yup.string(),
         Lenguaje: Yup.string(),
     });
+
     return (
         <>
             <div className="modal-overlay" onClick={handleClose} />
             <div className="Create_modal-content">
                 <Formik
-                    initialValues={{ Nombre: '', Clasificacion: '', Designacion: '', Estatura: '', Color_de_piel: '', Color_de_cabello: '', Color_de_ojos: '', Promedio_de_vida: '', Lenguaje: '' }}
+                    initialValues={{
+                        Nombre: viewData?.Nombre || '',
+                        Clasificacion: viewData?.Clasificacion || '',
+                        Designacion: viewData?.Designacion || '',
+                        Estatura: viewData?.Estatura || '',
+                        Color_de_piel: viewData?.Color_de_piel || '',
+                        Color_de_cabello: viewData?.Color_de_cabello || '',
+                        Color_de_ojos: viewData?.Color_de_ojos || '',
+                        Promedio_de_vida: viewData?.Promedio_de_vida || '',
+                        Lenguaje: viewData?.Lenguaje || '',
+                    }}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
-                            await Createspecies(values);
-                            console.log("Enviando datos:", values);
+                            if (isModifyMode) {
+                                await Modifyspecies(viewData._id, values); 
+                            } else {
+                                await Createspecies(values); 
+                            }
                             resetForm();
                             handleClose();
+                            setModalType(isModifyMode ? 'modify' : 'register');  
+                            setShowDeleteSuccessModal(true); 
                             onSuccess();
-                            fetchSpecies(currentPage);
+                            fetchSpecies(currentPage); // Actualiza la tabla
                         } catch (error) {
-                            setErrors({ submit: 'Ya hay una Especie con ese Nombre.' }); // MENSAJE DE ERROR SI LA ESPECIE "YA EXISTE"
+                            setErrors({ submit: 'Ya hay una Especie con ese Nombre.' }); 
                         } finally {
                             setSubmitting(false);
                         }
                     }}
+                    enableReinitialize 
                 >
-                    {({ isSubmitting, errors,resetForm }) => (
+                    {({ isSubmitting, errors, resetForm }) => (
                         <Form>
-                            <label className='titulo_modal' htmlFor="Titulo">Agregar Especie</label>
+                            <label className='titulo_modal' htmlFor="Nombre">{isViewMode ? 'Ver Especie' : (isModifyMode ? 'Modificar Especie' : 'Agregar Especie')}</label>
                             <div className='Crear'>
                                 <label htmlFor="Nombre">Nombre</label>
-                                <Field name="Nombre" className="input_field" />
+                                <Field name="Nombre" className="input_field" disabled={isViewMode} />
                                 <ErrorMessage name="Nombre" component="div" className="error-message" />
                             </div>
                             <div>
                                 <label htmlFor="Clasificacion">Clasificación</label>
-                                <Field name="Clasificacion" className="input_field" />
+                                <Field name="Clasificacion" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
                                 <label htmlFor="Designacion">Designación</label>
-                                <Field name="Designacion" className="input_field" />
+                                <Field name="Designacion" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
                                 <label htmlFor="Estatura">Estatura</label>
-                                <Field name="Estatura" className="input_field" />
+                                <Field name="Estatura" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
                                 <label htmlFor="Color_de_piel">Color de Piel</label>
-                                <Field name="Color_de_piel" className="input_field" />
+                                <Field name="Color_de_piel" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
                                 <label htmlFor="Color_de_cabello">Color de Cabello</label>
-                                <Field name="Color_de_cabello" className="input_field" />
+                                <Field name="Color_de_cabello" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
-                                <label htmlFor="Color_de_ojos">Color de ojos</label>
-                                <Field name="Color_de_ojos" className="input_field" />
+                                <label htmlFor="Color_de_ojos">Color de Ojos</label>
+                                <Field name="Color_de_ojos" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
                                 <label htmlFor="Promedio_de_vida">Promedio de Vida</label>
-                                <Field name="Promedio_de_vida" className="input_field" />
+                                <Field name="Promedio_de_vida" className="input_field" disabled={isViewMode} />
                             </div>
                             <div>
                                 <label htmlFor="Lenguaje">Lenguaje</label>
-                                <Field name="Lenguaje" className="input_field" />
+                                <Field name="Lenguaje" className="input_field" disabled={isViewMode} />
                             </div>
-                            {/* SECCION DE BOTONES*/}
+                            {/* SECCIÓN DE BOTONES */}
                             {errors.submit && <div className="error-message">{errors.submit}</div>}
                             <div className="button-container">
-                                <button className='Btn_agregar' type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? <div class="lds-hourglass"></div> : 'Enviar'}
-                                </button>
-                                <button className='Btn_agregar' type="button" onClick ={() => { resetForm(); handleClose();}} disabled={isSubmitting}>
+                                {!isViewMode && (
+                                    <button className='Btn_agregar' type="submit" disabled={isSubmitting}>
+                                        {isSubmitting ? <div className="lds-hourglass"></div> : (isModifyMode ? 'Modificar' : 'Enviar')}
+                                    </button>
+                                )}
+                                <button className='Btn_agregar' type="button" onClick={() => { resetForm(); handleClose(); }} disabled={isSubmitting}>
                                     Cerrar
                                 </button>
                             </div>

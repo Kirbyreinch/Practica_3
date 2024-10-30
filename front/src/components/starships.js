@@ -2,16 +2,13 @@
 import './components.css';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faFilePen, faEye } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_starships';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_starships';
-import ModifyModelStarships from '../Modals/modify_modals/modify_starships'
 import { Deletestarships } from '../request/starships';
-import DeleteComplete from '../Modals/message_modal/delete_modal';
-import ViewModal from '../Modals/view_modal/view_starships';
+import DeleteComplete from '../Modals/message_modal/complete_message';
 import Header from '../header/header';
 
 function Starships() {
@@ -67,6 +64,7 @@ function Starships() {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowModal(true);
+        closeViewModal();
     };
 
     // CERRAR TODAS LAS VENTANAS
@@ -76,6 +74,7 @@ function Starships() {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowViewModal(false);
+        closeViewModal();
     };
 
 
@@ -172,15 +171,21 @@ function Starships() {
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
-                    <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage} setShowDeleteSuccessModal={setShowDeleteSuccessModal}  setModalType={setModalType}
+                    <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
               
                         onSuccess={() => {
                             handleClose();
                      
-                        }} />
+                        }} 
+                        setShowDeleteSuccessModal={setShowDeleteSuccessModal}
+                        setModalType={setModalType}
+                        />
                 </Modal>
             </div>
             <div className="DatosBD">
+            {starships.length === 0 ? (
+                <div className="no_registers">No hay ningun registro</div>
+            ) : (
                 <table className='Table'>
                     <thead>
                         <tr>
@@ -231,15 +236,16 @@ function Starships() {
                         ))}
                     </tbody>
                 </table>
+            )}
             </div>
 
             {/* PAGINACION */}
             <div className="Paginacion">
                 <div className="pagination">
                     <br />
-                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Anterior</button>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1 || starships.length === 0}>Anterior</button>
                     <span> Página {currentPage} de {totalPages} </span>
-                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>Siguiente</button>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages  || starships.length === 0 }>Siguiente</button>
                 </div>
             </div>
 
@@ -261,32 +267,39 @@ function Starships() {
                 modalType={modalType}
             />
 
-            {/* MOSTRAR VENTANA MODIFICAR */}
-            {showModifyModal && (
+      {/* MOSTRAR VENTANA MODIFICAR */}
+      {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
-                    <ModifyModelStarships
-                        handleClose={closeModifyModal}
-                        fetchregister={fetchregister}
-                        currentPage={currentPage}
-                        starship={starshipsToModify}
-                        onSuccess={() => {
-                            handleClose();
-                            setShowDeleteSuccessModal(true);
-                            fetchAllRegisters(); 
+                    <MyForm
+                        handleClose={() => {
+                            closeModifyModal();
+                            fetchAllRegisters();
                         }}
-                        modalType={modalType}
+                        fetchAllRegisters={fetchAllRegisters}
+                        viewData={starshipsToModify}
+                        isModifyMode={true}
+                        setShowDeleteSuccessModal={setShowDeleteSuccessModal}
+                        setModalType={setModalType}
+                        onSuccess={() => {
+                            setShowDeleteSuccessModal(true);
+                            fetchAllRegisters();
+                        }}
                     />
                 </Modal>
             )}
 
 
 
-            {/* MODAL   VER */}
-            <ViewModal
-                isOpen={showViewModal}
-                onRequestClose={closeViewModal}
-                starship={view}
-            />
+           {/* MODAL   VER */}
+           {showViewModal && (
+                <Modal show={showViewModal} handleClose={closeViewModal}>
+                    <MyForm
+                        handleClose={closeViewModal}
+                        viewData={view}
+                        isViewMode={true}
+                    />
+                </Modal>
+            )}
         </div>
     );
 }

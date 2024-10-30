@@ -1,4 +1,3 @@
-
 import './components.css';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -7,10 +6,8 @@ import { faTrash, faFilePen, faEye } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_film';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_films';
-import ModifyFilmForm from '../Modals/modify_modals/modify_films';
-import DeleteComplete from '../Modals/message_modal/delete_modal';
+import DeleteComplete from '../Modals/message_modal/complete_message';
 import { deleteMovie } from '../request/films';
-import ViewModal from '../Modals/view_modal/view_film';
 import Header from '../header/header';
 
 
@@ -68,6 +65,7 @@ function Films() {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowModal(true);
+        closeViewModal();
     };
 
     // CERRAR TODAS LAS VENTANAS
@@ -77,6 +75,7 @@ function Films() {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowViewModal(false);
+        closeViewModal()
     };
 
 
@@ -168,7 +167,7 @@ function Films() {
         <div className="contenedor">
             <Header onSearch={handleSearch} />
             <div className="Titulo">
-                <h1>Peliculas</h1>
+                <h1>Películas</h1>
             </div>
             <div className="Registrar">
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
@@ -176,10 +175,16 @@ function Films() {
                     <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
-                        }} />
+                        }}
+                        setShowDeleteSuccessModal={setShowDeleteSuccessModal}
+                        setModalType={setModalType}
+                    />
                 </Modal>
             </div>
             <div className="DatosBD">
+            {films.length === 0 ? (
+                <div className="no_registers">No hay ningun registro</div>
+            ) : (
                 <table className='Table'>
                     <thead>
                         <tr>
@@ -216,15 +221,16 @@ function Films() {
                         ))}
                     </tbody>
                 </table>
+            )}
             </div>
 
             {/* PAGINACION */}
             <div className="Paginacion">
                 <div className="pagination">
                     <br />
-                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Anterior</button>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1 }>Anterior</button>
                     <span> Página {currentPage} de {totalPages} </span>
-                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>Siguiente</button>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages || films.length === 0}>Siguiente</button>
                 </div>
             </div>
 
@@ -249,17 +255,20 @@ function Films() {
             {/* MOSTRAR VENTANA MODIFICAR */}
             {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
-                    <ModifyFilmForm
-                        handleClose={closeModifyModal}
-                        fetchregister={fetchregister}
-                        currentPage={currentPage}
-                        film={filmToModify}
-                        onSuccess={() => {
-                            handleClose();
-                            setShowDeleteSuccessModal(true);
-                            fetchAllRegisters(); 
+                    <MyForm
+                        handleClose={() => {
+                            closeModifyModal();
+                            fetchAllRegisters();
                         }}
-                        modalType={modalType}
+                        fetchAllRegisters={fetchAllRegisters}
+                        viewData={filmToModify}
+                        isModifyMode={true}
+                        setShowDeleteSuccessModal={setShowDeleteSuccessModal}
+                        setModalType={setModalType}
+                        onSuccess={() => {
+                            setShowDeleteSuccessModal(true);
+                            fetchAllRegisters();
+                        }}
                     />
                 </Modal>
             )}
@@ -267,11 +276,15 @@ function Films() {
 
 
             {/* MODAL   VER */}
-            <ViewModal
-                isOpen={showViewModal}
-                onRequestClose={closeViewModal}
-                film={view}
-            />
+            {showViewModal && (
+                <Modal show={showViewModal} handleClose={closeViewModal}>
+                    <MyForm
+                        handleClose={closeViewModal}
+                        viewData={view}
+                        isViewMode={true} 
+                    />
+                </Modal>
+            )}
         </div>
     );
 }

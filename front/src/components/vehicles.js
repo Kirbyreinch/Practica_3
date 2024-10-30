@@ -2,16 +2,13 @@
 import './components.css';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faFilePen, faEye } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modals/create_modal/modal';
 import MyForm from '../Modals/create_modal/create_vehicles';
 import ConfirmDeleteModal from '../Modals/Delete_modals/delete_vehicles';
-import ModifyModelVehicles from '../Modals/modify_modals/modify_vehicles'
 import { Deletevehicles } from '../request/vehicles';
-import DeleteComplete from '../Modals/message_modal/delete_modal';
-import ViewModal from '../Modals/view_modal/view_vehicles';
+import DeleteComplete from '../Modals/message_modal/complete_message';
 import Header from '../header/header';
 
 function Vehicles() {
@@ -68,6 +65,7 @@ function Vehicles() {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowModal(true);
+        closeViewModal();
     };
 
     // CERRAR TODAS LAS VENTANAS
@@ -77,6 +75,7 @@ function Vehicles() {
         setShowDeleteModal(false);
         setShowModifyModal(false);
         setShowViewModal(false);
+        closeViewModal();
     };
 
 
@@ -176,10 +175,16 @@ function Vehicles() {
                     <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
-                        }} />
+                        }}
+                        setShowDeleteSuccessModal={setShowDeleteSuccessModal}
+                        setModalType={setModalType}
+                        />
                 </Modal>
             </div>
             <div className="DatosBD">
+            {vehicles.length === 0 ? (
+                <div className="no_registers">No hay ningun registro</div>
+            ) : (
                 <table className='Table'>
                     <thead>
                         <tr>
@@ -226,6 +231,7 @@ function Vehicles() {
                         ))}
                     </tbody>
                 </table>
+            )}
             </div>
 
             {/* PAGINACION */}
@@ -234,7 +240,7 @@ function Vehicles() {
                     <br />
                     <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Anterior</button>
                     <span> Página {currentPage} de {totalPages} </span>
-                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>Siguiente</button>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages || vehicles.length === 0}>Siguiente</button>
                 </div>
             </div>
 
@@ -256,31 +262,39 @@ function Vehicles() {
                 modalType={modalType}
             />
 
-            {/* MOSTRAR VENTANA MODIFICAR */}
-            {showModifyModal && (
+      {/* MOSTRAR VENTANA MODIFICAR */}
+      {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
-                    <ModifyModelVehicles
-                        handleClose={closeModifyModal}
-                        fetchregister={fetchregister}
-                        currentPage={currentPage}
-                        vehicle={vehiclesToModify}
-                        onSuccess={() => {
-                            handleClose();
-                            setShowDeleteSuccessModal(true);
-                            fetchAllRegisters(); 
+                    <MyForm
+                        handleClose={() => {
+                            closeModifyModal();
+                            fetchAllRegisters();
                         }}
-                        modalType={modalType}
+                        fetchAllRegisters={fetchAllRegisters}
+                        viewData={vehiclesToModify}
+                        isModifyMode={true}
+                        setShowDeleteSuccessModal={setShowDeleteSuccessModal}
+                        setModalType={setModalType}
+                        onSuccess={() => {
+                            setShowDeleteSuccessModal(true);
+                            fetchAllRegisters();
+                        }}
                     />
                 </Modal>
             )}
 
 
             {/* MODAL   VER */}
-            <ViewModal
-                isOpen={showViewModal}
-                onRequestClose={closeViewModal}
-                vehicle={view}
-            />
+                {/* MODAL   VER */}
+                {showViewModal && (
+                <Modal show={showViewModal} handleClose={closeViewModal}>
+                    <MyForm
+                        handleClose={closeViewModal}
+                        viewData={view}
+                        isViewMode={true} 
+                    />
+                </Modal>
+            )}
         </div>
     );
 }
