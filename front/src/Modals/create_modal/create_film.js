@@ -2,17 +2,17 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { createMovie } from '../../request/films';
-import { modifyMovie} from '../../request/films';
-const MyForm = ({ 
-    handleClose, 
-    fetchAllRegisters, 
-    currentPage, 
-    onSuccess, 
-    setShowDeleteSuccessModal, 
-    setModalType, 
-    viewData, 
-    isViewMode, 
-    isModifyMode 
+import { modifyMovie } from '../../request/films';
+const MyForm = ({
+    handleClose,
+    fetchAllRegisters,
+    currentPage,
+    onSuccess,
+    setShowDeleteSuccessModal,
+    setModalType,
+    viewData,
+    isViewMode,
+    isModifyMode
 }) => {
     const validationSchema = Yup.object({
         Titulo: Yup.string().required('El Título es requerido'),
@@ -23,15 +23,15 @@ const MyForm = ({
     const handleSubmit = async (values, { resetForm, setSubmitting, setErrors }) => {
         try {
             if (isModifyMode) {
-                await modifyMovie(viewData._id, values); 
+                await modifyMovie(viewData._id, values);
             } else {
-                await createMovie(values); 
+                await createMovie(values);
                 setModalType('add');
 
             }
             resetForm();
             handleClose();
-            setShowDeleteSuccessModal(true);  
+            setShowDeleteSuccessModal(true);
             onSuccess();
         } catch (error) {
             setErrors({ submit: 'Ya hay una película con ese Título.' });
@@ -54,7 +54,7 @@ const MyForm = ({
                     onSubmit={handleSubmit}
                     enableReinitialize
                 >
-                    {({ isSubmitting, errors }) => (
+                    {({ isSubmitting, errors, resetForm }) => (
                         <Form>
                             <label className='titulo_modal' htmlFor="Titulo">{isViewMode ? 'Ver Película' : (isModifyMode ? 'Modificar Película' : 'Agregar Película')}</label>
                             <div className='Crear'>
@@ -72,6 +72,7 @@ const MyForm = ({
                                 <Field name="Productor" className="input_field" disabled={isViewMode} />
                                 <ErrorMessage name="Productor" component="div" className="error-message" />
                             </div>
+                            {/* SECCIÓN DE BOTONES */}
                             {errors.submit && <div className="error-message">{errors.submit}</div>}
                             <div className="button-container">
                                 {!isViewMode && (
@@ -79,7 +80,7 @@ const MyForm = ({
                                         {isSubmitting ? <div className="lds-hourglass"></div> : (isModifyMode ? 'Modificar' : 'Enviar')}
                                     </button>
                                 )}
-                                <button className='Btn_agregar' type="button" onClick={handleClose} disabled={isSubmitting}>
+                                <button className='Btn_agregar' type="button" onClick={() => { resetForm(); handleClose(); }} disabled={isSubmitting}>
                                     Cerrar
                                 </button>
                             </div>

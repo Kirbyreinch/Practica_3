@@ -160,7 +160,7 @@ function Starships() {
         }
     };
 
- 
+
 
     return (
         <div className="contenedor">
@@ -172,71 +172,71 @@ function Starships() {
                 <button className='Btn_agregar' onClick={handleOpen}>+ Agregar Registro</button>
                 <Modal show={showModal} handleClose={handleClose}>
                     <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
-              
+
                         onSuccess={() => {
                             handleClose();
-                     
-                        }} 
+
+                        }}
                         setShowDeleteSuccessModal={setShowDeleteSuccessModal}
                         setModalType={setModalType}
-                        />
+                    />
                 </Modal>
             </div>
             <div className="DatosBD">
-            {starships.length === 0 ? (
-                <div className="no_registers">No hay ningun registro</div>
-            ) : (
-                <table className='Table'>
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Modelo</th>
-                            <th>Clase</th>
-                            <th>Tamaño</th>
-                            <th>Número de Pasajeros</th>
-                            <th>Máxima Velocidad Atmosférica</th>
-                            <th>Hiperimpulsor</th>
-                            <th>MGLT</th>
-                            <th>Capacidad de Carga</th>
-                            <th>Tiempo Máximo de Combustible</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {starships.map(starship => (
-                            <tr key={starship._id}>
-                                <td>{GetHomologation(starship.Nombre)}</td>
-                                <td>{GetHomologation(starship.Modelo)}</td>
-                                <td>{GetHomologation(starship.Clase)}</td>
-                                <td>{GetHomologation(starship.Tamaño)}</td>
-                                <td>{GetHomologation(starship.Numero_de_Pasajeros)}</td>
-                                <td>{GetHomologation(starship.Maxima_velocidad_atmosferica)}</td>
-                                <td>{GetHomologation(starship.Hiperimpulsor)}</td>
-                                <td>{GetHomologation(starship.MGLT)}</td>
-                                <td>{GetHomologation(starship.Capacidad_de_carga)}</td>
-                                <td>{GetHomologation(starship.Tiempo_Maximo_Cobustibles)}</td>
-                                <td>
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faTrash}
-                                        onClick={() => openDeleteModal(starship)}
-                                    />
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faFilePen}
-                                        onClick={() => openModifyModal(starship)}
-                                    />
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faEye}
-                                        onClick={() => openViewModal(starship)}
-                                    />
-                                </td>
+                {starships.length === 0 ? (
+                    <div className="no_registers">No hay ningun registro</div>
+                ) : (
+                    <table className='Table'>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Modelo</th>
+                                <th>Clase</th>
+                                <th>Tamaño</th>
+                                <th>Número de Pasajeros</th>
+                                <th>Máxima Velocidad Atmosférica</th>
+                                <th>Hiperimpulsor</th>
+                                <th>MGLT</th>
+                                <th>Capacidad de Carga</th>
+                                <th>Tiempo Máximo de Combustible</th>
+                                <th>Acciones</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+                        </thead>
+                        <tbody>
+                            {starships.map(starship => (
+                                <tr key={starship._id}>
+                                    <td>{GetHomologation(starship.Nombre)}</td>
+                                    <td>{GetHomologation(starship.Modelo)}</td>
+                                    <td>{GetHomologation(starship.Clase)}</td>
+                                    <td>{GetHomologation(starship.Tamaño)}</td>
+                                    <td>{GetHomologation(starship.Numero_de_Pasajeros)}</td>
+                                    <td>{GetHomologation(starship.Maxima_velocidad_atmosferica)}</td>
+                                    <td>{GetHomologation(starship.Hiperimpulsor)}</td>
+                                    <td>{GetHomologation(starship.MGLT)}</td>
+                                    <td>{GetHomologation(starship.Capacidad_de_carga)}</td>
+                                    <td>{GetHomologation(starship.Tiempo_Maximo_Cobustibles)}</td>
+                                    <td>
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faTrash}
+                                            onClick={() => openDeleteModal(starship)}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faFilePen}
+                                            onClick={() => openModifyModal(starship)}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faEye}
+                                            onClick={() => openViewModal(starship)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
 
             {/* PAGINACION */}
@@ -245,7 +245,7 @@ function Starships() {
                     <br />
                     <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1 || starships.length === 0}>Anterior</button>
                     <span> Página {currentPage} de {totalPages} </span>
-                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages  || starships.length === 0 }>Siguiente</button>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages || starships.length === 0}>Siguiente</button>
                 </div>
             </div>
 
@@ -267,8 +267,8 @@ function Starships() {
                 modalType={modalType}
             />
 
-      {/* MOSTRAR VENTANA MODIFICAR */}
-      {showModifyModal && (
+            {/* MOSTRAR VENTANA MODIFICAR */}
+            {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <MyForm
                         handleClose={() => {
@@ -290,8 +290,8 @@ function Starships() {
 
 
 
-           {/* MODAL   VER */}
-           {showViewModal && (
+            {/* MODAL   VER */}
+            {showViewModal && (
                 <Modal show={showViewModal} handleClose={closeViewModal}>
                     <MyForm
                         handleClose={closeViewModal}

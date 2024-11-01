@@ -2,17 +2,17 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Createspecies } from '../../request/species';
-import {  Modifyspecies } from '../../request/species';
-const MyForm = ({ 
-    handleClose, 
-    fetchSpecies, 
-    currentPage, 
-    onSuccess, 
-    setShowDeleteSuccessModal, 
-    setModalType,  
-    viewData, 
-    isViewMode, 
-    isModifyMode 
+import { Modifyspecies } from '../../request/species';
+const MyForm = ({
+    handleClose,
+    fetchSpecies,
+    currentPage,
+    onSuccess,
+    setShowDeleteSuccessModal,
+    setModalType,
+    viewData,
+    isViewMode,
+    isModifyMode
 }) => {
     const validationSchema = Yup.object({
         Nombre: Yup.string().required('El Nombre es requerido'),
@@ -46,23 +46,23 @@ const MyForm = ({
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
                             if (isModifyMode) {
-                                await Modifyspecies(viewData._id, values); 
+                                await Modifyspecies(viewData._id, values);
                             } else {
-                                await Createspecies(values); 
+                                await Createspecies(values);
                             }
                             resetForm();
                             handleClose();
-                            setModalType(isModifyMode ? 'modify' : 'register');  
-                            setShowDeleteSuccessModal(true); 
+                            setModalType(isModifyMode ? 'modify' : 'register');
+                            setShowDeleteSuccessModal(true);
                             onSuccess();
                             fetchSpecies(currentPage); // Actualiza la tabla
                         } catch (error) {
-                            setErrors({ submit: 'Ya hay una Especie con ese Nombre.' }); 
+                            setErrors({ submit: 'Ya hay una Especie con ese Nombre.' });
                         } finally {
                             setSubmitting(false);
                         }
                     }}
-                    enableReinitialize 
+                    enableReinitialize
                 >
                     {({ isSubmitting, errors, resetForm }) => (
                         <Form>

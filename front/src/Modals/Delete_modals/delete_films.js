@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import './delete_modals.css';
 
-const ConfirmDeleteModal = ({ isOpen, onRequestClose, onConfirm, Film_Title,  }) => {
+const ConfirmDeleteModal = ({ isOpen, onRequestClose, onConfirm, Film_Title, }) => {
     return (
         <Modal
             isOpen={isOpen}

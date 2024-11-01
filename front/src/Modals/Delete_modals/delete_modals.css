@@ -5,23 +5,24 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7); 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 }
 
 .modal_delete {
     position: fixed;
-    width: 80%; 
-    max-width: 500px; 
-    height: auto; 
+    width: 80%;
+    max-width: 500px;
+    height: auto;
     background: rgb(128, 128, 128);
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 20px;
-    padding: 20px; 
+    padding: 20px;
 }
 
 

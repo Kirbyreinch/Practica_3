@@ -1,18 +1,18 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Createplanets  } from '../../request/planets';
-import {  Modifyplanets } from '../../request/planets';
-const MyForm = ({ 
-    handleClose, 
-    fetchPlanets, 
-    currentPage, 
-    onSuccess, 
-    setShowDeleteSuccessModal, 
-    setModalType,  
-    viewData, 
-    isViewMode, 
-    isModifyMode 
+import { Createplanets } from '../../request/planets';
+import { Modifyplanets } from '../../request/planets';
+const MyForm = ({
+    handleClose,
+    fetchPlanets,
+    currentPage,
+    onSuccess,
+    setShowDeleteSuccessModal,
+    setModalType,
+    viewData,
+    isViewMode,
+    isModifyMode
 }) => {
 
     // VALIDACIONES
@@ -48,18 +48,18 @@ const MyForm = ({
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
                             if (isModifyMode) {
-                                await Modifyplanets(viewData._id, values); 
+                                await Modifyplanets(viewData._id, values);
                             } else {
-                                await Createplanets(values); 
+                                await Createplanets(values);
                             }
                             resetForm();
                             handleClose();
-                            setShowDeleteSuccessModal(true); 
-                            setModalType(isModifyMode ? 'modify' : 'register');  
+                            setShowDeleteSuccessModal(true);
+                            setModalType(isModifyMode ? 'modify' : 'register');
                             onSuccess();
                             fetchPlanets(currentPage); // Actualiza la tabla
                         } catch (error) {
-                            setErrors({ submit: 'Ya hay un Planeta con ese Nombre.' }); 
+                            setErrors({ submit: 'Ya hay un Planeta con ese Nombre.' });
                         } finally {
                             setSubmitting(false);
                         }

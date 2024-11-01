@@ -182,53 +182,55 @@ function Films() {
                 </Modal>
             </div>
             <div className="DatosBD">
-            {films.length === 0 ? (
-                <div className="no_registers">No hay ningun registro</div>
-            ) : (
-                <table className='Table'>
-                    <thead>
-                        <tr>
-                            <th>Título</th>
-                            <th>Director</th>
-                            <th>Productor</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {films.map(film => (
-                            <tr key={GetHomologation(film._id)}>
-                                <td>{GetHomologation(film.Titulo)}</td>
-                                <td>{GetHomologation(film.Director)}</td>
-                                <td>{GetHomologation(film.Productor)}</td>
-                                <td>
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faTrash}
-                                        onClick={() => openDeleteModal(film)}
-                                    />
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faFilePen}
-                                        onClick={() => openModifyModal(film)}
-                                    />
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faEye}
-                                        onClick={() => openViewModal(film)}
-                                    />
-                                </td>
+                {films.length === 0 ? (
+                    <div className="no_registers">No hay ningun registro</div>
+                ) : (
+                    <div className="table-container">
+                    <table className='Table'>
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Director</th>
+                                <th>Productor</th>
+                                <th>Acciones</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+                        </thead>
+                        <tbody>
+                            {films.map(film => (
+                                <tr key={GetHomologation(film._id)}>
+                                    <td>{GetHomologation(film.Titulo)}</td>
+                                    <td>{GetHomologation(film.Director)}</td>
+                                    <td>{GetHomologation(film.Productor)}</td>
+                                    <td>
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faTrash}
+                                            onClick={() => openDeleteModal(film)}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faFilePen}
+                                            onClick={() => openModifyModal(film)}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faEye}
+                                            onClick={() => openViewModal(film)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    </div>
+                )}
             </div>
 
             {/* PAGINACION */}
             <div className="Paginacion">
                 <div className="pagination">
                     <br />
-                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1 }>Anterior</button>
+                    <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Anterior</button>
                     <span> Página {currentPage} de {totalPages} </span>
                     <button className="Btn_agregar" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages || films.length === 0}>Siguiente</button>
                 </div>
@@ -281,7 +283,7 @@ function Films() {
                     <MyForm
                         handleClose={closeViewModal}
                         viewData={view}
-                        isViewMode={true} 
+                        isViewMode={true}
                     />
                 </Modal>
             )}

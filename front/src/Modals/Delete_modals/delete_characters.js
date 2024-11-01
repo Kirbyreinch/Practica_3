@@ -9,7 +9,7 @@ const ConfirmDeleteModal = ({ isOpen, onRequestClose, onConfirm, Character_Name 
             onRequestClose={onRequestClose}
             ariaHideApp={false}
             className="modal_delete"
-            overlayClassName="overlay" 
+            overlayClassName="overlay"
         >
             {/* VENTANA DE ELIMINAR */}
             <div className="modal-main">

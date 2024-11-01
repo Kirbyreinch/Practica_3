@@ -23,7 +23,7 @@ function Planets() {
     const [showViewModal, setShowViewModal] = useState(false);
     const [view, setToView] = useState(null);
     const [filtered, setFiltered] = useState([]);
-    const [allRegisters, setAllRegisters] = useState([]);    
+    const [allRegisters, setAllRegisters] = useState([]);
     const [modalType, setModalType] = useState(null); //    ESTADO PARA MENSAJES MODAL  //
 
 
@@ -40,21 +40,21 @@ function Planets() {
         try {
             const response = await axios.get(`http://localhost:5000/Planetas/modulo/todos`);
             setAllRegisters(response.data.planets);
-            setFiltered(response.data.planets); 
+            setFiltered(response.data.planets);
             setTotalPages(Math.ceil(response.data.total / limit));
-            fetchregister(1); 
+            fetchregister(1);
         } catch (error) {
             console.error("Error al obtener todos los planetas:", error);
         }
     };
 
     useEffect(() => {
-        fetchAllRegisters(); 
+        fetchAllRegisters();
     }, []);
 
     useEffect(() => {
-        fetchregister(currentPage); 
-    }, );
+        fetchregister(currentPage);
+    },);
 
     const handleOpen = () => {
         setShowDeleteModal(false);
@@ -117,7 +117,7 @@ function Planets() {
         }
 
         setFiltered(filteredResults);
-        setCurrentPage(1); 
+        setCurrentPage(1);
     };
 
     const GetHomologation = (value) => {
@@ -133,7 +133,7 @@ function Planets() {
                 await Deleteplanets(planetToDelete._id);
                 setModalType('delete');
                 setShowDeleteSuccessModal(true);
-                fetchAllRegisters(); 
+                fetchAllRegisters();
             } catch (error) {
                 console.error("Error al eliminar el planeta: ", error.message);
             } finally {
@@ -144,7 +144,7 @@ function Planets() {
 
     return (
         <div className="contenedor">
-            <Header onSearch={handleSearch} /> 
+            <Header onSearch={handleSearch} />
             <div className="Titulo">
                 <h1>Planetas</h1>
             </div>
@@ -154,65 +154,65 @@ function Planets() {
                     <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
-                        }} 
+                        }}
                         setShowDeleteSuccessModal={setShowDeleteSuccessModal}
                         setModalType={setModalType}
-                        />
+                    />
                 </Modal>
             </div>
             <div className="DatosBD">
-            {planets.length === 0 ? (
-                <div className="no_registers">No hay ningun registro</div>
-            ) : (
-                <table className='Table'>
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Diametro</th>
-                            <th>Periodo de Rotacion</th>
-                            <th>Periodo Orbital</th>
-                            <th>Gravedad</th>
-                            <th>Poblacion</th>
-                            <th>Clima</th>
-                            <th>Terreno</th>
-                            <th>Superficie de Agua</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {planets.map(planet => (
-                            <tr key={planet._id}>
-                                <td>{GetHomologation(planet.Nombre)}</td>
-                                <td>{GetHomologation(planet.Diametro)}</td>
-                                <td>{GetHomologation(planet.Periodo_Rotacion)}</td>
-                                <td>{GetHomologation(planet.Periodo_Orbital)}</td>
-                                <td>{GetHomologation(planet.Gravedad)}</td>
-                                <td>{GetHomologation(planet.Poblacion)}</td>
-                                <td>{GetHomologation(planet.Clima)}</td>
-                                <td>{GetHomologation(planet.Terreno)}</td>
-                                <td>{GetHomologation(planet.Superficie_Agua)}</td>
-                                <td>
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faTrash}
-                                        onClick={() => openDeleteModal(planet)}
-                                    />
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faFilePen}
-                                        onClick={() => openModifyModal(planet)}
-                                    />
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faEye}
-                                        onClick={() => openViewModal(planet)}
-                                    />
-                                </td>
+                {planets.length === 0 ? (
+                    <div className="no_registers">No hay ningun registro</div>
+                ) : (
+                    <table className='Table'>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Diametro</th>
+                                <th>Periodo de Rotacion</th>
+                                <th>Periodo Orbital</th>
+                                <th>Gravedad</th>
+                                <th>Poblacion</th>
+                                <th>Clima</th>
+                                <th>Terreno</th>
+                                <th>Superficie de Agua</th>
+                                <th>Acciones</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+                        </thead>
+                        <tbody>
+                            {planets.map(planet => (
+                                <tr key={planet._id}>
+                                    <td>{GetHomologation(planet.Nombre)}</td>
+                                    <td>{GetHomologation(planet.Diametro)}</td>
+                                    <td>{GetHomologation(planet.Periodo_Rotacion)}</td>
+                                    <td>{GetHomologation(planet.Periodo_Orbital)}</td>
+                                    <td>{GetHomologation(planet.Gravedad)}</td>
+                                    <td>{GetHomologation(planet.Poblacion)}</td>
+                                    <td>{GetHomologation(planet.Clima)}</td>
+                                    <td>{GetHomologation(planet.Terreno)}</td>
+                                    <td>{GetHomologation(planet.Superficie_Agua)}</td>
+                                    <td>
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faTrash}
+                                            onClick={() => openDeleteModal(planet)}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faFilePen}
+                                            onClick={() => openModifyModal(planet)}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faEye}
+                                            onClick={() => openViewModal(planet)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
             <div className="Paginacion">
                 <div className="pagination">
@@ -235,13 +235,13 @@ function Planets() {
                 show={showDeleteSuccessModal}
                 handleClose={() => {
                     setShowDeleteSuccessModal(false);
-                    fetchregister(currentPage); 
+                    fetchregister(currentPage);
                 }}
                 modalType={modalType}
             />
 
-      {/* MOSTRAR VENTANA MODIFICAR */}
-      {showModifyModal && (
+            {/* MOSTRAR VENTANA MODIFICAR */}
+            {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <MyForm
                         handleClose={() => {
@@ -262,13 +262,13 @@ function Planets() {
             )}
 
 
-           {/* MODAL   VER */}
-           {showViewModal && (
+            {/* MODAL   VER */}
+            {showViewModal && (
                 <Modal show={showViewModal} handleClose={closeViewModal}>
                     <MyForm
                         handleClose={closeViewModal}
                         viewData={view}
-                        isViewMode={true} 
+                        isViewMode={true}
                     />
                 </Modal>
             )}

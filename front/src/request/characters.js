@@ -35,3 +35,60 @@ export const Modifycharacter = async (id, characterdata) => {
     }
 };
 
+
+
+//PETICION OBTENER PELICULAS NOMBRE-ID//
+export const fetchPeliculas = async () => {
+    try {
+        const response = await axios.get(`http://localhost:5000/Peliculas/personajes`);
+        return response.data; 
+    } catch (error) {
+        console.error("Error al obtener las películas:", error);
+        
+        throw error; 
+    }
+};
+
+
+
+//PETICION OBTENER PELICULAS NOMBRE-ID//
+export const fetchSpecies = async () => {
+    try {
+        const response_species = await axios.get(`http://localhost:5000/Especies/personajes`);
+        return response_species.data; 
+    } catch (error) {
+        console.error("Error al obtener las Especies:", error);
+        
+        throw error; 
+    }
+};
+
+
+
+//PETICION OBTENER PELICULAS NOMBRE-ID//
+export const fetchStarships = async () => {
+    try {
+        const response = await axios.get(`http://localhost:5000/Naves/personajes`);
+        return response.data; 
+    } catch (error) {
+        console.error("Error al obtener las Naves:", error);
+        
+        throw error; 
+    }
+};
+
+
+
+
+//PETICION OBTENER PELICULAS NOMBRE-ID//
+export const fetchVehicles = async () => {
+    try {
+        const response = await axios.get(`http://localhost:5000/Vehiculos/personajes`);
+        return response.data; 
+    } catch (error) {
+        console.error("Error al obtener los Vehiculos:", error);
+        
+        throw error; 
+    }
+};
+

@@ -148,3 +148,10 @@ td:last-child {
     font-size: 200%;
     
 }
+
+.table-container {
+    overflow-x: auto; 
+    overflow-y: auto; 
+    max-width: 100%; 
+    border-radius: 4px; 
+}

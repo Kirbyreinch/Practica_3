@@ -174,65 +174,65 @@ function Species() {
                     <MyForm handleClose={handleClose} fetchCharacter={fetchregister} currentPage={currentPage}
                         onSuccess={() => {
                             handleClose();
-                        }} 
+                        }}
                         setShowDeleteSuccessModal={setShowDeleteSuccessModal}
                         setModalType={setModalType}
-                        />
+                    />
                 </Modal>
             </div>
             <div className="DatosBD">
-            {species.length === 0 ? (
-                <div className="no_registers">No hay ningun registro</div>
-            ) : (
-                <table className='Table'>
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Clasificación</th>
-                            <th>Designación</th>
-                            <th>Estatura</th>
-                            <th>Color de Piel</th>
-                            <th>Color de Cabello</th>
-                            <th>Color de Ojos</th>
-                            <th>Promedio de Vida</th>
-                            <th>Lenguaje</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {species.map(specie => (
-                            <tr key={specie._id}>
-                                <td>{GetHomologation(specie.Nombre)}</td>
-                                <td>{GetHomologation(specie.Clasificacion)}</td>
-                                <td>{GetHomologation(specie.Designacion)}</td>
-                                <td>{GetHomologation(specie.Estatura)}</td>
-                                <td>{GetHomologation(specie.Color_de_piel)}</td>
-                                <td>{GetHomologation(specie.Color_de_cabello)}</td>
-                                <td>{GetHomologation(specie.Color_de_ojos)}</td>
-                                <td>{GetHomologation(specie.Promedio_de_vida)}</td>
-                                <td>{GetHomologation(specie.Lenguaje)}</td>
-                                <td>
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faTrash}
-                                        onClick={() => openDeleteModal(specie)}
-                                    />
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faFilePen}
-                                        onClick={() => openModifyModal(specie)}
-                                    />
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faEye}
-                                        onClick={() => openViewModal(specie)}
-                                    />
-                                </td>
+                {species.length === 0 ? (
+                    <div className="no_registers">No hay ningun registro</div>
+                ) : (
+                    <table className='Table'>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Clasificación</th>
+                                <th>Designación</th>
+                                <th>Estatura</th>
+                                <th>Color de Piel</th>
+                                <th>Color de Cabello</th>
+                                <th>Color de Ojos</th>
+                                <th>Promedio de Vida</th>
+                                <th>Lenguaje</th>
+                                <th>Acciones</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+                        </thead>
+                        <tbody>
+                            {species.map(specie => (
+                                <tr key={specie._id}>
+                                    <td>{GetHomologation(specie.Nombre)}</td>
+                                    <td>{GetHomologation(specie.Clasificacion)}</td>
+                                    <td>{GetHomologation(specie.Designacion)}</td>
+                                    <td>{GetHomologation(specie.Estatura)}</td>
+                                    <td>{GetHomologation(specie.Color_de_piel)}</td>
+                                    <td>{GetHomologation(specie.Color_de_cabello)}</td>
+                                    <td>{GetHomologation(specie.Color_de_ojos)}</td>
+                                    <td>{GetHomologation(specie.Promedio_de_vida)}</td>
+                                    <td>{GetHomologation(specie.Lenguaje)}</td>
+                                    <td>
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faTrash}
+                                            onClick={() => openDeleteModal(specie)}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faFilePen}
+                                            onClick={() => openModifyModal(specie)}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faEye}
+                                            onClick={() => openViewModal(specie)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
 
             {/* PAGINACION */}
@@ -263,8 +263,8 @@ function Species() {
                 modalType={modalType}
             />
 
-      {/* MOSTRAR VENTANA MODIFICAR */}
-      {showModifyModal && (
+            {/* MOSTRAR VENTANA MODIFICAR */}
+            {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <MyForm
                         handleClose={() => {
@@ -292,7 +292,7 @@ function Species() {
                     <MyForm
                         handleClose={closeViewModal}
                         viewData={view}
-                        isViewMode={true} 
+                        isViewMode={true}
                     />
                 </Modal>
             )}

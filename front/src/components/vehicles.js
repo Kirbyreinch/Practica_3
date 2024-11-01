@@ -161,7 +161,7 @@ function Vehicles() {
         }
     };
 
- 
+
 
     return (
         <div className="contenedor">
@@ -178,60 +178,60 @@ function Vehicles() {
                         }}
                         setShowDeleteSuccessModal={setShowDeleteSuccessModal}
                         setModalType={setModalType}
-                        />
+                    />
                 </Modal>
             </div>
             <div className="DatosBD">
-            {vehicles.length === 0 ? (
-                <div className="no_registers">No hay ningun registro</div>
-            ) : (
-                <table className='Table'>
-                    <thead>
-                        <tr>
-                        <th>Nombre</th>
-                            <th>Modelo</th>
-                            <th>Clase</th>
-                            <th>Tamaño</th>
-                            <th>Número de Pasajeros</th>
-                            <th>Máxima Velocidad Atmosférica</th>
-                            <th>Capacidad Máxima</th>
-                            <th>Tiempo Máximo de Combustibles</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {vehicles.map(vehicle => (
-                          <tr key={GetHomologation(vehicle._id)}>
-                          <td>{GetHomologation(vehicle.Nombre)}</td>
-                          <td>{GetHomologation(vehicle.Modelo)}</td>
-                          <td>{GetHomologation(vehicle.Clase)}</td>
-                          <td>{GetHomologation(vehicle.Tamaño)}</td>
-                          <td>{GetHomologation(vehicle.Numero_de_Pasajeros)}</td>
-                          <td>{GetHomologation(vehicle.Maxima_velocidad_atmosferica)}</td>
-                          <td>{GetHomologation(vehicle.Capacidad_Maxima)}</td>
-                          <td>{GetHomologation(vehicle.Tiempo_Maximo_Cobustibles)}</td>
-                                <td>
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faTrash}
-                                        onClick={() => openDeleteModal(vehicle)}
-                                    />
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faFilePen}
-                                        onClick={() => openModifyModal(vehicle)}
-                                    />
-                                    <FontAwesomeIcon
-                                        className="icon"
-                                        icon={faEye}
-                                        onClick={() => openViewModal(vehicle)}
-                                    />
-                                </td>
+                {vehicles.length === 0 ? (
+                    <div className="no_registers">No hay ningun registro</div>
+                ) : (
+                    <table className='Table'>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Modelo</th>
+                                <th>Clase</th>
+                                <th>Tamaño</th>
+                                <th>Número de Pasajeros</th>
+                                <th>Máxima Velocidad Atmosférica</th>
+                                <th>Capacidad Máxima</th>
+                                <th>Tiempo Máximo de Combustibles</th>
+                                <th>Acciones</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+                        </thead>
+                        <tbody>
+                            {vehicles.map(vehicle => (
+                                <tr key={GetHomologation(vehicle._id)}>
+                                    <td>{GetHomologation(vehicle.Nombre)}</td>
+                                    <td>{GetHomologation(vehicle.Modelo)}</td>
+                                    <td>{GetHomologation(vehicle.Clase)}</td>
+                                    <td>{GetHomologation(vehicle.Tamaño)}</td>
+                                    <td>{GetHomologation(vehicle.Numero_de_Pasajeros)}</td>
+                                    <td>{GetHomologation(vehicle.Maxima_velocidad_atmosferica)}</td>
+                                    <td>{GetHomologation(vehicle.Capacidad_Maxima)}</td>
+                                    <td>{GetHomologation(vehicle.Tiempo_Maximo_Cobustibles)}</td>
+                                    <td>
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faTrash}
+                                            onClick={() => openDeleteModal(vehicle)}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faFilePen}
+                                            onClick={() => openModifyModal(vehicle)}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="icon"
+                                            icon={faEye}
+                                            onClick={() => openViewModal(vehicle)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
 
             {/* PAGINACION */}
@@ -262,8 +262,8 @@ function Vehicles() {
                 modalType={modalType}
             />
 
-      {/* MOSTRAR VENTANA MODIFICAR */}
-      {showModifyModal && (
+            {/* MOSTRAR VENTANA MODIFICAR */}
+            {showModifyModal && (
                 <Modal show={showModifyModal} handleClose={closeModifyModal}>
                     <MyForm
                         handleClose={() => {
@@ -285,13 +285,13 @@ function Vehicles() {
 
 
             {/* MODAL   VER */}
-                {/* MODAL   VER */}
-                {showViewModal && (
+            {/* MODAL   VER */}
+            {showViewModal && (
                 <Modal show={showViewModal} handleClose={closeViewModal}>
                     <MyForm
                         handleClose={closeViewModal}
                         viewData={view}
-                        isViewMode={true} 
+                        isViewMode={true}
                     />
                 </Modal>
             )}

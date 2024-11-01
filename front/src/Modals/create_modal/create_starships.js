@@ -3,15 +3,15 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Createstarships } from '../../request/starships';
 import { Modifystarships } from '../../request/starships';
-const MyForm = ({ 
-    handleClose, 
-    fetchStarships, 
-    currentPage, 
-    onSuccess, 
-    setShowDeleteSuccessModal, 
-    setModalType,  
-    viewData, 
-    isViewMode, 
+const MyForm = ({
+    handleClose,
+    fetchStarships,
+    currentPage,
+    onSuccess,
+    setShowDeleteSuccessModal,
+    setModalType,
+    viewData,
+    isViewMode,
     isModifyMode
 }) => {
 
@@ -50,23 +50,23 @@ const MyForm = ({
                     onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
                         try {
                             if (isModifyMode) {
-                                await Modifystarships(viewData._id, values); 
+                                await Modifystarships(viewData._id, values);
                             } else {
-                                await Createstarships(values); 
+                                await Createstarships(values);
                             }
                             resetForm();
                             handleClose();
-                            setModalType(isModifyMode ? 'modify' : 'register');  
-                            setShowDeleteSuccessModal(true); 
+                            setModalType(isModifyMode ? 'modify' : 'register');
+                            setShowDeleteSuccessModal(true);
                             onSuccess();
                             fetchStarships(currentPage); // Actualiza la tabla
                         } catch (error) {
-                            setErrors({ submit: 'Ya hay una Nave con ese Nombre.' }); 
+                            setErrors({ submit: 'Ya hay una Nave con ese Nombre.' });
                         } finally {
                             setSubmitting(false);
                         }
                     }}
-                    enableReinitialize 
+                    enableReinitialize
                 >
                     {({ isSubmitting, errors, resetForm }) => (
                         <Form>

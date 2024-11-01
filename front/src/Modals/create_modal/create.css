@@ -1,29 +1,30 @@
 .Create_modal-content {
-  position: relative;
-  width: 100%; 
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
   background: rgb(128, 128, 128);
   border-radius: 8px;
-  padding: 50px;
+  padding: 20px;
   margin: auto;
-  transform: translateY(-50%);
   z-index: 1000;
-  right: 10%;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+
 }
 
 .modal {
-  width: 20%;
+  width: 100%;
+  max-width: 600px;
   position: fixed;
-  top: 50%; 
-  left: 88%;
-  transform: translate(-50%, -10%); 
+  top: 50%;
+  left: 84%;
+  transform: translate(-50%, -50%);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   z-index: 1000;
-  max-height: 10%;
+  overflow: hidden;
 }
-
 
 
 .input_field {
@@ -37,7 +38,8 @@
 
 /* Estilos adicionales */
 .titulo_modal {
-  font-size: 1.5em; 
+  font-size: 1.5em;
+
 }
 
 /* MENSAJES DE ERROR */
@@ -50,7 +52,7 @@
 .button-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px; 
+  margin-top: 20px;
 }
 
 .Btn_agregar {
@@ -95,10 +97,51 @@
   }
 }
 
-/* Media Queries para pantallas pequeñas */
+
 @media (max-width: 600px) {
   .Create_modal-content {
-    width: 95%; 
-    padding: 15px; 
+    width: 95%;
+    padding: 15px;
   }
+}
+
+
+
+.listbox-container {
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.peliculas-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.peliculas-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.peliculas-list button {
+  margin-left: 10px;
+}
+
+.listbox-container {
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+
+
+.modal-content {
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 20px;
 }

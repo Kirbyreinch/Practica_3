@@ -4,16 +4,16 @@ import * as Yup from 'yup';
 import { Createvehicles } from '../../request/vehicles';
 import { Modifyvehicles } from '../../request/vehicles';
 
-const MyForm = ({ 
-    handleClose, 
-    fetchVehicles, 
-    currentPage, 
-    onSuccess, 
-    setShowDeleteSuccessModal, 
-    setModalType,  
-    viewData, 
-    isViewMode, 
-    isModifyMode 
+const MyForm = ({
+    handleClose,
+    fetchVehicles,
+    currentPage,
+    onSuccess,
+    setShowDeleteSuccessModal,
+    setModalType,
+    viewData,
+    isViewMode,
+    isModifyMode
 }) => {
     // VALIDACIONES
     const validationSchema = Yup.object({
@@ -52,8 +52,8 @@ const MyForm = ({
                             }
                             resetForm();
                             handleClose();
-                            setModalType(isModifyMode ? 'modify' : 'register');  
-                            setShowDeleteSuccessModal(true); 
+                            setModalType(isModifyMode ? 'modify' : 'register');
+                            setShowDeleteSuccessModal(true);
                             onSuccess();
                             fetchVehicles(currentPage); // Actualiza la tabla
                         } catch (error) {

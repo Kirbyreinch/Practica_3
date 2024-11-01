@@ -9,7 +9,7 @@ const DeleteComplete = ({ show, handleClose, modalType }) => {
             <section className="success-message" onClick={e => e.stopPropagation()}>
                 {modalType === 'delete' ? (
                     <div>Registro Eliminado exitosamente</div>
-                ) :  modalType === 'modify' ? (
+                ) : modalType === 'modify' ? (
                     <div>Registro Modificado exitosamente</div>
                 ) : (
                     <div>Registro Agregado exitosamente</div>
