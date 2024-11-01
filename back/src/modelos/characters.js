@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+const { PelisModel } = require('./films'); 
+const { especiesModel } = require('./species'); 
+const { NavesModel } = require('./starships'); 
+const { VehiculosModel } = require('./vehicles'); 
 
-
-//////////////Modelo Personajes/////////////////////
 const PersonajeSchemas = new mongoose.Schema(
     {
         Nombre: {
@@ -13,39 +15,53 @@ const PersonajeSchemas = new mongoose.Schema(
         },
         Color_Ojos: {
             type: String,
-
         },
         Genero: {
             type: String,
-
         },
         Color_Cabello: {
             type: String,
-
         },
         Altura: {
             type: String,
-
         },
         Masa: {
             type: String,
-
         },
         Color_de_Piel: {
             type: String,
-
         },
+        films: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Peliculas', 
+            default: [],
+        }],
+        species: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Especies', 
+            default: [],
+        }],
+        starships: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Naves', 
+            default: [],
+        }],
+        vehicles: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Vehiculos', 
+            default: [],
+        }],
     },
     {
         timestamps: true,
         versionKey: false,
     }
-)
+);
 
-// Crear los modelos
+// Crear el modelo de personajes
 const PersonajesModel = mongoose.model("Personajes", PersonajeSchemas);
 
-// Exportar  modelos
+// Exportar modelos
 module.exports = {
     PersonajesModel,
 };
