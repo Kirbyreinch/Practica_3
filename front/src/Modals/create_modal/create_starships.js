@@ -1,8 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Createstarships } from '../../request/starships';
-import { Modifystarships } from '../../request/starships';
+import { Createstarships, Modifystarships } from '../../request/starships';
+
 const MyForm = ({
     handleClose,
     fetchStarships,
@@ -30,47 +30,52 @@ const MyForm = ({
     });
 
     return (
-        <>
-            <div className="modal-overlay" onClick={handleClose} />
-            <div className="Create_modal-content">
-                <Formik
-                    initialValues={{
-                        Nombre: viewData?.Nombre || '',
-                        Modelo: viewData?.Modelo || '',
-                        Clase: viewData?.Clase || '',
-                        Tamaño: viewData?.Tamaño || '',
-                        Numero_de_Pasajeros: viewData?.Numero_de_Pasajeros || '',
-                        Maxima_velocidad_atmosferica: viewData?.Maxima_velocidad_atmosferica || '',
-                        Hiperimpulsor: viewData?.Hiperimpulsor || '',
-                        MGLT: viewData?.MGLT || '',
-                        Capacidad_de_carga: viewData?.Capacidad_de_carga || '',
-                        Tiempo_Maximo_Cobustibles: viewData?.Tiempo_Maximo_Cobustibles || '',
-                    }}
-                    validationSchema={validationSchema}
-                    onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
-                        try {
-                            if (isModifyMode) {
-                                await Modifystarships(viewData._id, values);
-                            } else {
-                                await Createstarships(values);
-                            }
-                            resetForm();
-                            handleClose();
-                            setModalType(isModifyMode ? 'modify' : 'register');
-                            setShowDeleteSuccessModal(true);
-                            onSuccess();
-                            fetchStarships(currentPage); // Actualiza la tabla
-                        } catch (error) {
-                            setErrors({ submit: 'Ya hay una Nave con ese Nombre.' });
-                        } finally {
-                            setSubmitting(false);
-                        }
-                    }}
-                    enableReinitialize
-                >
-                    {({ isSubmitting, errors, resetForm }) => (
+        <Formik
+            initialValues={{
+                Nombre: viewData?.Nombre || '',
+                Modelo: viewData?.Modelo || '',
+                Clase: viewData?.Clase || '',
+                Tamaño: viewData?.Tamaño || '',
+                Numero_de_Pasajeros: viewData?.Numero_de_Pasajeros || '',
+                Maxima_velocidad_atmosferica: viewData?.Maxima_velocidad_atmosferica || '',
+                Hiperimpulsor: viewData?.Hiperimpulsor || '',
+                MGLT: viewData?.MGLT || '',
+                Capacidad_de_carga: viewData?.Capacidad_de_carga || '',
+                Tiempo_Maximo_Cobustibles: viewData?.Tiempo_Maximo_Cobustibles || '',
+            }}
+            validationSchema={validationSchema}
+            onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
+                try {
+                    if (isModifyMode) {
+                        await Modifystarships(viewData._id, values);
+                    } else {
+                        await Createstarships(values);
+                    }
+                    resetForm();
+                    handleClose();
+                    setModalType(isModifyMode ? 'modify' : 'register');
+                    setShowDeleteSuccessModal(true);
+                    onSuccess();
+                
+                } catch (error) {
+                    setErrors({ submit: 'Ya hay una Nave con ese Nombre.' });
+                } finally {
+                    setSubmitting(false);
+                }
+            }}
+            enableReinitialize
+        >
+            {({ isSubmitting, errors, resetForm }) => (
+                <>
+                    <div className="overlay" onClick={() => { resetForm(); handleClose(); }}></div>
+                    <div className="Create_modal-content">
                         <Form>
-                            <label className='titulo_modal' htmlFor="Titulo">{isViewMode ? 'Ver Nave' : (isModifyMode ? 'Modificar Nave' : 'Agregar Nave')}</label>
+                            <label className='titulo_modal' htmlFor="Titulo">
+                                {isViewMode ? 'Ver Nave' : (isModifyMode ? 'Modificar Nave' : 'Agregar Nave')}
+                                <button className='Btn_agregar' type="button" onClick={() => { resetForm(); handleClose(); }} style={{ marginLeft: '20%' }} disabled={isSubmitting}>
+                                    X
+                                </button>
+                            </label>
                             <div className='Crear'>
                                 <label htmlFor="Nombre">Nombre</label>
                                 <Field name="Nombre" className="input_field" disabled={isViewMode} />
@@ -126,10 +131,10 @@ const MyForm = ({
                                 </button>
                             </div>
                         </Form>
-                    )}
-                </Formik>
-            </div>
-        </>
+                    </div>
+                </>
+            )}
+        </Formik>
     );
 };
 

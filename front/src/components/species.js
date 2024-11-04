@@ -184,6 +184,7 @@ function Species() {
                 {species.length === 0 ? (
                     <div className="no_registers">No hay ningun registro</div>
                 ) : (
+                    <div className="table-container"> 
                     <table className='Table'>
                         <thead>
                             <tr>
@@ -232,6 +233,7 @@ function Species() {
                             ))}
                         </tbody>
                     </table>
+                    </div>
                 )}
             </div>
 

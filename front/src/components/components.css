@@ -155,3 +155,14 @@ td:last-child {
     max-width: 100%; 
     border-radius: 4px; 
 }
+
+
+
+
+@media (max-width: 600px) {
+    .Table {
+        margin-left: 40%; 
+        width: 100%; 
+        table-layout: auto;
+    }
+}

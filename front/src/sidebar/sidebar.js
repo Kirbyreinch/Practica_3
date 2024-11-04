@@ -27,7 +27,7 @@ function Sidebar({ onSelect, selectedComponent }) {
                         onMouseLeave={handleMouseLeave}
                     >
                             {/* // ICONO Y TEXTO DE ETIQUETA // */}
-                        <FontAwesomeIcon icon={faUsers} />
+                        <FontAwesomeIcon icon={faUsers} className="fa-icon" />
                         {hoveredComponent === 'Characters' && <span className="tooltip">Personajes</span>}
                     </li>
                     <li 
@@ -36,7 +36,7 @@ function Sidebar({ onSelect, selectedComponent }) {
                         onMouseEnter={() => handleMouseEnter('Starships')}
                         onMouseLeave={handleMouseLeave}
                     >
-                        <FontAwesomeIcon icon={faShuttleSpace} />
+                        <FontAwesomeIcon icon={faShuttleSpace}  className="fa-icon"/>
                         {hoveredComponent === 'Starships' && <span className="tooltip">Naves</span>}
                     </li>
                     <li 
@@ -45,7 +45,7 @@ function Sidebar({ onSelect, selectedComponent }) {
                         onMouseEnter={() => handleMouseEnter('Species')}
                         onMouseLeave={handleMouseLeave}
                     >
-                        <FontAwesomeIcon icon={faFeatherPointed} />
+                        <FontAwesomeIcon icon={faFeatherPointed} className="fa-icon"/>
                         {hoveredComponent === 'Species' && <span className="tooltip">Especies</span>}
                     </li>
                     <li 
@@ -54,7 +54,7 @@ function Sidebar({ onSelect, selectedComponent }) {
                         onMouseEnter={() => handleMouseEnter('Vehicles')}
                         onMouseLeave={handleMouseLeave}
                     >
-                        <FontAwesomeIcon icon={faCarSide} />
+                        <FontAwesomeIcon icon={faCarSide} className="fa-icon"/>
                         {hoveredComponent === 'Vehicles' && <span className="tooltip">Vehículos</span>}
                     </li>
                     <li 
@@ -63,7 +63,7 @@ function Sidebar({ onSelect, selectedComponent }) {
                         onMouseEnter={() => handleMouseEnter('Planets')}
                         onMouseLeave={handleMouseLeave}
                     >
-                        <FontAwesomeIcon icon={faEarthAsia} />
+                        <FontAwesomeIcon icon={faEarthAsia} className="fa-icon"/>
                         {hoveredComponent === 'Planets' && <span className="tooltip">Planetas</span>}
                     </li>
                     <li 
@@ -72,7 +72,7 @@ function Sidebar({ onSelect, selectedComponent }) {
                         onMouseEnter={() => handleMouseEnter('Films')}
                         onMouseLeave={handleMouseLeave}
                     >
-                        <FontAwesomeIcon icon={faFilm} />
+                        <FontAwesomeIcon icon={faFilm} className="fa-icon"/>
                         {hoveredComponent === 'Films' && <span className="tooltip">Peliculas</span>}
                     </li>
                 </ul>

@@ -70,6 +70,7 @@ function Films() {
 
     // CERRAR TODAS LAS VENTANAS
     const handleClose = () => {
+        
         setShowModal(false);
         fetchAllRegisters();
         setShowDeleteModal(false);
@@ -284,11 +285,25 @@ function Films() {
                         handleClose={closeViewModal}
                         viewData={view}
                         isViewMode={true}
+                        
+                        
                     />
                 </Modal>
             )}
+
+            
+
+
+
+
+
         </div>
     );
+
+
+
+
+    
 }
 
 export default Films;

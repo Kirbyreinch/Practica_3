@@ -1,8 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Createspecies } from '../../request/species';
-import { Modifyspecies } from '../../request/species';
+import { Createspecies, Modifyspecies } from '../../request/species';
+
 const MyForm = ({
     handleClose,
     fetchSpecies,
@@ -27,46 +27,51 @@ const MyForm = ({
     });
 
     return (
-        <>
-            <div className="modal-overlay" onClick={handleClose} />
-            <div className="Create_modal-content">
-                <Formik
-                    initialValues={{
-                        Nombre: viewData?.Nombre || '',
-                        Clasificacion: viewData?.Clasificacion || '',
-                        Designacion: viewData?.Designacion || '',
-                        Estatura: viewData?.Estatura || '',
-                        Color_de_piel: viewData?.Color_de_piel || '',
-                        Color_de_cabello: viewData?.Color_de_cabello || '',
-                        Color_de_ojos: viewData?.Color_de_ojos || '',
-                        Promedio_de_vida: viewData?.Promedio_de_vida || '',
-                        Lenguaje: viewData?.Lenguaje || '',
-                    }}
-                    validationSchema={validationSchema}
-                    onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
-                        try {
-                            if (isModifyMode) {
-                                await Modifyspecies(viewData._id, values);
-                            } else {
-                                await Createspecies(values);
-                            }
-                            resetForm();
-                            handleClose();
-                            setModalType(isModifyMode ? 'modify' : 'register');
-                            setShowDeleteSuccessModal(true);
-                            onSuccess();
-                            fetchSpecies(currentPage); // Actualiza la tabla
-                        } catch (error) {
-                            setErrors({ submit: 'Ya hay una Especie con ese Nombre.' });
-                        } finally {
-                            setSubmitting(false);
-                        }
-                    }}
-                    enableReinitialize
-                >
-                    {({ isSubmitting, errors, resetForm }) => (
+        <Formik
+            initialValues={{
+                Nombre: viewData?.Nombre || '',
+                Clasificacion: viewData?.Clasificacion || '',
+                Designacion: viewData?.Designacion || '',
+                Estatura: viewData?.Estatura || '',
+                Color_de_piel: viewData?.Color_de_piel || '',
+                Color_de_cabello: viewData?.Color_de_cabello || '',
+                Color_de_ojos: viewData?.Color_de_ojos || '',
+                Promedio_de_vida: viewData?.Promedio_de_vida || '',
+                Lenguaje: viewData?.Lenguaje || '',
+            }}
+            validationSchema={validationSchema}
+            onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
+                try {
+                    if (isModifyMode) {
+                        await Modifyspecies(viewData._id, values);
+                    } else {
+                        await Createspecies(values);
+                    }
+                    resetForm();
+                    handleClose();
+                    setModalType(isModifyMode ? 'modify' : 'register');
+                    setShowDeleteSuccessModal(true);
+                    onSuccess();
+       
+                } catch (error) {
+                    setErrors({ submit: 'Ya hay una Especie con ese Nombre.' });
+                } finally {
+                    setSubmitting(false);
+                }
+            }}
+            enableReinitialize
+        >
+            {({ isSubmitting, errors, resetForm }) => (
+                <>
+                    <div className="overlay" onClick={() => { resetForm(); handleClose(); }}></div>
+                    <div className="Create_modal-content">
                         <Form>
-                            <label className='titulo_modal' htmlFor="Nombre">{isViewMode ? 'Ver Especie' : (isModifyMode ? 'Modificar Especie' : 'Agregar Especie')}</label>
+                            <label className='titulo_modal' htmlFor="Nombre">
+                                {isViewMode ? 'Ver Especie' : (isModifyMode ? 'Modificar Especie' : 'Agregar Especie')}
+                                <button className='Btn_agregar' type="button" onClick={() => { resetForm(); handleClose(); }} style={{ marginLeft: '20%' }} disabled={isSubmitting}>
+                                    X
+                                </button>
+                            </label>
                             <div className='Crear'>
                                 <label htmlFor="Nombre">Nombre</label>
                                 <Field name="Nombre" className="input_field" disabled={isViewMode} />
@@ -117,10 +122,10 @@ const MyForm = ({
                                 </button>
                             </div>
                         </Form>
-                    )}
-                </Formik>
-            </div>
-        </>
+                    </div>
+                </>
+            )}
+        </Formik>
     );
 };
 

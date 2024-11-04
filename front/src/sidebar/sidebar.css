@@ -69,3 +69,22 @@
     z-index: 1000; 
     margin-left: 5px;
 }
+
+@media (max-width: 600px) {
+    .optionsvar {
+        width: 5%;
+    }
+
+    .optionsvar ul li {
+        height: 4%; /* Reducir altura del elemento de lista */
+        padding: 5px; /* Ajustar padding para que el tamaño se vea mejor */
+    }
+
+    .optionsvar ul li .fa-icon {
+        font-size: 14px; /* Tamaño más pequeño para los íconos */
+    }
+
+    .tooltip {
+        font-size: 10px; /* Tamaño más pequeño para el texto del tooltip */
+    }
+}

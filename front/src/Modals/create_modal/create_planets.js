@@ -1,8 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Createplanets } from '../../request/planets';
-import { Modifyplanets } from '../../request/planets';
+import { Createplanets, Modifyplanets } from '../../request/planets';
+
 const MyForm = ({
     handleClose,
     fetchPlanets,
@@ -14,7 +14,6 @@ const MyForm = ({
     isViewMode,
     isModifyMode
 }) => {
-
     // VALIDACIONES
     const validationSchema = Yup.object({
         Nombre: Yup.string().required('El Nombre es requerido'),
@@ -29,46 +28,51 @@ const MyForm = ({
     });
 
     return (
-        <>
-            <div className="modal-overlay" onClick={handleClose} />
-            <div className="Create_modal-content">
-                <Formik
-                    initialValues={{
-                        Nombre: viewData?.Nombre || '',
-                        Diametro: viewData?.Diametro || '',
-                        Periodo_Rotacion: viewData?.Periodo_Rotacion || '',
-                        Periodo_Orbital: viewData?.Periodo_Orbital || '',
-                        Gravedad: viewData?.Gravedad || '',
-                        Poblacion: viewData?.Poblacion || '',
-                        Clima: viewData?.Clima || '',
-                        Terreno: viewData?.Terreno || '',
-                        Superficie_Agua: viewData?.Superficie_Agua || '',
-                    }}
-                    validationSchema={validationSchema}
-                    onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
-                        try {
-                            if (isModifyMode) {
-                                await Modifyplanets(viewData._id, values);
-                            } else {
-                                await Createplanets(values);
-                            }
-                            resetForm();
-                            handleClose();
-                            setShowDeleteSuccessModal(true);
-                            setModalType(isModifyMode ? 'modify' : 'register');
-                            onSuccess();
-                            fetchPlanets(currentPage); // Actualiza la tabla
-                        } catch (error) {
-                            setErrors({ submit: 'Ya hay un Planeta con ese Nombre.' });
-                        } finally {
-                            setSubmitting(false);
-                        }
-                    }}
-                    enableReinitialize // Permite reiniciar el formulario cuando cambian los datos de vista
-                >
-                    {({ isSubmitting, errors, resetForm }) => (
+        <Formik
+            initialValues={{
+                Nombre: viewData?.Nombre || '',
+                Diametro: viewData?.Diametro || '',
+                Periodo_Rotacion: viewData?.Periodo_Rotacion || '',
+                Periodo_Orbital: viewData?.Periodo_Orbital || '',
+                Gravedad: viewData?.Gravedad || '',
+                Poblacion: viewData?.Poblacion || '',
+                Clima: viewData?.Clima || '',
+                Terreno: viewData?.Terreno || '',
+                Superficie_Agua: viewData?.Superficie_Agua || '',
+            }}
+            validationSchema={validationSchema}
+            onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
+                try {
+                    if (isModifyMode) {
+                        await Modifyplanets(viewData._id, values);
+                    } else {
+                        await Createplanets(values);
+                    }
+                    resetForm();
+                    handleClose();
+                    setShowDeleteSuccessModal(true);
+                    setModalType(isModifyMode ? 'modify' : 'register');
+                    onSuccess();
+        
+                } catch (error) {
+                    setErrors({ submit: 'Ya hay un Planeta con ese Nombre.' });
+                } finally {
+                    setSubmitting(false);
+                }
+            }}
+            enableReinitialize
+        >
+            {({ isSubmitting, errors, resetForm }) => (
+                <>
+                    <div className="overlay" onClick={() => { resetForm(); handleClose(); }}></div>
+                    <div className="Create_modal-content">
                         <Form>
-                            <label className='titulo_modal' htmlFor="Nombre">{isViewMode ? 'Ver Planeta' : (isModifyMode ? 'Modificar Planeta' : 'Agregar Planeta')}</label>
+                            <label className='titulo_modal' htmlFor="Nombre">
+                                {isViewMode ? 'Ver Planeta' : (isModifyMode ? 'Modificar Planeta' : 'Agregar Planeta')}
+                                <button className='Btn_agregar' type="button" onClick={() => { resetForm(); handleClose(); }} style={{ marginLeft: '20%' }} disabled={isSubmitting}>
+                                    X
+                                </button>
+                            </label>
                             <div className='Crear'>
                                 <label htmlFor="Nombre">Nombre</label>
                                 <Field name="Nombre" className="input_field" disabled={isViewMode} />
@@ -119,10 +123,10 @@ const MyForm = ({
                                 </button>
                             </div>
                         </Form>
-                    )}
-                </Formik>
-            </div>
-        </>
+                    </div>
+                </>
+            )}
+        </Formik>
     );
 };
 

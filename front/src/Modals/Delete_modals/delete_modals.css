@@ -9,7 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 .modal_delete {
@@ -24,8 +24,6 @@
     border-radius: 20px;
     padding: 20px;
 }
-
-
 
 
 .display-block {

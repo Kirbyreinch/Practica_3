@@ -1,8 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Createvehicles } from '../../request/vehicles';
-import { Modifyvehicles } from '../../request/vehicles';
+import { Createvehicles, Modifyvehicles } from '../../request/vehicles';
 
 const MyForm = ({
     handleClose,
@@ -28,45 +27,49 @@ const MyForm = ({
     });
 
     return (
-        <>
-            <div className="modal-overlay" onClick={handleClose} />
-            <div className="Create_modal-content">
-                <Formik
-                    initialValues={{
-                        Nombre: viewData?.Nombre || '',
-                        Modelo: viewData?.Modelo || '',
-                        Clase: viewData?.Clase || '',
-                        Tamaño: viewData?.Tamaño || '',
-                        Numero_de_Pasajeros: viewData?.Numero_de_Pasajeros || '',
-                        Maxima_velocidad_atmosferica: viewData?.Maxima_velocidad_atmosferica || '',
-                        Capacidad_Maxima: viewData?.Capacidad_Maxima || '',
-                        Tiempo_Maximo_Cobustibles: viewData?.Tiempo_Maximo_Cobustibles || '',
-                    }}
-                    validationSchema={validationSchema}
-                    onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
-                        try {
-                            if (isModifyMode) {
-                                await Modifyvehicles(viewData._id, values); // Modifica el vehículo existente
-                            } else {
-                                await Createvehicles(values); // Crea un nuevo vehículo
-                            }
-                            resetForm();
-                            handleClose();
-                            setModalType(isModifyMode ? 'modify' : 'register');
-                            setShowDeleteSuccessModal(true);
-                            onSuccess();
-                            fetchVehicles(currentPage); // Actualiza la tabla
-                        } catch (error) {
-                            setErrors({ submit: 'Ya hay un Vehículo con ese Nombre.' }); // Mensaje de error si el vehículo "ya existe"
-                        } finally {
-                            setSubmitting(false);
-                        }
-                    }}
-                    enableReinitialize // Permite reiniciar el formulario cuando cambian los datos de vista
-                >
-                    {({ isSubmitting, errors, resetForm }) => (
+        <Formik
+            initialValues={{
+                Nombre: viewData?.Nombre || '',
+                Modelo: viewData?.Modelo || '',
+                Clase: viewData?.Clase || '',
+                Tamaño: viewData?.Tamaño || '',
+                Numero_de_Pasajeros: viewData?.Numero_de_Pasajeros || '',
+                Maxima_velocidad_atmosferica: viewData?.Maxima_velocidad_atmosferica || '',
+                Capacidad_Maxima: viewData?.Capacidad_Maxima || '',
+                Tiempo_Maximo_Cobustibles: viewData?.Tiempo_Maximo_Cobustibles || '',
+            }}
+            validationSchema={validationSchema}
+            onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
+                try {
+                    if (isModifyMode) {
+                        await Modifyvehicles(viewData._id, values); // Modifica el vehículo existente
+                    } else {
+                        await Createvehicles(values); // Crea un nuevo vehículo
+                    }
+                    resetForm();
+                    handleClose();
+                    setModalType(isModifyMode ? 'modify' : 'register');
+                    setShowDeleteSuccessModal(true);
+                    onSuccess();
+                } catch (error) {
+                    setErrors({ submit: 'Ya hay un Vehículo con ese Nombre.' }); // Mensaje de error si el vehículo "ya existe"
+                } finally {
+                    setSubmitting(false);
+                }
+            }}
+            enableReinitialize // Permite reiniciar el formulario cuando cambian los datos de vista
+        >
+            {({ isSubmitting, errors, resetForm }) => (
+                <>
+                    <div className="overlay" onClick={() => { resetForm(); handleClose(); }}></div>
+                    <div className="Create_modal-content">
                         <Form>
-                            <label className='titulo_modal' htmlFor="Titulo">{isViewMode ? 'Ver Vehículo' : (isModifyMode ? 'Modificar Vehículo' : 'Agregar Vehículo')}</label>
+                            <label className='titulo_modal' htmlFor="Titulo">
+                                {isViewMode ? 'Ver Vehículo' : (isModifyMode ? 'Modificar Vehículo' : 'Agregar Vehículo')}
+                                <button className='Btn_agregar' type="button" onClick={() => { resetForm(); handleClose(); }} style={{ marginLeft: '20%' }} disabled={isSubmitting}>
+                                    X
+                                </button>
+                            </label>
                             <div className='Crear'>
                                 <label htmlFor="Nombre">Nombre</label>
                                 <Field name="Nombre" className="input_field" disabled={isViewMode} />
@@ -114,10 +117,10 @@ const MyForm = ({
                                 </button>
                             </div>
                         </Form>
-                    )}
-                </Formik>
-            </div>
-        </>
+                    </div>
+                </>
+            )}
+        </Formik>
     );
 };
 

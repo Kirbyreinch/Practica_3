@@ -59,7 +59,7 @@ const MyForm = ({
 
     return (
         <>
-            <div className="modal-overlay" onClick={handleClose} />
+              <div className="overlay" onClick={handleClose}></div>
             <div className="Create_modal-content">
                 <Formik
                     initialValues={{
@@ -98,7 +98,14 @@ const MyForm = ({
                     }}
                     enableReinitialize
                 >
+
+
+
+
+
+                    
                     {({ isSubmitting, errors, resetForm, values, setFieldValue }) => (
+                        
                         <Form>
                             <label className='titulo_modal' htmlFor="Nombre">
                                 {isViewMode ? 'Ver Personaje' : (isModifyMode ? 'Modificar Personaje' : 'Agregar Personaje')}
@@ -177,6 +184,8 @@ const MyForm = ({
                                                 return (
                                                     <li key={filmId}>
                                                         {pelicula?.Titulo || 'Desconocido'}
+
+
                                                         {/* IsViewMode CONTROLA LO QUE SE VERA  */}
                                                         {!isViewMode && (
                                                             <button className='Btn_agregar'
@@ -187,6 +196,8 @@ const MyForm = ({
                                                                 }}
                                                             >X </button>
                                                         )}
+
+                                                        
                                                     </li>
                                                 );
                                             })}

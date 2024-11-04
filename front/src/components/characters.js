@@ -176,52 +176,54 @@ function Characters() {
                 {characters.length === 0 ? (
                     <div className="no_registers">No hay ningun registro</div>
                 ) : (
-                    <table className='Table'>
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Altura</th>
-                                <th>Peso</th>
-                                <th>Color de Cabello</th>
-                                <th>Color de Piel</th>
-                                <th>Color de Ojos</th>
-                                <th>Fecha de Nacimiento</th>
-                                <th>Género</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {characters.map(character => (
-                                <tr key={character._id}>
-                                    <td>{GetHomologation(character.Nombre)}</td>
-                                    <td>{GetHomologation(character.Altura)}</td>
-                                    <td>{GetHomologation(character.Masa)}</td>
-                                    <td>{GetHomologation(character.Color_Cabello)}</td>
-                                    <td>{GetHomologation(character.Color_de_Piel)}</td>
-                                    <td>{GetHomologation(character.Color_Ojos)}</td>
-                                    <td>{GetHomologation(character.Fecha_Nacimiento)}</td>
-                                    <td>{GetHomologation(character.Genero)}</td>
-                                    <td>
-                                        <FontAwesomeIcon
-                                            className="icon"
-                                            icon={faTrash}
-                                            onClick={() => openDeleteModal(character)}
-                                        />
-                                        <FontAwesomeIcon
-                                            className="icon"
-                                            icon={faFilePen}
-                                            onClick={() => openModifyModal(character)}
-                                        />
-                                        <FontAwesomeIcon
-                                            className="icon"
-                                            icon={faEye}
-                                            onClick={() => openViewModal(character)}
-                                        />
-                                    </td>
+                    <div className="table-container">
+                        <table className='Table'>
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Altura</th>
+                                    <th>Peso</th>
+                                    <th>Color de Cabello</th>
+                                    <th>Color de Piel</th>
+                                    <th>Color de Ojos</th>
+                                    <th>Fecha de Nacimiento</th>
+                                    <th>Género</th>
+                                    <th>Acciones</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {characters.map(character => (
+                                    <tr key={character._id}>
+                                        <td>{GetHomologation(character.Nombre)}</td>
+                                        <td>{GetHomologation(character.Altura)}</td>
+                                        <td>{GetHomologation(character.Masa)}</td>
+                                        <td>{GetHomologation(character.Color_Cabello)}</td>
+                                        <td>{GetHomologation(character.Color_de_Piel)}</td>
+                                        <td>{GetHomologation(character.Color_Ojos)}</td>
+                                        <td>{GetHomologation(character.Fecha_Nacimiento)}</td>
+                                        <td>{GetHomologation(character.Genero)}</td>
+                                        <td>
+                                            <FontAwesomeIcon
+                                                className="icon"
+                                                icon={faTrash}
+                                                onClick={() => openDeleteModal(character)}
+                                            />
+                                            <FontAwesomeIcon
+                                                className="icon"
+                                                icon={faFilePen}
+                                                onClick={() => openModifyModal(character)}
+                                            />
+                                            <FontAwesomeIcon
+                                                className="icon"
+                                                icon={faEye}
+                                                onClick={() => openViewModal(character)}
+                                            />
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </div>
             <div className="Paginacion">
